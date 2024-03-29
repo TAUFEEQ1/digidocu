@@ -1,5 +1,9 @@
 <?php
 return [
+    'DOC_TYPES'=>[
+        'LETTER'=>'LETTER',
+        'LEAVE_REQUESTS'=>'LEAVE_REQUESTS'
+    ],
     'STATUS' => [
         "PENDING" => 'PENDING',
         "ACTIVE" => 'ACTIVE',

@@ -18,6 +18,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WelcomeController;
 
 Route::get('/', [HomeController::class,'welcome'])->name('home');
 
@@ -32,7 +33,9 @@ Route::get('config', function () {
 Auth::routes();
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], function () {
-    Route::get('/home', [HomeController::class,'index'])->name('admin.dashboard');
+    // Route::get('/home', [HomeController::class,'index'])->name('admin.dashboard');
+    Route::get("/home",[WelcomeController::class,'index'])->name('admin.dashboard');
+    Route::get("/search",[WelcomeController::class,'search'])->name('documents.search');
     Route::match(['get','post'],'/profile', [HomeController::class,'profile'])->name('profile.manage');
     Route::group(['prefix' => 'advanced'], function () {
         Route::resource('settings', SettingController::class);

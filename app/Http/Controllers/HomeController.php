@@ -45,8 +45,10 @@ class HomeController extends AppBaseController
         }
         $activities = $activities->orderByDesc('id')->paginate(25);
         $allTags = Tag::with('documents','documents.files')->withCount('documents');
-        if(!auth()->user()->can('read documents')){
-            $allPerm = auth()->user()->getAllPermissions();
+        /** @var \App\User */
+        $user = auth()->user();
+        if(!$user->can('read documents')){
+            $allPerm = $user->getAllPermissions();
             $tmpTags = array_column(groupTagsPermissions($allPerm),'tag_id');
             $allTags->whereIn('id',$tmpTags);
         }
