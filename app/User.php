@@ -16,6 +16,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $username
  * @property string $address
  * @property string $description
+ * @property bool $is_executive_secretary
+ * @property bool $is_registry_member
+ * @property bool $is_managing_director
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string $status
@@ -71,7 +74,11 @@ class User extends Authenticatable
         'address',
         'description',
         'password',
-        'status'
+        'status',
+        // letter roles.
+        'is_executive_secretary',
+        'is_managing_director',
+        'is_registry_member'
     ];
 
     /**

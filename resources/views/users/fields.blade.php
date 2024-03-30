@@ -93,6 +93,21 @@
                 {!! $errors->first('password','<span class="help-block">:message</span>') !!}
             </div>
 
+            <!-- Executive Secretary Checkbox -->
+            <div class="form-group col-sm-6">
+                <label>{!! Form::checkbox('is_executive_secretary', 1, false) !!} Executive Secretary</label>
+            </div>
+
+            <!-- Managing Director Checkbox -->
+            <div class="form-group col-sm-6">
+                <label>{!! Form::checkbox('is_managing_director', 1, false) !!} Managing Director</label>
+            </div>
+
+            <!-- Registry Member Checkbox -->
+            <div class="form-group col-sm-6">
+                <label>{!! Form::checkbox('is_registry_member', 1, false) !!} Registry Member</label>
+            </div>
+
             {{--Status Filed--}}
             <div class="form-group col-sm-6 {{ $errors->has('status') ? 'has-error' :'' }}">
                 {!! Form::label('status', 'Status:') !!}
