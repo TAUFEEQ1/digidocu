@@ -2,7 +2,7 @@
     <a href="{!! route('admin.dashboard') !!}"><i class="fa fa-home"></i><span>Home</span></a>
 </li>
 <li class="{{ Request::is('admin/letters*')? 'active':'' }}">
-    <a href="{!! route('users.index') !!}"><i class="fa fa fa-envelope"></i><span>Letters</span></a>
+    <a href="{!! route('letters.index') !!}"><i class="fa fa fa-envelope"></i><span>Letters</span></a>
 </li>
 @can('read users')
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">

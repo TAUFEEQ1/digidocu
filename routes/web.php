@@ -15,6 +15,7 @@ use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FileTypeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LettersController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     // Route::get('/home', [HomeController::class,'index'])->name('admin.dashboard');
     Route::get("/home",[WelcomeController::class,'index'])->name('admin.dashboard');
     Route::get("/search",[WelcomeController::class,'search'])->name('documents.search');
+
     Route::match(['get','post'],'/profile', [HomeController::class,'profile'])->name('profile.manage');
     Route::group(['prefix' => 'advanced'], function () {
         Route::resource('settings', SettingController::class);
@@ -45,6 +47,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::resource('users', UserController::class);
     Route::get('/users-block/{user}',[UserController::class,'blockUnblock'])->name('users.blockUnblock');
     Route::resource('tags', TagController::class);
+
+    Route::get("/letters",[LettersController::class,"index"])->name("letters.index");
+    Route::get("letters/create",[LettersController::class,"create"])->name("letters.create");
+    Route::get("letters/store",[LettersController::class,"store"])->name("letters.store");
+
 
     Route::resource('documents', DocumentController::class);
     Route::post('document-verify/{id}',[DocumentController::class,'verify'])->name('documents.verify');

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Document;
+use App\User;
 use App\Policies\DocumentPolicy;
+use App\Policies\LetterPolicy;
 use App\Policies\TagPolicy;
 use App\Tag;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         //'App\Model' => 'App\Policies\ModelPolicy',
+        User::class => LetterPolicy::class
     ];
 
     /**

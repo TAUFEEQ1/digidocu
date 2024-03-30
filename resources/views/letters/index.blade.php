@@ -2,9 +2,9 @@
 @section('title', 'Letters')
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Dashboard</h1>
+        <h1 class="pull-left">Letter Dashboard</h1>
         <div class="pull-right">
-            <a href="{{route('documents.create')}}" class="btn btn-primary">
+            <a href="{{ route('letters.create') }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
                 Add New
             </a>
@@ -17,9 +17,9 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Document List</h3>
+                        <h3 class="box-title">Letter List</h3>
                         <div class="box-tools">
-                            <form action="{{ route('documents.search') }}" method="GET" class="form-inline">
+                            <form action="{{ route('letters.index') }}" method="GET" class="form-inline">
                                 <div class="input-group input-group-sm">
                                     <input type="text" name="query" class="form-control" placeholder="Search...">
                                     <span class="input-group-btn">
@@ -34,8 +34,8 @@
                             <thead>
                                 <tr>
                                     <th>Sender</th>
-                                    <th>Assigned To</th>
                                     <th>Subject</th>
+                                    <th>Created By</th>
                                     <th>Status</th>
                                     <th>Created At</th>
                                     <th>Action</th>
@@ -45,8 +45,8 @@
                                 @foreach($documents as $document)
                                 <tr>
                                     <td>{{ $document->sender }}</td>
-                                    <td>{{ $document->assigned_to }}</td>
                                     <td>{{ $document->subject }}</td>
+                                    <td>{{ $document->createdBy->name }}</td>
                                     <td>{{ $document->status }}</td>
                                     <td>{{ $document->created_at }}</td>
                                     <td>

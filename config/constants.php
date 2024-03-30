@@ -4,6 +4,9 @@ return [
         'LETTER'=>'LETTER',
         'LEAVE_REQUESTS'=>'LEAVE_REQUESTS'
     ],
+    'LETTER_STATES'=>[
+        'SUBMITTED'=>'SUBMITTED'
+    ],
     'STATUS' => [
         "PENDING" => 'PENDING',
         "ACTIVE" => 'ACTIVE',
