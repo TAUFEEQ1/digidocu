@@ -16,14 +16,19 @@ class LettersController extends AppBaseController{
     }
 
     public function index(Request $request){
+        /** @var \App\User */
         $user = $request->user();
-        $documents = GlobalLetter::with(['createdBy','executedBy','managedBy','assignedTo'])->where(function ($query) use ($user) {
-            $query->where('created_by', $user->id)
-                ->orWhere('executed_by', $user->id)
-                ->orWhere('managed_by', $user->id)
-                ->orWhere('assigned_to', $user->id);
-        })
-        ->paginate(10);
+        $baseQ = GlobalLetter::with(['createdBy','executedBy','managedBy','assignedTo']);
+        if($user->is_registry_member){
+            $baseQ->where("created_by",$user->id);
+        }elseif($user->is_executive_secretary){
+            $baseQ->where("executed_by",$user->id)->orWhere("executed_by",null);
+        }elseif($user->is_managing_director){
+            $baseQ->where("managed_by",$user->id)->orWhere("managed_by",null);
+        }else{
+            $baseQ->where("assigned_to",$user->id);
+        }
+        $documents = $baseQ->paginate(10);
         return view("letters.index",compact("documents"));
     }
     public function create(Request $request){
