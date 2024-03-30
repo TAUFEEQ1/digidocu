@@ -50,7 +50,7 @@
                                     <td>{{ $document->status }}</td>
                                     <td>{{ $document->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('documents.show', $document->id) }}" class="btn btn-primary">View</a>
+                                        <a href="{{ route('letters.show', $document->id) }}" class="btn btn-primary">View</a>
                                     </td>
                                 </tr>
                                 @endforeach

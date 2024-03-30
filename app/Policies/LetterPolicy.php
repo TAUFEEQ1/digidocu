@@ -13,5 +13,8 @@ class LetterPolicy
     public function scan_letters(User $user){
         return $user->is_registry_member;
     }
+    public function execute_letters(User $user){
+        return $user->is_executive_secretary;
+    }
 
 }

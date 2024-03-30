@@ -49,7 +49,7 @@
                             <tbody>
                                 @foreach($documents as $document)
                                 <tr>
-                                    <td>{{ $document->category }}</td>
+                                    <td>{{ ucfirst(strtolower($document->category));}}</td>
                                     <td>{{ $document->status }}</td>
                                     <td>{{ $document->created_at }}</td>
                                     <td>

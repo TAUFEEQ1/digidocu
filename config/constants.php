@@ -5,7 +5,10 @@ return [
         'LEAVE_REQUESTS'=>'LEAVE_REQUESTS'
     ],
     'LETTER_STATES'=>[
-        'SUBMITTED'=>'SUBMITTED'
+        'SUBMITTED'=>'SUBMITTED',
+        'EXECUTED'=>'EXECUTED',
+        'MANAGED'=>'MANAGED',
+        'ASSIGNED'=>'ASSIGNED'
     ],
     'STATUS' => [
         "PENDING" => 'PENDING',

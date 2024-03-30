@@ -24,6 +24,20 @@ class Letter extends Document
 {
     public $table = 'documents'; // Default table name
     
+    public $fillable = [
+        'name',
+        'description',
+        'status',
+        'created_by',
+        'custom_fields',
+        'verified_at',
+        'verified_by',
+        // lettet fields.
+        'subject',
+        'sender',
+        'sending_entity',
+        'category'
+    ];
     /**
      * Boot the model.
      */

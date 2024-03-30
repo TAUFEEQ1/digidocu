@@ -49,17 +49,19 @@ class LettersController extends AppBaseController{
             'sending_entity'=>$data['sending_entity'],
             'description'=>$data['description'],
             'status'=>config('constants.LETTER_STATES.SUBMITTED'),
-            'created_by'=>$user->id
+            'created_by'=>$user->id,
+            'category'=>config('constants.DOC_TYPES.LETTER')
         ]);
+        $letter->newActivity('Letter Submitted');
         $letter->save();
 
         // save file.
         $uploaded_file = $request->file('file_scan');
         $uploaded_file->store('files/original');
-        $fileData['name'] = $uploaded_file->getName();
+        $fileData['name'] =  $uploaded_file->getClientOriginalName();
         $fileData['created_by'] = $user->id;
         $fileData['file'] = $uploaded_file->hashName();
-        $fileData['custom_fields'] = [];
+        $fileData['custom_fields'] = json_encode([]);
         $fileData['created_at'] = now();
         $fileData['updated_at'] = now();
         $file_type = FileType::where('name',config('constants.DOC_TYPES.LETTER'))->first();
@@ -67,6 +69,11 @@ class LettersController extends AppBaseController{
         $fileData['document_id'] = $letter->id;
 
         $letter->files()->insert([$fileData]);
-        return redirect('letters.index');
+        return redirect()->route('letters.index');
+    }
+    public function show(int $id,Request $request){
+        $document = GlobalLetter::with(['createdBy','executedBy','managedBy','assignedTo'])->find($id);
+        $user = $request->user();
+        return view("letters.show",compact("document","user"));
     }
 }

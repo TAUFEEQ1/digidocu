@@ -49,8 +49,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::resource('tags', TagController::class);
 
     Route::get("/letters",[LettersController::class,"index"])->name("letters.index");
+    Route::get("/letters/{id}",[LettersController::class,"show"])->name("letters.show");
     Route::get("letters/create",[LettersController::class,"create"])->name("letters.create");
-    Route::get("letters/store",[LettersController::class,"store"])->name("letters.store");
+    Route::post("letters/store",[LettersController::class,"store"])->name("letters.store");
+
 
 
     Route::resource('documents', DocumentController::class);
