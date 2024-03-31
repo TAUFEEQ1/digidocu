@@ -42,13 +42,6 @@ class LettersController extends AppBaseController
     public function store(Request $request)
     {
         $this->authorize('scan_letters', User::class);
-        $request->validate([
-            'file_scan' => 'required|file|mimes:pdf|max:10240', // Max file size: 10MB
-            'sender' => 'required|string',
-            'sending_entity' => 'required|string',
-            'description' => 'required|string',
-            'subject' => 'required|string'
-        ]);
         $user = $request->user();
         // save document.
         $data = $request->all();
@@ -92,6 +85,7 @@ class LettersController extends AppBaseController
             $this->authorize('execute_letters', User::class);
             $letter = GlobalLetter::where("status", config('constants.LETTER_STATES.SUBMITTED'))->findOrFail($id);
             $letter->executed_by = $user->id;
+            $letter->executed_at = now();
             $letter->lt_executor_notes = $request->input('vcomment', 'NA');
             $letter->status = config('constants.LETTER_STATES.EXECUTED');
             $letter->newActivity('Letter executed by secretary - ' . $user->name);
@@ -102,11 +96,13 @@ class LettersController extends AppBaseController
                 $letter = GlobalLetter::where("status", config('constants.LETTER_STATES.SUBMITTED'))->findOrFail($id);
                 $letter->lt_executor_notes = $request->input('vcomment', 'NA');
                 $letter->executed_by = $user->id;
+                $letter->executed_at = now();
                 $letter->newActivity('Letter discarded by secretary - ' . $user->name);
             } else if ($user->is_managing_director) {
                 $letter = GlobalLetter::where("status", config('constants.LETTER_STATES.EXECUTED'))->findOrFail($id);
                 $letter->lt_manager_notes = $request->input('vcomment', 'NA');
                 $letter->managed_by = $user->id;
+                $letter->managed_at = now();
                 $letter->newActivity('Letter discarded by manager-' . $user->name);
             }
             $letter->status = config('constants.LETTER_STATES.DISCARDED');
@@ -116,6 +112,7 @@ class LettersController extends AppBaseController
             $letter = GlobalLetter::where("status", config('constants.LETTER_STATES.EXECUTED'))->findOrFail($id);
             $letter->lt_manager_notes = $request->input('vcomment', 'NA');
             $letter->managed_by = $user->id;
+            $letter->managed_at = now();
             $letter->status = config('constants.LETTER_STATES.MANAGED');
             $letter->newActivity('Letter managed by manager-' . $user->name);
             $letter->save();

@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left">Letter Dashboard</h1>
-        @can('scan_letters')
+        @can('scan_letters',$user)
         <div class="pull-right">
             <a href="{{ route('letters.create') }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i>

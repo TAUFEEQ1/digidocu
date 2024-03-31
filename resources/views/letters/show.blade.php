@@ -195,6 +195,8 @@
                         <span class="label label-success">{{$document->status}}</span>
                         @elseif($document->status==config('constants.LETTER_STATES.MANAGED'))
                         <span class="label label-info">{{$document->status}}</span>
+                        @elseif($document->status==config('constants.LETTER_STATES.DISCARDED'))
+                        <span class="label label-danger">{{$document->status}}</span>
                         @else
                         <span class="label label-warning">{{$document->status}}</span>
                         @endif
@@ -226,7 +228,7 @@
                     <li class=""><a href="#tab_execution" data-toggle="tab" aria-expanded="false">Execution</a></li>
                     @endcan
                     <li class=""><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
-                    @if ($document->status==config('constants.LETTER_STATES.EXECUTED'))
+                    @if ($document->status!=config('constants.LETTER_STATES.SUBMITTED'))
                      <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
                     @endif
                 </ul>
@@ -305,11 +307,9 @@
                             </li>
                         </ul>
                     </div>
-                    @if ($document->status==config('constants.LETTER_STATES.EXECUTED'))
+                    @if ($document->status!=config('constants.LETTER_STATES.SUBMITTED'))
                     <div class="tab-pane" id="execution_details">
-                    <div class="form-group">
-                            <span class="label label-success">Execution</span>
-                        </div>
+                        
                         <div class="form-group">
                             Executive Secretary: <b>{{$document->executedBy->name}}</b>
                         </div>
@@ -317,7 +317,7 @@
                             Executive Secretary Notes: <p>{{$document->lt_executor_notes}}</p>
                         </div>
                         <div class="form-group">
-                            Executed At: <b>{{formatDateTime($document->executed_at)}}</b>
+                            Executed At: <b>{!! formatDateTime($document->executed_at) !!}</b>
                             ({{\Carbon\Carbon::parse($document->executed_at)->diffForHumans()}})
                         </div>
                     </div>
