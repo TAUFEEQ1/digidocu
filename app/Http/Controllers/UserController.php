@@ -11,6 +11,9 @@ use App\Repositories\UserRepository;
 use App\Tag;
 use App\User;
 use Flash;
+use Log;
+use Illuminate\Http\Request;
+
 use Response;
 
 class UserController extends AppBaseController
@@ -21,9 +24,10 @@ class UserController extends AppBaseController
     /** @var PermissionRepository */
     private $permissionRepository;
 
-    public function __construct(UserRepository $userRepo,
-                                PermissionRepository $permissionRepository)
-    {
+    public function __construct(
+        UserRepository $userRepo,
+        PermissionRepository $permissionRepository
+    ) {
         $this->userRepository = $userRepo;
         $this->permissionRepository = $permissionRepository;
     }
@@ -40,6 +44,29 @@ class UserController extends AppBaseController
         return $userDataTable->render('users.index');
     }
 
+    public function list_assignable(Request $request)
+    {
+        $this->authorize('assign_letters', User::class);
+        
+        // Extract parameters from the request
+        $draw = $request->input('draw');
+        $perPage = $request->input('length', 10); // Number of records per page
+        $page = $request->input('start', 0) / $perPage + 1; // Calculate the current page
+    
+        // Query users based on the pagination parameters
+        $users = User::whereNot("id", 1)->paginate($perPage, ['*'], 'page', $page);
+    
+        // Prepare the response as DataTables format
+        $response = [
+            'draw' => $draw, // For server-side processing
+            'recordsTotal' => $users->total(),
+            'recordsFiltered' => $users->total(), // For server-side processing, this should be adjusted based on the filtered count
+            'data' => $users->items(),
+        ];
+    
+        return response()->json($response);
+    }
+    
     /**
      * Show the form for creating a new User.
      *
@@ -121,7 +148,7 @@ class UserController extends AppBaseController
             $globalPermissions = $this->permissionRepository->getGlobalPermissionsModelWiseForUser($user);
         }
 
-        return view('users.show', compact('user', 'tags', 'documents','globalPermissions'));
+        return view('users.show', compact('user', 'tags', 'documents', 'globalPermissions'));
     }
 
     /**
@@ -179,13 +206,13 @@ class UserController extends AppBaseController
         //give selected permission to users
         if (\Auth::user()->can('user manage permission')) {
             $permissions = $this->mapInputToPermissions($data);
-            $docsPermissions = [];//also allocate doc level permissions.
+            $docsPermissions = []; //also allocate doc level permissions.
             foreach (groupDocumentsPermissions($user->getAllPermissions()) as $perm) {
                 foreach ($perm['permissions'] as $perm_val) {
-                    $docsPermissions[] = $perm_val." document ".$perm['doc_id'];
+                    $docsPermissions[] = $perm_val . " document " . $perm['doc_id'];
                 }
             }
-            $user->syncPermissions(array_merge($permissions,$docsPermissions));
+            $user->syncPermissions(array_merge($permissions, $docsPermissions));
         }
         //end permission
         Flash::success('User updated successfully.');

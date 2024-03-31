@@ -22,4 +22,7 @@ class LetterPolicy
     public function manage_letters(User $user){
         return $user->is_managing_director;
     }
+    public function assign_letters(User $user){
+        return $user->is_executive_secretary;
+    }
 }

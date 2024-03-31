@@ -45,6 +45,7 @@
         right: 10px;
     }
 </style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 @stop
 @section('scripts')
 <script src="https://cdn.scaleflex.it/plugins/filerobot-image-editor/3/filerobot-image-editor.min.js"></script>
@@ -135,7 +136,84 @@
         $("input[name='topdf_check[]']").trigger('ifToggled');
     });
 </script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 @stop
+@if($document->status==config("constants.LETTER_STATES.MANAGED"))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let table = new DataTable('#usersTable', {
+            serverSide: true,
+            ajax: {
+                url: '/admin/users/list_assignable', // Your API endpoint
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if required
+                },
+                dataSrc: 'data', // If your JSON response has a specific data structure
+                data: function(data) {
+                    // Add any additional parameters you need here
+                    data.per_page = 10; // Default number of items per page
+                }
+            },
+            columns: [{
+                    data: 'name',
+                    title: 'Name'
+                },
+                {
+                    data:'username',
+                    title:'Username'
+                },
+                {
+                    data: 'email',
+                    title: 'Email'
+                },
+                {
+                    data: null,
+                    title: 'Action',
+                    render: function(data, type, row) {
+                        return '<button class="assignBtn btn btn-info" data-userid="' + data.id + '">Assign</button>';
+                    }
+                }
+            ]
+        });
+        let usersTable = document.getElementById("usersTable");
+        usersTable.addEventListener('click', function(event) {
+            var target = event.target;
+            if (target.classList.contains('assignBtn')) {
+                var userId = target.dataset.userid;
+                var documentId = '{{ $document->id }}'; // Get document ID from PHP variable
+
+                // Perform assign user to document action here using fetch API
+                fetch('/admin/letters/'+documentId+"/assign", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if required
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('User with ID ' + userId + ' assigned to document with ID ' + documentId);
+                            // You can handle success here
+                        } else {
+                            console.error('Failed to assign user to document');
+                            // You can handle failure here
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error assigning user to document:', error);
+                        // You can handle error here
+                    });
+            }
+        });
+
+    });
+</script>
+@endif
 @section('content')
 <div id="modal-space">
 </div>
@@ -232,11 +310,16 @@
                     @endcan
                     <li class=""><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
                     @if ($document->executed_by)
-                     <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
+                    <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
                     @endif
                     @if ($document->managed_by)
-                     <li class=""><a href="#management_details" data-toggle="tab">Management Details</a></li>
+                    <li class=""><a href="#management_details" data-toggle="tab">Management Details</a></li>
                     @endif
+                    @can('assign_letters',$user)
+                    @if($document->status==config("constants.LETTER_STATES.MANAGED"))
+                    <li class=""><a href="#tab_assignment" data-toggle="tab">Assignment</a></li>
+                    @endif
+                    @endcan
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_files">
@@ -343,7 +426,7 @@
                     </div>
                     @if ($document->executed_by)
                     <div class="tab-pane" id="execution_details">
-                        
+
                         <div class="form-group">
                             Executive Secretary: <b>{{$document->executedBy->name}}</b>
                         </div>
@@ -358,7 +441,7 @@
                     @endif
                     @if ($document->managed_by)
                     <div class="tab-pane" id="management_details">
-                        
+
                         <div class="form-group">
                             Managing Director: <b>{{$document->managedBy->name}}</b>
                         </div>
@@ -371,6 +454,25 @@
                         </div>
                     </div>
                     @endif
+                    @can("assign_letters",$user)
+                    @if ($document->status == config("constants.LETTER_STATES.MANAGED"))
+                    <div class="tab-pane" id="tab_assignment">
+                        <table id="usersTable" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- User data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    @endif
+                    @endcan
                 </div>
             </div>
         </div>

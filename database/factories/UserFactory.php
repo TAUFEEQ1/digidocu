@@ -1,19 +1,26 @@
 <?php
 
+namespace Database\Factories;
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(User::class, function (Faker $faker) {
+class UserFactory extends Factory{
+    protected $model = User::class;
 
-    return [
-        'name' => $faker->word,
-        'email' => $faker->word,
-        'username' => $faker->word,
-        'address' => $faker->word,
-        'description' => $faker->text,
-        'password' => $faker->word,
-        'status' => $faker->word
-    ];
-});
+    public function definition()
+    {
+        
+        return [
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail,
+            'username' => $this->faker->unique()->userName,
+            'address' => $this->faker->word,
+            'description' => $this->faker->text,
+            'password' => bcrypt($this->faker->word),
+            'status' => 'ACTIVE',
+        ];
+    }
+}
+

@@ -44,6 +44,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::resource('custom-fields', CustomFieldController::class, ['names' => 'customFields']);
         Route::resource('file-types', FileTypeController::class, ['names' => 'fileTypes']);
     });
+    Route::get('users/list_assignable',[UserController::class,'list_assignable'])->name("users.assignable");
+
     Route::resource('users', UserController::class);
     Route::get('/users-block/{user}',[UserController::class,'blockUnblock'])->name('users.blockUnblock');
     Route::resource('tags', TagController::class);
@@ -52,6 +54,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("letters/create",[LettersController::class,"create"])->name("letters.create");
     Route::get("/letters/{id}",[LettersController::class,"show"])->name("letters.show");
     Route::post("/letters/{id}/status",[LettersController::class,"editStatus"])->name("letters.review"); 
+    Route::post("/letters/{id}/assign",[LettersController::class,"assign"])->name("letters.assign");
     Route::post("letters/store",[LettersController::class,"store"])->name("letters.store");
 
 
