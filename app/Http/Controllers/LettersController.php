@@ -31,7 +31,7 @@ class LettersController extends AppBaseController
         } else {
             $baseQ->where("assigned_to", $user->id);
         }
-        $documents = $baseQ->paginate(10);
+        $documents = $baseQ->orderBy('created_at', 'desc')->paginate(10);
         return view("letters.index", compact("documents","user"));
     }
     public function create(Request $request)
