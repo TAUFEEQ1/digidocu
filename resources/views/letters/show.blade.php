@@ -231,8 +231,11 @@
                     <li class=""><a href="#tab_management" data-toggle="tab" aria-expanded="false">Management</a></li>
                     @endcan
                     <li class=""><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
-                    @if ($document->status!=config('constants.LETTER_STATES.SUBMITTED'))
+                    @if ($document->executed_by)
                      <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
+                    @endif
+                    @if ($document->managed_by)
+                     <li class=""><a href="#management_details" data-toggle="tab">Management Details</a></li>
                     @endif
                 </ul>
                 <div class="tab-content">
@@ -338,7 +341,7 @@
                             </li>
                         </ul>
                     </div>
-                    @if ($document->status!=config('constants.LETTER_STATES.SUBMITTED'))
+                    @if ($document->executed_by)
                     <div class="tab-pane" id="execution_details">
                         
                         <div class="form-group">
@@ -350,6 +353,21 @@
                         <div class="form-group">
                             Executed At: <b>{!! formatDateTime($document->executed_at) !!}</b>
                             ({{\Carbon\Carbon::parse($document->executed_at)->diffForHumans()}})
+                        </div>
+                    </div>
+                    @endif
+                    @if ($document->managed_by)
+                    <div class="tab-pane" id="management_details">
+                        
+                        <div class="form-group">
+                            Managing Director: <b>{{$document->managedBy->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            Director Notes: <p>{{$document->lt_manager_notes}}</p>
+                        </div>
+                        <div class="form-group">
+                            Managed At: <b>{!! formatDateTime($document->managed_at) !!}</b>
+                            ({{\Carbon\Carbon::parse($document->managed_at)->diffForHumans()}})
                         </div>
                     </div>
                     @endif
