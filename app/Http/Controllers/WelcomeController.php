@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Document;
+use App\Activity;
 use Illuminate\Http\Request;
 
 
@@ -17,8 +18,15 @@ class WelcomeController extends AppBaseController{
         $user = $request->user();
         $letter_alias = config('constants.DOC_TYPES.LETTER');
         $leave_rqs = config('constants.DOC_TYPES.LEAVE_REQUESTS');
-        $documents = Document::whereIn("category",[$letter_alias,$leave_rqs])->where("created_by",$user->id)->paginate(10);
-        return view('new_home',compact('documents'));
+        $documents = Document::whereIn("category",[$letter_alias,$leave_rqs])->where("created_by",$user->id)->paginate(3);
+        $activities = Activity::with(['createdBy','document']);
+        if($request->has('activity_range')){
+            $dates = explode("to",$request->get('activity_range'));
+            $activities->whereDate('created_at','>=',$dates[0]??'');
+            $activities->whereDate('created_at','<=',$dates[1]??'');
+        }
+        $activities = $activities->orderByDesc('id')->paginate(4);
+        return view('new_home',compact('documents','activities'));
     }
 
     public function search(Request $request)
