@@ -227,6 +227,9 @@
                     @can('execute_letters', $user)
                     <li class=""><a href="#tab_execution" data-toggle="tab" aria-expanded="false">Execution</a></li>
                     @endcan
+                    @can('manage_letters', $user)
+                    <li class=""><a href="#tab_management" data-toggle="tab" aria-expanded="false">Management</a></li>
+                    @endcan
                     <li class=""><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
                     @if ($document->status!=config('constants.LETTER_STATES.SUBMITTED'))
                      <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
@@ -282,6 +285,34 @@
                         <div class="form-group">
                             Executed At: <b>{{formatDateTime($document->executed_at)}}</b>
                             ({{\Carbon\Carbon::parse($document->executed_at)->diffForHumans()}})
+                        </div>
+                        @endif
+                    </div>
+                    @endcan
+                    @can('manage_letters', $user)
+                    <div class="tab-pane" id="tab_management">
+                        @if ($document->status==config('constants.LETTER_STATES.EXECUTED'))
+                        {!! Form::open(['route' => ['letters.review', $document->id], 'method' => 'post']) !!}
+                        <div class="form-group text-center">
+                            <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success" type="submit" name="action" value="MANAGED"><i class="fa fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger" type="submit" name="action" value="DISCARDED"><i class="fa fa-close"></i> Reject
+                            </button>
+                        </div>
+                        {!! Form::close() !!}
+                        @else
+                        <div class="form-group">
+                            <span class="label label-success">Management</span>
+                        </div>
+                        <div class="form-group">
+                            Managing Director: <b>{{$document->managedBy->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            Managed At: <b>{{formatDateTime($document->managed_at)}}</b>
+                            ({{\Carbon\Carbon::parse($document->managed_at)->diffForHumans()}})
                         </div>
                         @endif
                     </div>
