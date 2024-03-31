@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\User|null $managedBy
  * @property-read \App\User|null $assignedTo
  */
+
 class Letter extends Document
 {
     public $table = 'documents'; // Default table name
@@ -64,4 +65,14 @@ class Letter extends Document
         return $this->belongsTo(\App\User::class, 'assigned_to', 'id');
     }
 
+    public function newActivity($activity_text,$include_document=true){
+        if($include_document){
+            $activity_text .= " : ".'<a href="'.route('letters.show',$this->id).'">'.$this->name."</a>";
+        }
+        Activity::create([
+            'activity' => $activity_text,
+            'created_by' => \Auth::id(),
+            'document_id' => $this->id,
+        ]);
+    }
 }
