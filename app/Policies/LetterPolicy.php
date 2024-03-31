@@ -16,5 +16,10 @@ class LetterPolicy
     public function execute_letters(User $user){
         return $user->is_executive_secretary;
     }
-
+    public function discard_letters(User $user){
+        return $user->is_executive_secretary||$user->is_managing_director;
+    }
+    public function manage_letters(User $user){
+        return $user->is_managing_director;
+    }
 }

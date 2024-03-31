@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $subject
  * @property string $sending_entity
  * @property int $executed_by
+ * @property string $lt_executor_notes
+ * @property string $lt_manager_notes
  * @property int $managed_by
  * @property int $assigned_to
  * @property string|null $executed_at

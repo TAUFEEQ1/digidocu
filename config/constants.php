@@ -8,7 +8,8 @@ return [
         'SUBMITTED'=>'SUBMITTED',
         'EXECUTED'=>'EXECUTED',
         'MANAGED'=>'MANAGED',
-        'ASSIGNED'=>'ASSIGNED'
+        'ASSIGNED'=>'ASSIGNED',
+        'DISCARDED'=>'DISCARDED'
     ],
     'STATUS' => [
         "PENDING" => 'PENDING',

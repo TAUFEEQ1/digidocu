@@ -3,12 +3,14 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left">Letter Dashboard</h1>
+        @can('scan_letters')
         <div class="pull-right">
             <a href="{{ route('letters.create') }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
                 Add New
             </a>
         </div>
+        @endcan
     </section>
     <section class="content" style="margin-top: 20px;">
         <div class="clearfix"></div>

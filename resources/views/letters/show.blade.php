@@ -231,15 +231,18 @@
                     <div class="tab-pane active" id="tab_files">
                         <div class="row">
                             @foreach ($document->files->sortBy('file_type_id') as $file)
+                            @php
+                            $encodedFile = json_encode($file);
+                            @endphp
                             <div class="col-md-4">
                                 <div class="box custom-box">
                                     <div class="box-body">
-                                        <img onclick="showFileModal({{json_encode($file)}})" style="cursor:pointer;" src="{{buildPreviewUrl($file->file)}}" alt="">
+                                        <img onclick="showFileModal({{$encodedFile}})" style="cursor:pointer;" src="{{buildPreviewUrl($file->file)}}" alt="">
                                     </div>
                                     <div class="box-header">
                                         <div class="user-block">
                                             <span class="label label-default">{{$file->fileType->name}}</span>
-                                            <span class="username" style="cursor:pointer;" onclick="showFileModal({{json_encode($file)}})">{{$file->name}}</span>
+                                            <span class="username" style="cursor:pointer;" onclick="showFileModal({{$encodedFile}})">{{$file->name}}</span>
                                             <small class="description text-gray"><b title="{{formatDateTime($file->created_at)}}" data-toggle="tooltip">{{\Carbon\Carbon::parse($file->created_at)->diffForHumans()}}</b>
                                                 by <b>{{$file->createdBy->name}}</b></small>
                                         </div>
@@ -247,19 +250,20 @@
                                 </div>
                             </div>
                             @endforeach
+
                         </div>
                     </div>
                     @can('execute_letters', $user)
                     <div class="tab-pane" id="tab_execution">
                         @if ($document->status==config('constants.LETTER_STATES.SUBMITTED'))
-                        {!! Form::open(['route' => ['letters.execute', $document->id], 'method' => 'post']) !!}
+                        {!! Form::open(['route' => ['letters.review', $document->id], 'method' => 'post']) !!}
                         <div class="form-group text-center">
                             <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
                         </div>
                         <div class="form-group text-center">
-                            <button class="btn btn-success" type="submit" name="action" value="approve"><i class="fa fa-check"></i> Approve
+                            <button class="btn btn-success" type="submit" name="action" value="EXECUTED"><i class="fa fa-check"></i> Approve
                             </button>
-                            <button class="btn btn-danger" type="submit" name="action" value="reject"><i class="fa fa-close"></i> Reject
+                            <button class="btn btn-danger" type="submit" name="action" value="DISCARDED"><i class="fa fa-close"></i> Reject
                             </button>
                         </div>
                         {!! Form::close() !!}
