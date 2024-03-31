@@ -92,6 +92,7 @@ class LettersController extends AppBaseController
             $this->authorize('execute_letters', User::class);
             $letter = GlobalLetter::where("status", config('constants.LETTER_STATES.SUBMITTED'))->findOrFail($id);
             $letter->executed_by = $user->id;
+            $letter->lt_executor_notes = $request->input('vcomment', 'NA');
             $letter->status = config('constants.LETTER_STATES.EXECUTED');
             $letter->newActivity('Letter executed by secretary - ' . $user->name);
             $letter->save();

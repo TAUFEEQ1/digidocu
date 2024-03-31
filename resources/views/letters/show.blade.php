@@ -226,6 +226,9 @@
                     <li class=""><a href="#tab_execution" data-toggle="tab" aria-expanded="false">Execution</a></li>
                     @endcan
                     <li class=""><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
+                    @if ($document->status==config('constants.LETTER_STATES.EXECUTED'))
+                     <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
+                    @endif
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_files">
@@ -274,7 +277,7 @@
                         <div class="form-group">
                             Executive Secretary: <b>{{$document->executedBy->name}}</b>
                         </div>
-                        <div class="form-gorup">
+                        <div class="form-group">
                             Executed At: <b>{{formatDateTime($document->executed_at)}}</b>
                             ({{\Carbon\Carbon::parse($document->executed_at)->diffForHumans()}})
                         </div>
@@ -302,6 +305,23 @@
                             </li>
                         </ul>
                     </div>
+                    @if ($document->status==config('constants.LETTER_STATES.EXECUTED'))
+                    <div class="tab-pane" id="execution_details">
+                    <div class="form-group">
+                            <span class="label label-success">Execution</span>
+                        </div>
+                        <div class="form-group">
+                            Executive Secretary: <b>{{$document->executedBy->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            Executive Secretary Notes: <p>{{$document->lt_executor_notes}}</p>
+                        </div>
+                        <div class="form-group">
+                            Executed At: <b>{{formatDateTime($document->executed_at)}}</b>
+                            ({{\Carbon\Carbon::parse($document->executed_at)->diffForHumans()}})
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
