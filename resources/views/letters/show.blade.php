@@ -45,10 +45,12 @@
         right: 10px;
     }
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 @stop
 @section('scripts')
 <script src="https://cdn.scaleflex.it/plugins/filerobot-image-editor/3/filerobot-image-editor.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script id="file-modal-template" type="text/x-handlebars-template">
     <div id="fileModal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -138,11 +140,13 @@
 </script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 @stop
-@if($document->status==config("constants.LETTER_STATES.MANAGED"))
+@if($document->status == config("constants.LETTER_STATES.MANAGED") || $document->status == config("constants.LETTER_STATES.ASSIGNED"))
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let table = new DataTable('#usersTable', {
             serverSide: true,
+            pageLength: 8,
+            lengthMenu: [5, 8, 10],
             ajax: {
                 url: '/admin/users/list_assignable', // Your API endpoint
                 method: 'GET',
@@ -151,18 +155,14 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if required
                 },
                 dataSrc: 'data', // If your JSON response has a specific data structure
-                data: function(data) {
-                    // Add any additional parameters you need here
-                    data.per_page = 10; // Default number of items per page
-                }
             },
             columns: [{
                     data: 'name',
                     title: 'Name'
                 },
                 {
-                    data:'username',
-                    title:'Username'
+                    data: 'username',
+                    title: 'Username'
                 },
                 {
                     data: 'email',
@@ -185,7 +185,7 @@
                 var documentId = '{{ $document->id }}'; // Get document ID from PHP variable
 
                 // Perform assign user to document action here using fetch API
-                fetch('/admin/letters/'+documentId+"/assign", {
+                fetch('/admin/letters/' + documentId + "/assign", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -197,8 +197,16 @@
                     })
                     .then(response => {
                         if (response.ok) {
-                            console.log('User with ID ' + userId + ' assigned to document with ID ' + documentId);
                             // You can handle success here
+                            response.json().then((res) => {
+                                Toastify({
+
+                                    text: res.message,
+
+                                    duration: 3000
+
+                                }).showToast();
+                            });
                         } else {
                             console.error('Failed to assign user to document');
                             // You can handle failure here
@@ -279,6 +287,11 @@
                         <span class="label label-warning">{{$document->status}}</span>
                         @endif
                     </div>
+                    @if ($document->status==config("constants.LETTER_STATES.ASSIGNED"))
+                    <div class="form-group">
+                        <label> Assigned To:</label> {{ $document->assignedTo->name }}
+                    </div>
+                    @endif
                     <div class="form-group">
                         <label>Created By:</label> {{$document->createdBy->name}}
                     </div>
@@ -316,7 +329,7 @@
                     <li class=""><a href="#management_details" data-toggle="tab">Management Details</a></li>
                     @endif
                     @can('assign_letters',$user)
-                    @if($document->status==config("constants.LETTER_STATES.MANAGED"))
+                    @if($document->status == config("constants.LETTER_STATES.MANAGED") || $document->status == config("constants.LETTER_STATES.ASSIGNED"))
                     <li class=""><a href="#tab_assignment" data-toggle="tab">Assignment</a></li>
                     @endif
                     @endcan
@@ -408,7 +421,7 @@
                             <li class="time-label">
                                 <span class="bg-red">{{formatDate($document->updated_at,'d M Y')}}</span>
                             </li>
-                            @foreach ($document->activities as $activity)
+                            @foreach ($document->activities()->orderBy('created_at', 'desc')->paginate(10) as $activity)
                             <li>
                                 <i class="fa fa-user bg-aqua" data-toggle="tooltip" title="{{$activity->createdBy->name}}"></i>
 
@@ -455,7 +468,7 @@
                     </div>
                     @endif
                     @can("assign_letters",$user)
-                    @if ($document->status == config("constants.LETTER_STATES.MANAGED"))
+                    @if ($document->status == config("constants.LETTER_STATES.MANAGED") || $document->status == config("constants.LETTER_STATES.ASSIGNED"))
                     <div class="tab-pane" id="tab_assignment">
                         <table id="usersTable" class="display" style="width:100%">
                             <thead>

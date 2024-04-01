@@ -53,8 +53,17 @@ class UserController extends AppBaseController
         $perPage = $request->input('length', 10); // Number of records per page
         $page = $request->input('start', 0) / $perPage + 1; // Calculate the current page
     
+        $searchValue = $request->input('search.value'); // Get the search keyword from the request
+        $query = User::whereNot("id", 1);
+        if (!empty($searchValue)) {
+            $query->where(function($q) use ($searchValue) {
+                $q->where('name', 'like', '%'.$searchValue.'%')
+                  ->orWhere('email', 'like', '%'.$searchValue.'%');
+                // Add more fields to search here if needed
+            });
+        }
         // Query users based on the pagination parameters
-        $users = User::whereNot("id", 1)->paginate($perPage, ['*'], 'page', $page);
+        $users = $query->paginate($perPage, ['*'], 'page', $page);
     
         // Prepare the response as DataTables format
         $response = [

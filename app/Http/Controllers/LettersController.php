@@ -138,13 +138,14 @@ class LettersController extends AppBaseController
     }
     public function assign(int $id,Request $request){
         $this->authorize('assign_letters',User::class);
-        $letter = GlobalLetter::findOrFail($id);
-        $user_id = $request->json('user_id');
+        $letter = GlobalLetter::find($id);
+        $user_id = (int) $request->json('user_id');
         $letter->assigned_to = $user_id;
         $user = User::find($user_id);
         $letter->newActivity('Letter Assigned To '.$user->name);
         $letter->assigned_at = now();
+        $letter->status = config('constants.LETTER_STATES.ASSIGNED');
         $letter->save();
-        return view("letters.show");
+        return ["message"=>$letter->assignedTo->name." has been assigned to this letter"];
     }
 }
