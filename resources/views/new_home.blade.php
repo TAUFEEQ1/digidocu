@@ -96,7 +96,6 @@
                                 <span class="bg-red">{{formatDate(optional($activities->first())->created_at,'d M Y')}}</span>
                             </li>
                             @foreach ($activities as $activity)
-                                @can('view',$activity->document)
                                 <li>
                                     <i class="fa fa-user bg-aqua" data-toggle="tooltip"
                                        title="{{$activity->createdBy->name}}"></i>
@@ -109,7 +108,6 @@
                                         <h4 class="timeline-header no-border">{!! $activity->activity !!}</h4>
                                     </div>
                                 </li>
-                                @endcan
                             @endforeach
                             <li>
                                 <i class="fa fa-clock-o bg-gray"></i>
