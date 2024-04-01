@@ -2,6 +2,7 @@
 return [
     'DOC_TYPES'=>[
         'LETTER'=>'LETTER',
+        'LETTER_RESPONSE'=>'LETTER_RESPONSE',
         'LEAVE_REQUESTS'=>'LEAVE_REQUESTS'
     ],
     'LETTER_STATES'=>[
@@ -9,7 +10,8 @@ return [
         'EXECUTED'=>'EXECUTED',
         'MANAGED'=>'MANAGED',
         'ASSIGNED'=>'ASSIGNED',
-        'DISCARDED'=>'DISCARDED'
+        'DISCARDED'=>'DISCARDED',
+        'RESPONSE_SUBMITTED' => 'RESPONSE SUBMITTED'
     ],
     'STATUS' => [
         "PENDING" => 'PENDING',

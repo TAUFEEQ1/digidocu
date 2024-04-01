@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use App\Letter;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -24,5 +25,8 @@ class LetterPolicy
     }
     public function assign_letters(User $user){
         return $user->is_executive_secretary;
+    }
+    public function respond_letters(User $user, Letter $letter){
+        return $letter->assigned_to == $user->id;
     }
 }

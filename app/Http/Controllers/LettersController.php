@@ -32,7 +32,7 @@ class LettersController extends AppBaseController
             $baseQ->where("assigned_to", $user->id);
         }
         $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
-        return view("letters.index", compact("documents","user"));
+        return view("letters.index", compact("documents", "user"));
     }
     public function create(Request $request)
     {
@@ -136,16 +136,43 @@ class LettersController extends AppBaseController
         $user = $request->user();
         return view("letters.show", compact("document", "user"));
     }
-    public function assign(int $id,Request $request){
-        $this->authorize('assign_letters',User::class);
+    public function assign(int $id, Request $request)
+    {
+        $this->authorize('assign_letters', User::class);
         $letter = GlobalLetter::find($id);
         $user_id = (int) $request->json('user_id');
         $letter->assigned_to = $user_id;
         $user = User::find($user_id);
-        $letter->newActivity('Letter Assigned To '.$user->name);
+        $letter->newActivity('Letter Assigned To ' . $user->name);
         $letter->assigned_at = now();
         $letter->status = config('constants.LETTER_STATES.ASSIGNED');
         $letter->save();
-        return ["message"=>$letter->assignedTo->name." has been assigned to this letter"];
+        return ["message" => $letter->assignedTo->name . " has been assigned to this letter"];
+    }
+    public function respond(int $id, Request $request)
+    {
+        $letter = Letter::find($id);
+        $user = $request->user();
+
+        $this->authorize('respond_letters', [$letter,$user]);
+
+        $uploaded_file = $request->file('file_scan');
+        $uploaded_file->store('files/original');
+        $fileData['name'] =  $uploaded_file->getClientOriginalName();
+        $fileData['created_by'] = $user->id;
+        $fileData['file'] = $uploaded_file->hashName();
+        $fileData['custom_fields'] = json_encode([]);
+        $fileData['created_at'] = now();
+        $fileData['updated_at'] = now();
+        $file_type = FileType::where('name', config('constants.DOC_TYPES.LETTER_RESPONSE'))->first();
+        $fileData['file_type_id'] = $file_type->id;
+        $fileData['document_id'] = $letter->id;
+        $letter->files()->insert([$fileData]);
+
+        $letter->status = config('constants.LETTER_STATES.RESPONSE_SUBMITTED');
+        $letter->newActivity('Letter Response Submitted by ' . $user->name);
+        $letter->save();
+
+        return redirect()->route('letters.show', ['id' => $id]);
     }
 }

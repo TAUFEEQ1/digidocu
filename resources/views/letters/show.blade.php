@@ -47,6 +47,51 @@
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<style>
+    .file-drop-area {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 450px;
+        max-width: 100%;
+        padding: 25px;
+        border: 1px dashed rgba(0, 0, 0, 0.4);
+        border-radius: 3px;
+        transition: 0.2s;
+        background-color: #e2e2e2;
+    }
+
+    .choose-file-button {
+        flex-shrink: 0;
+        background-color: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        padding: 8px 15px;
+        margin-right: 10px;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    .file-message {
+        font-size: small;
+        font-weight: 300;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .file-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        opacity: 0;
+
+    }
+</style>
 @stop
 @section('scripts')
 <script src="https://cdn.scaleflex.it/plugins/filerobot-image-editor/3/filerobot-image-editor.min.js"></script>
@@ -222,6 +267,26 @@
     });
 </script>
 @endif
+@can('respond_letters',$document,$user)
+<script>
+    document.addEventListener('change', function(event) {
+        var target = event.target;
+
+        // Check if the event target is a file input element
+        if (target.classList.contains('file-input')) {
+            var filesCount = target.files.length;
+            var textbox = target.previousElementSibling; // Get the previous element
+
+            if (filesCount === 1) {
+                var fileName = target.value.split('\\').pop();
+                textbox.textContent = fileName;
+            } else {
+                textbox.textContent = filesCount + ' files selected';
+            }
+        }
+    });
+</script>
+@endcan
 @section('content')
 <div id="modal-space">
 </div>
@@ -322,7 +387,7 @@
                     <li class=""><a href="#tab_management" data-toggle="tab" aria-expanded="false">Management</a></li>
                     @endcan
                     <li class=""><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
-                    @if ($document->executed_by)
+                    @if ($document->executed_by && !$document->status==config("constants.LETTER_STATES.ASSIGNED"))
                     <li class=""><a href="#execution_details" data-toggle="tab">Execution Details</a></li>
                     @endif
                     @if ($document->managed_by)
@@ -333,6 +398,12 @@
                     <li class=""><a href="#tab_assignment" data-toggle="tab">Assignment</a></li>
                     @endif
                     @endcan
+                    @can('respond_letters',$document,$user)
+                    <li class=""><a href="#tab_respond" data-toggle="tab">Respond To Letter</a></li>
+                    @endcan
+                    @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED'))
+                    <li class=""><a href="#tab_comments" data-toggle="tab">Comments on Response</a></li>
+                    @endif
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_files">
@@ -486,6 +557,28 @@
                     </div>
                     @endif
                     @endcan
+                    @can("respond_letters",$document,$user)
+                    <div class="tab-pane" id="tab_respond">
+                        <form action="{{ route('letters.respond', ['id' => $document->id]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="file-drop-area">
+                                <span class="choose-file-button">Choose PDF file</span>
+                                <span class="file-message">or drag and drop files here</span>
+                                <input class="file-input" type="file" name="file_scan" required>
+                            </div>
+                            <div style="height:10px;"></div>
+                            <button class="btn btn-info mt-1" type="submit">
+                                <i class="fa fa-file"></i>&nbsp;
+                                Upload Response File
+                            </button>
+                        </form>
+                    </div>
+                    @endcan
+                    @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED'))
+                    <div class="tab-pane" id="tab_comments">
+
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
