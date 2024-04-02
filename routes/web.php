@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("letters/create",[LettersController::class,"create"])->name("letters.create");
     Route::post("/letters/{id}/assign",[LettersController::class,"assign"])->name("letters.assign");
     Route::post("/letters/{id}/respond",[LettersController::class,"respond"])->name("letters.respond");
+    Route::post("/letters/{id}/comment",[LettersController::class,"comment"])->name("letters.comment");
     Route::get("/letters/{id}",[LettersController::class,"show"])->name("letters.show");
     Route::post("/letters/{id}/status",[LettersController::class,"editStatus"])->name("letters.review"); 
     Route::post("letters/store",[LettersController::class,"store"])->name("letters.store");

@@ -1,6 +1,7 @@
 <?php
 namespace App;
 use App\Document;
+use App\LetterComment;
 use Illuminate\Database\Eloquent\Model;
 /**
  * Class Letter
@@ -74,5 +75,10 @@ class Letter extends Document
             'created_by' => \Auth::id(),
             'document_id' => $this->id,
         ]);
+    }
+    public function comments()
+    {
+        return $this->hasMany(LetterComment::class,'document_id', 'id')
+            ->orderByDesc('id');
     }
 }

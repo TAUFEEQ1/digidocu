@@ -175,4 +175,15 @@ class LettersController extends AppBaseController
 
         return redirect()->route('letters.show', ['id' => $id]);
     }
+    public function comment(int $id,Request $request){
+        $user = $request->user();
+        $letter = GlobalLetter::find($id);
+        $letter->comments()->create([
+            "notes"=>$request->input('notes'),
+            "created_by"=>$user->id
+        ]);
+        $letter->newActivity("New comment from: ".$user->name);
+        $letter->save();
+        return redirect()->route("letters.show",["id"=>$id]);
+    }
 }

@@ -576,7 +576,7 @@
                     @endcan
                     @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED'))
                     <div class="tab-pane" id="tab_comments">
-
+                        @include("letters.comments")
                     </div>
                     @endif
                 </div>
