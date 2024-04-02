@@ -178,10 +178,19 @@ class LettersController extends AppBaseController
     public function comment(int $id,Request $request){
         $user = $request->user();
         $letter = GlobalLetter::find($id);
+        $action = $request->input('action');
         $letter->comments()->create([
             "notes"=>$request->input('notes'),
             "created_by"=>$user->id
         ]);
+        if($action == 'approve'){
+            if($user->is_executive_secretary){
+                $letter->status = config('constants.LETTER_STATES.RESPONSE_EXEC_APPROVED');
+            }elseif($user->is_managing_director){
+                $letter->status = config('constants.LETTER_STATES.RESPONSE_MGR_APPROVED');
+            }
+        }
+
         $letter->newActivity("New comment from: ".$user->name);
         $letter->save();
         return redirect()->route("letters.show",["id"=>$id]);

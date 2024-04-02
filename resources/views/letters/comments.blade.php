@@ -87,7 +87,14 @@
                 {!! Form::open(['route' => ['letters.comment', 'id' => $document->id]]) !!}
 
                 {!! Form::bsTextarea('notes', null, ['class'=>'form-control b-wysihtml5-editor']) !!}
-                <button class="btn btn-info pull-right" type="submit">SEND</button>
+                @if($document->assigned_to==$user->id)
+                <button class="btn btn-info" type="submit" name="action" value="comment">SEND COMMENT</button>
+                @else
+                <button class="btn btn-info" type="submit" name="action" value="comment">DEFER TO ASSIGNEE </button>
+                @endif
+                @if($document->assigned_to!=$user->id)
+                <button class="btn pull-right" type="submit" name="action" value="approve">APPROVE TO NEXT STAGE</button>
+                @endif
                 {!! Form::close() !!}
             </div>
         </div>

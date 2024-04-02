@@ -399,10 +399,15 @@
                     @endif
                     @endcan
                     @can('respond_letters',$document,$user)
+                    @if($document->status!=config('constants.LETTER_STATES.RESPONSE_MGR_APPROVED'))
                     <li class=""><a href="#tab_respond" data-toggle="tab">Respond To Letter</a></li>
+                    @endif
                     @endcan
-                    @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED'))
+                    @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED') && ($user->is_executive_secretary || $document->assigned_to==$user->id))
                     <li class=""><a href="#tab_comments" data-toggle="tab">Comments on Response</a></li>
+                    @elseif ($document->status == config('constants.LETTER_STATES.RESPONSE_EXEC_APPROVED') && ($user->is_managing_director || $document->assigned_to == $user->id))
+                    <li class=""><a href="#tab_comments" data-toggle="tab">Comments on Response</a></li>
+                    
                     @endif
                 </ul>
                 <div class="tab-content">
@@ -525,7 +530,7 @@
                     @endif
                     @if ($document->managed_by)
                     <div class="tab-pane" id="management_details">
-
+                        
                         <div class="form-group">
                             Managing Director: <b>{{$document->managedBy->name}}</b>
                         </div>
@@ -558,6 +563,7 @@
                     @endif
                     @endcan
                     @can("respond_letters",$document,$user)
+                    @if($document->status!=config('constants.LETTER_STATES.RESPONSE_MGR_APPROVED'))
                     <div class="tab-pane" id="tab_respond">
                         <form action="{{ route('letters.respond', ['id' => $document->id]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -573,8 +579,13 @@
                             </button>
                         </form>
                     </div>
+                    @endif
                     @endcan
-                    @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED'))
+                    @if ($document->status == config('constants.LETTER_STATES.RESPONSE_SUBMITTED') && ($user->is_executive_secretary || $document->assigned_to==$user->id))
+                    <div class="tab-pane" id="tab_comments">
+                        @include("letters.comments")
+                    </div>
+                    @elseif ($document->status == config('constants.LETTER_STATES.RESPONSE_EXEC_APPROVED') && ($user->is_managing_director || $document->assigned_to == $user->id))
                     <div class="tab-pane" id="tab_comments">
                         @include("letters.comments")
                     </div>
