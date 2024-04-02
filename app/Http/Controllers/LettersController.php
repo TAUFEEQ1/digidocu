@@ -179,8 +179,9 @@ class LettersController extends AppBaseController
         $user = $request->user();
         $letter = GlobalLetter::find($id);
         $action = $request->input('action');
+        $notes = $action=="approve"?'Approved by'.$user->name:$request->input('notes');
         $letter->comments()->create([
-            "notes"=>$request->input('notes'),
+            "notes"=>$notes,
             "created_by"=>$user->id
         ]);
         if($action == 'approve'){
