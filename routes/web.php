@@ -64,6 +64,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("/leave_requests/create",[LeaveRequestsController::class,"create"])->name("leave_requests.create");
     Route::get("/leave_requests/{id}",[LeaveRequestsController::class,"show"])->name("leave_requests.show");
     Route::post("leave_requests/store",[LeaveRequestsController::class,"store"])->name("leave_requests.store");
+    Route::post("leave_requests/review/{id}",[LeaveRequestsController::class,"review"])->name("leave_requests.review");
+
 
 
 

@@ -38,7 +38,6 @@ class LeaveRequestsController extends Controller
         /** @var \App\User */
         $user = $request->user();
         $data = $request->all();
-        Log::info($data);
         $ref_no = Str::uuid();
         $lv = LeaveRequest::create([
             "lv_reference_number"=>$ref_no,
@@ -66,5 +65,37 @@ class LeaveRequestsController extends Controller
 
         return view("leave_requests.show",compact("user","document"));
 
+    }
+    public function review(int $id, Request $request){
+        $document = LeaveRequest::find($id);
+        /** @var \App\User */
+        $user = $request->user();
+
+        $action = $request->input('action');
+
+        if ($action == config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED')) {
+            $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED');
+            $document->lv_line_manager_notes = $request->input('vcomment','NA');
+            $document->lv_line_managed_at = now();
+            $document->newActivity('Leave Request Approved by Line Mgr: '.$user->name);
+            $document->save();
+        }elseif($action == config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED')){
+            $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED');
+            $document->lv_line_manager_notes = $request->input('vcomment','NA');
+            $document->lv_line_managed_at = now();
+            $document->save();
+        }elseif($action == config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED')){
+            $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED');
+            $document->lv_managing_director_notes = $request->input('vcomment','NA');
+            $document->lv_managing_directed_at = now();
+            $document->save();
+        }elseif($action == config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED')){
+            $document->status = config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED');
+            $document->lv_managing_director_notes = $request->input('vcomment','NA');
+            $document->lv_managing_director_id = $user->id;
+            $document->lv_managing_directed_at = now();
+            $document->save();
+        }
+        return redirect()->route('leave_requests.show', ['id' => $id]);
     }
 }

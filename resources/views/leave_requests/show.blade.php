@@ -61,7 +61,7 @@
                 <div class="box-body">
                     <div class="form-group">
                         <label>Leave Type:</label>
-                        <p>{{ $document->lv_type }}</p>
+                        <span>{{ $document->lv_type }}</span>
                     </div>
 
                     <div class="form-group">
@@ -78,18 +78,18 @@
                     </div>
                     <div class="form-group">
                         <label>Line Manager:</label>
-                        <p>{{ $document->lineManager->name }}</p>
+                        <span>{{ $document->lineManager->name }}</span>
                     </div>
                     <div class="form-group">
                         <label>Created By:</label> {{$document->createdBy->name}}
                     </div>
                     <div class="form-group">
                         <label>Designation:</label>
-                        <p>{{ $document->lv_designation }}</p>
+                        <span>{{ $document->lv_designation }}</span>
                     </div>
                     <div class="form-group">
                         <label>Deparment:</label>
-                        <p>{{ $document->lv_department }}</p>
+                        <span>{{ $document->lv_department }}</span>
                     </div>
                     <div class="form-group">
                         <label>Created At:</label>
@@ -110,12 +110,18 @@
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_activity" data-toggle="tab" aria-expanded="false">Activity</a></li>
-                    @can("line_manage",$user)
-                    <li><a href="#line_management" data-toggle="tab" aria-expanded="false">Line Management</a></li>
+                    @can("line_manage_leave_requests",$user)
+                    <li><a href="#tab_line_management" data-toggle="tab" aria-expanded="false">Line Management</a></li>
                     @endcan
-                    @if($document->status==config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED') || $document->status == config("constants.LEAVE_RQ_STATES.LN_MGR_DENIED"))
-                    <li><a href="#line_manager_details" data-toggle="tab" aria-expanded="false">Line Manager Details</a></li>
+                    @if($document->status == config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED') || $document->status == config("constants.LEAVE_RQ_STATES.LN_MGR_DENIED"))
+                    <li><a href="#tab_line_manager_details" data-toggle="tab" aria-expanded="false">Line Manager Details</a></li>
                     @endif
+                    @can("hr_manage_leave_requests",$user)
+                    <li><a href="#tab_hr_management" data-toggle="tab" aria-expanded="false">HR Management</a></li>
+                    @endcan
+                    @if($document->status == config('constants.LEAVE_RQ_STATES.HR_MGR_APPROVED') || $document->status == config("constants.LEAVE_RQ_STATES.HR_MGR_DENIED"))
+                    <li><a href="#tab_hr_manager_details" data-toggle="tab" aria-expanded="false">HR Manager Details</a></li>
+                    @endcan
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_activity">
@@ -139,7 +145,7 @@
                             </li>
                         </ul>
                     </div>
-                    @can("line_manage", $user)
+                    @can("line_manage_leave_requests",$user)
                     <div class="tab-pane" id="tab_line_management">
                         @if ($document->status==config('constants.LEAVE_RQ_STATES.SUBMITTED'))
                         {!! Form::open(['route' => ['leave_requests.review', $document->id], 'method' => 'post']) !!}
@@ -147,9 +153,9 @@
                             <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
                         </div>
                         <div class="form-group text-center">
-                            <button class="btn btn-success" type="submit" name="action" value="LINE_MANAGER_APPROVED"><i class="fa fa-check"></i> Approve
+                            <button class="btn btn-success" type="submit" name="action" value="{{ config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED') }}"><i class="fa fa-check"></i> Approve
                             </button>
-                            <button class="btn btn-danger" type="submit" name="action" value="LINE_MANAGER_DENIED"><i class="fa fa-close"></i> Reject
+                            <button class="btn btn-danger" type="submit" name="action" value="{{ config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED') }}"><i class="fa fa-close"></i> Reject
                             </button>
                         </div>
                         {!! Form::close() !!}
@@ -159,6 +165,9 @@
                         </div>
                         <div class="form-group">
                             Line Manager: <b>{{$document->lineManager->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            Line Manager Comments: <b>{{ $document->lv_line_manager_notes }}</b>
                         </div>
                         <div class="form-group">
                             Line Managed At: <b>{{formatDateTime($document->lv_line_managed_at)}}</b>
@@ -178,6 +187,54 @@
                         <div class="form-group">
                             Line Managed At: <b>{!! formatDateTime($document->lv_line_managed_at) !!}</b>
                             ({{\Carbon\Carbon::parse($document->lv_line_managed_at)->diffForHumans()}})
+                        </div>
+                    </div>
+                    @endif
+                    @can("hr_manage_leave_requests",$user)
+                    <div class="tab-pane" id="tab_hr_management">
+                        @if ($document->status==config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED'))
+                        {!! Form::open(['route' => ['leave_requests.review', $document->id], 'method' => 'post']) !!}
+                        <div class="form-group text-center">
+                            <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success" type="submit" name="action" value="{{ config('constants.LEAVE_RQ_STATES.HR_MGR_APPROVED') }}"><i class="fa fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger" type="submit" name="action" value="{{ config('constants.LEAVE_RQ_STATES.HR_MGR_DENIED') }}"><i class="fa fa-close"></i> Reject
+                            </button>
+                        </div>
+                        {!! Form::close() !!}
+                        @else
+                        <div class="form-group">
+                            <span class="label label-success">HR Management</span>
+                        </div>
+                        <div class="form-group">
+                            HR Manager: <b>{{$document->hrManager->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            HR Manager Comments: <b>{{ $document->lv_hr_manager_notes }}</b>
+                        </div>
+                        <div class="form-group">
+                            HR Managed At: <b>{{formatDateTime($document->lv_hr_managed_at)}}</b>
+                            ({{\Carbon\Carbon::parse($document->lv_hr_managed_at)->diffForHumans()}})
+                        </div>
+                        @endif
+                    </div>
+                    @endcan
+                    @if($document->status == config('constants.LEAVE_RQ_STATES.HR_MGR_APPROVED') || $document->status == config("constants.LEAVE_RQ_STATES.HR_MGR_DENIED"))
+                    <div class="tab-pane" id="tab_hr_manager_details">
+                        <div class="form-group">
+                            <span class="label label-success">HR Management</span>
+                        </div>
+                        <div class="form-group">
+                            HR Manager: <b>{{$document->hrManager->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            HR Manager Comments: <b>{{ $document->lv_hr_manager_notes }}</b>
+                        </div>
+                        <div class="form-group">
+                            HR Managed At: <b>{{formatDateTime($document->lv_hr_managed_at)}}</b>
+                            ({{\Carbon\Carbon::parse($document->lv_hr_managed_at)->diffForHumans()}})
                         </div>
                     </div>
                     @endif
