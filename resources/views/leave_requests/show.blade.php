@@ -92,15 +92,16 @@
                         <span>{{ $document->lv_department }}</span>
                     </div>
                     <div class="form-group">
+                        <label>Starts On: </label><b>{!! formatDateTime($document->lv_start_date) !!}</b>
+                    </div>
+                    <div class="form-group">
+                        <label>Ends On: </label><b>{!! formatDateTime($document->lv_end_date) !!}</b>
+                    </div>
+
+                    <div class="form-group">
                         <label>Created At:</label>
                         <p>{!! formatDateTime($document->created_at) !!} <br>
                             ({{\Carbon\Carbon::parse($document->created_at)->diffForHumans()}})
-                        </p>
-                    </div>
-                    <div class="form-group">
-                        <label>Last Updated:</label>
-                        <p>{!! formatDateTime($document->updated_at) !!} <br>
-                            ({{\Carbon\Carbon::parse($document->updated_at)->diffForHumans()}})
                         </p>
                     </div>
                 </div>

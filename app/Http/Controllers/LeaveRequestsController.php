@@ -20,7 +20,9 @@ class LeaveRequestsController extends Controller
         $user = $request->user();
         $baseQ = LeaveRequest::with(['createdBy','lineManager','hrManager']);
         if($user->is_line_manager){
-            $baseQ->where("created_by",$user->id)->orWhere("lv_hr_manager_id",$user->id);
+            $baseQ->where("created_by",$user->id)->orWhere(function ($query) use ($user){
+                $query->where("status",config("constants.LEAVE_RQ_STATES.SUBMITTED"))->where("lv_line_manager_id",$user->id);
+            });
         }elseif($user->is_hr_manager){
             $baseQ->where("created_by",$user->id)->orWhere("lv_hr_manager_id",$user->id)->orWhere(function ($query){
                 $query->where("status", config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED'))->whereNull("lv_hr_manager_id");
@@ -77,18 +79,19 @@ class LeaveRequestsController extends Controller
         $document = LeaveRequest::find($id);
         /** @var \App\User */
         $user = $request->user();
-
+        $data = $request->all();
+        $vcomment = $data['vcomment']?$data['vcomment']:'NA';
         $action = $request->input('action');
 
         if ($action == config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED')) {
             $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED');
-            $document->lv_line_manager_notes = $request->input('vcomment','NA');
+            $document->lv_line_manager_notes = $vcomment;
             $document->lv_line_managed_at = now();
             $document->newActivity('Leave Request Approved by Line Mgr: '.$user->name);
             $document->save();
         }elseif($action == config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED')){
             $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED');
-            $document->lv_line_manager_notes = $request->input('vcomment','NA');
+            $document->lv_line_manager_notes = $vcomment;
             $document->lv_line_managed_at = now();
             $document->newActivity('Leave Request Denied by Line Mgr: '.$user->name);
             $document->save();
@@ -96,6 +99,7 @@ class LeaveRequestsController extends Controller
             $document->status = config('constants.LEAVE_RQ_STATES.HR_MGR_APPROVED');
             $document->lv_hr_manager_id = $user->id;
             $document->lv_hr_managed_at = now();
+
             $document->lv_hr_manager_notes = $request->input('vcomment','NA');
             $document->newActivity('Leave Request Approved by HR Mgr: '.$user->name);
             $document->save();
@@ -103,18 +107,18 @@ class LeaveRequestsController extends Controller
             $document->status = config('constants.LEAVE_RQ_STATES.HR_MGR_DENIED');
             $document->lv_hr_manager_id = $user->id;
             $document->lv_hr_managed_at = now();
-            $document->lv_hr_manager_notes = $request->input('vcomment','NA');
+            $document->lv_hr_manager_notes = $vcomment;
             $document->newActivity('Leave Request Denied by HR Mgr: '.$user->name);
             $document->save();
         }
         elseif($action == config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED')){
             $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED');
-            $document->lv_managing_director_notes = $request->input('vcomment','NA');
+            $document->lv_managing_director_notes = $vcomment;
             $document->lv_managing_directed_at = now();
             $document->save();
         }elseif($action == config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED')){
             $document->status = config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED');
-            $document->lv_managing_director_notes = $request->input('vcomment','NA');
+            $document->lv_managing_director_notes = $vcomment;
             $document->lv_managing_director_id = $user->id;
             $document->lv_managing_directed_at = now();
             $document->save();
