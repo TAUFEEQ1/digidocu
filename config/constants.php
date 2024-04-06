@@ -3,7 +3,8 @@ return [
     'DOC_TYPES'=>[
         'LETTER'=>'LETTER',
         'LETTER_RESPONSE'=>'LETTER_RESPONSE',
-        'LEAVE_REQUESTS'=>'LEAVE_REQUESTS'
+        'LEAVE_REQUESTS'=>'LEAVE_REQUESTS',
+        'CASH_REQUEST' => 'CASH_REQUEST'
     ],
     'LETTER_STATES'=>[
         'SUBMITTED'=>'SUBMITTED',
