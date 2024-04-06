@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * 
  * @mixin \Eloquent
  * @property string|null $lv_reference_number
- * @property string|null $lv_application_date
  * @property string|null $lv_designation
  * @property string $lv_type
  * @property string $lv_start_date
@@ -31,6 +30,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class LeaveRequest extends Document
 {
     use HasFactory;
+    public $table = 'documents'; // Default table name
+
 
     public $fillable = [
         'lv_reference_number',
@@ -41,4 +42,39 @@ class LeaveRequest extends Document
         'lv_start_date',
         'lv_end_date'
     ];
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('category', function ($builder) {
+            $builder->where('category', config('constants.DOC_TYPES.LEAVE_REQUESTS'));
+        });
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(\App\User::class, 'created_by', 'id');
+    }
+    public function lineManager(){
+        return $this->belongsTo(\App\User::class, 'lv_line_manager_id', 'id');
+    }
+    public function hrManager(){
+        return $this->belongsTo(\App\User::class, 'lv_hr_manager_id', 'id');
+    }
+    public function managingDirector(){
+        return $this->belongsTo(\App\User::class, 'lv_managing_director_id', 'id');
+    }
+    public function newActivity($activity_text,$include_document=true){
+        if($include_document){
+            $activity_text .= " : ".'<a href="'.route('leave_requests.show',$this->id).'">'.$this->name."</a>";
+        }
+        Activity::create([
+            'activity' => $activity_text,
+            'created_by' => \Auth::id(),
+            'document_id' => $this->id,
+        ]);
+    }
 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\LeaveRequestsController;
 
 Route::get('/', [HomeController::class,'welcome'])->name('home');
 
@@ -58,6 +59,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("/letters/{id}",[LettersController::class,"show"])->name("letters.show");
     Route::post("/letters/{id}/status",[LettersController::class,"editStatus"])->name("letters.review"); 
     Route::post("letters/store",[LettersController::class,"store"])->name("letters.store");
+
+    Route::get("/leave_requests",[LeaveRequestsController::class,"index"])->name("leave_requests.index");
+    Route::get("/leave_requests/create",[LeaveRequestsController::class,"create"])->name("leave_requests.create");
+    Route::get("/leave_requests/{id}",[LeaveRequestsController::class,"index"])->name("leave_requests.show");
+    Route::post("leave_requests/store",[LeaveRequestsController::class,"store"])->name("leave_requests.store");
+
 
 
 

@@ -92,10 +92,20 @@
                 {!! Form::text('password', null, ['class' => 'form-control']) !!}
                 {!! $errors->first('password','<span class="help-block">:message</span>') !!}
             </div>
-
+            Roles
             <!-- Executive Secretary Checkbox -->
             <div class="form-group col-sm-6">
                 <label>{!! Form::checkbox('is_executive_secretary', 1, false) !!} Executive Secretary</label>
+            </div>
+
+            <!-- Line Manager Checkbox -->
+            <div class="form-group col-sm-6">
+                <label>{!! Form::checkbox('is_line_manager', 1, false) !!} Line Manager</label>
+            </div>
+
+            <!-- Executive Secretary Checkbox -->
+            <div class="form-group col-sm-6">
+                <label>{!! Form::checkbox('is_hr_manager', 1, false) !!} HR Manager</label>
             </div>
 
             <!-- Managing Director Checkbox -->

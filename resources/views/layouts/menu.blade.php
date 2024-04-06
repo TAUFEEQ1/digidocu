@@ -4,6 +4,9 @@
 <li class="{{ Request::is('admin/letters*')? 'active':'' }}">
     <a href="{!! route('letters.index') !!}"><i class="fa fa fa-envelope"></i><span>Letters</span></a>
 </li>
+<li class="{{ Request::is('admin/leave_requests*')? 'active':'' }}">
+    <a href="{!! route('leave_requests.index') !!}"><i class="fa fa-address-card-o"></i><span>Leave Requests</span></a>
+</li>
 @can('read users')
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
         <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
