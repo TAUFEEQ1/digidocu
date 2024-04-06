@@ -23,7 +23,8 @@ return [
         'MG_DIR_DENIED'=>'MANAGING DIRECTOR DENIED'
     ],
     'DEPARTMENTS'=>[
-        'IT'=>'Information Technology'
+        'IT'=>'Information Technology',
+        'SERVICE DESK'=>'Help Desk'
     ],
     'STATUS' => [
         "PENDING" => 'PENDING',

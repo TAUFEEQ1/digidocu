@@ -50,60 +50,65 @@
             <div class="row">
                 {!! Form::open(['route' => 'leave_requests.store']) !!}
 
-
-                <div class="form-group">
-                    {!! Form::label('name', 'Name:') !!}
-                    {!! Form::text('name', $user->name, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
-                </div>
-
-
-                <div class="form-group">
-                    {!! Form::label('designation', 'Designation:') !!}
-                    {!! Form::text('lv_designation', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('department', 'Department:') !!}
-                    {!! Form::select('lv_department', config('constants.DEPARTMENTS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('leave_type', 'Leave Type:') !!}
-                    {!! Form::select('lv_type', ['Annual' => 'Annual', 'Sick' => 'Sick', 'Maternity' => 'Maternity', 'Paternity' => 'Paternity', 'Compassionate' => 'Compassionate', 'Terminal' => 'Terminal / Long term illness', 'Study' => 'Study leave with pay', 'Without_pay' => 'Leave without pay'], null, ['class' => 'form-control', 'required' => 'required']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('line_manager', 'Line Manager:') !!}
-                    {!! Form::select('lv_line_manager_id', $senior_managers, null, ['class' => 'form-control', 'required' => 'required']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('outstanding_leave_days', 'Outstanding Leave days:') !!}
-                    {!! Form::number('outstanding_leave_days', $user->outstanding_leave_days, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('start_date', 'Start Date:') !!}
-                    {!! Form::date('lv_start_date', null, ['id' => 'start_date', 'class' => 'form-control', 'required' => 'required']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('end_date', 'End Date:') !!}
-                    {!! Form::date('lv_end_date', null, ['id' => 'end_date', 'class' => 'form-control', 'required' => 'required']) !!}
-                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Name:') !!}
+                        {!! Form::text('name', $user->name, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
+                    </div>
 
 
-                <div class="form-group">
-                    {!! Form::label('number_of_days_taken', 'Number of days taken:') !!}
-                    {!! Form::number('number_of_days_taken', null, ['id' => 'number_of_days_taken','class' => 'form-control', 'readonly' => 'readonly']) !!}
-                </div>
+                    <div class="form-group">
+                        {!! Form::label('designation', 'Designation:') !!}
+                        {!! Form::text('lv_designation', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    </div>
 
-                <div class="form-group">
-                    <div class="col-md-offset-8 col-md-4">
-                        {!! Form::submit('Submit', ['class' => 'btn btn-primary pull-right']) !!}
+                    <div class="form-group">
+                        {!! Form::label('department', 'Department:') !!}
+                        {!! Form::select('lv_department', config('constants.DEPARTMENTS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('leave_type', 'Leave Type:') !!}
+                        {!! Form::select('lv_type', ['Annual' => 'Annual', 'Sick' => 'Sick', 'Maternity' => 'Maternity', 'Paternity' => 'Paternity', 'Compassionate' => 'Compassionate', 'Terminal' => 'Terminal / Long term illness', 'Study' => 'Study leave with pay', 'Without_pay' => 'Leave without pay'], null, ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                 </div>
 
+
+
+                <div class="col-md-6">
+
+
+                    <div class="form-group">
+                        {!! Form::label('line_manager', 'Line Manager:') !!}
+                        {!! Form::select('lv_line_manager_id', $senior_managers, null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('outstanding_leave_days', 'Outstanding Leave days:') !!}
+                        {!! Form::number('outstanding_leave_days', $user->outstanding_leave_days, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('start_date', 'Start Date:') !!}
+                        {!! Form::date('lv_start_date', null, ['id' => 'start_date', 'class' => 'form-control', 'required' => 'required']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('end_date', 'End Date:') !!}
+                        {!! Form::date('lv_end_date', null, ['id' => 'end_date', 'class' => 'form-control', 'required' => 'required']) !!}
+                    </div>
+
+
+                    <div class="form-group">
+                        {!! Form::label('number_of_days_taken', 'Number of days taken:') !!}
+                        {!! Form::number('number_of_days_taken', null, ['id' => 'number_of_days_taken','class' => 'form-control', 'readonly' => 'readonly']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-8 col-md-4">
+                            {!! Form::submit('Submit', ['class' => 'btn btn-primary pull-right']) !!}
+                        </div>
+                    </div>
+                </div>
                 {!! Form::close() !!}
 
             </div>

@@ -17,15 +17,12 @@ class LeaveRequestsController extends Controller
     public function index(Request $request){
         /** @var \App\User */
         $user = $request->user();
-        $baseQ = LeaveRequest::with(['createdBy','lineManager','hrManager']);
-        if ($user->is_line_manager) {
-            $baseQ->where('lv_line_manager_id',$user->id);
-        }else if($user->is_managing_director){
-            $baseQ->where('lv_managing_director_id',$user->id);
-        }
-        else{
-            $baseQ->where('created_by',$user->id);
-        }
+        $baseQ = LeaveRequest::with(['createdBy','lineManager','hrManager'])
+        ->where("created_by",$user->id)
+        ->orWhere("lv_line_manager_id",$user->id)
+        ->orWhere("lv_hr_manager_id",$user->id)
+        ->orWhere("lv_managing_director_id",$user->id);
+
         $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
         return view("leave_requests.index", compact("documents", "user"));
     }
@@ -33,7 +30,7 @@ class LeaveRequestsController extends Controller
     public function create(Request $request){
         /** @var \App\User */
         $user = $request->user();
-        $senior_managers = User::where("is_line_manager",true)->get()->pluck('id','name');
+        $senior_managers = User::where("is_line_manager",true)->get()->pluck('name','id');
         return view("leave_requests.create",compact("user","senior_managers"));
     }
     public function store(Request $request){
@@ -43,7 +40,7 @@ class LeaveRequestsController extends Controller
         $ref_no = Str::uuid();
         $lv = LeaveRequest::create([
             "lv_reference_number"=>$ref_no,
-            "name"=>$ref_no,
+            "name"=>"Leave Application by ".$user->name,
             "lv_designation"=>$data['lv_designation'],
             "lv_department"=>$data['lv_department'],
             "lv_type"=>$data["lv_type"],
@@ -51,8 +48,10 @@ class LeaveRequestsController extends Controller
             "lv_start_date"=>$data['lv_start_date'],
             "lv_end_date"=>$data['lv_end_date'],
             'status' => config('constants.LEAVE_RQ_STATES.SUBMITTED'),
+            "created_by"=>$user->id,
         ]);
         $lv->created_by = $user->id;
+        $lv->category = config('constants.DOC_TYPES.LEAVE_REQUESTS');
         $lv->newActivity('Leave Request Submitted');
         $lv->save();
 

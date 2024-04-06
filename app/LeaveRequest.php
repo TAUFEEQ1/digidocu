@@ -34,13 +34,16 @@ class LeaveRequest extends Document
 
 
     public $fillable = [
+        "name",
         'lv_reference_number',
         'lv_application_date',
         'lv_designation',
         'lv_department',
         'lv_type',
         'lv_start_date',
-        'lv_end_date'
+        'lv_end_date',
+        "status",
+        "created_by"
     ];
     /**
      * Boot the model.
