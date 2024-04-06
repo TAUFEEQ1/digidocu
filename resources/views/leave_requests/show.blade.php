@@ -123,6 +123,12 @@
                     @if($document->status == config('constants.LEAVE_RQ_STATES.HR_MGR_APPROVED') || $document->status == config("constants.LEAVE_RQ_STATES.HR_MGR_DENIED"))
                     <li><a href="#tab_hr_manager_details" data-toggle="tab" aria-expanded="false">HR Manager Details</a></li>
                     @endcan
+                    @can("md_manage_leave_requests",$user)
+                    <li><a href="#tab_md_management" data-toggle="tab" aria-expanded="false">MD Management</a></li>
+                    @endcan
+                    @if($document->status == config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED') || $document->status == config('constants.LEAVE_RQ_STATES.HR_MGR_DENIED'))
+                    <li><a href="#tab_md_management_details" data-toggle="tab" aria-expanded="false">MD Management Details</a></li>
+                    @endif
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_activity">
@@ -239,6 +245,54 @@
                         </div>
                     </div>
                     @endif
+                    @can("md_manage_leave_requests",$user)
+                    <div class="tab-pane" id="tab_md_management">
+                        @if ($document->status==config('constants.LEAVE_RQ_STATES.HR_MGR_APPROVED'))
+                        {!! Form::open(['route' => ['leave_requests.review', $document->id], 'method' => 'post']) !!}
+                        <div class="form-group text-center">
+                            <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success" type="submit" name="action" value="{{ config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED') }}"><i class="fa fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger" type="submit" name="action" value="{{ config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED') }}"><i class="fa fa-close"></i> Reject
+                            </button>
+                        </div>
+                        {!! Form::close() !!}
+                        @else
+                        <div class="form-group">
+                            <span class="label label-success">MD Management</span>
+                        </div>
+                        <div class="form-group">
+                            Managing Director: <b>{{$document->managingDirector->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            Managing Director Comments: <b>{{ $document->lv_managing_director_notes }}</b>
+                        </div>
+                        <div class="form-group">
+                            MD Managed At: <b>{{formatDateTime($document->lv_managing_directed_at)}}</b>
+                            ({{\Carbon\Carbon::parse($document->lv_managing_directed_at)->diffForHumans()}})
+                        </div>
+                        @endif
+                    </div>
+                    @endcan
+                    @if($document->status == config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED') || $document->status == config('constants.LEAVE_RQ_STATES.HR_MGR_DENIED'))
+                    <div class="tab-pane" id="tab_md_management_details">
+                        <div class="form-group">
+                            <span class="label label-success">MD Management</span>
+                        </div>
+                        <div class="form-group">
+                            Managing Director: <b>{{$document->managingDirector->name}}</b>
+                        </div>
+                        <div class="form-group">
+                            Managing Director Comments: <b>{{ $document->lv_managing_director_notes }}</b>
+                        </div>
+                        <div class="form-group">
+                            MD Managed At: <b>{{formatDateTime($document->lv_managing_directed_at)}}</b>
+                            ({{\Carbon\Carbon::parse($document->lv_managing_directed_at)->diffForHumans()}})
+                        </div>
+                    </div>
+                    @endcan
                 </div>
             </div>
         </div>

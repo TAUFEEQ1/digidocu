@@ -7,6 +7,7 @@ use App\LeaveRequest;
 use App\User;
 use Log;
 use Str;
+use Carbon\Carbon;
 
 class LeaveRequestsController extends Controller
 {
@@ -28,7 +29,9 @@ class LeaveRequestsController extends Controller
                 $query->where("status", config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED'))->whereNull("lv_hr_manager_id");
             });
         }elseif($user->is_managing_director){
-            $baseQ->where("created_by",$user->id)->orWhere("lv_managing_director_id",$user->id);
+            $baseQ->where("created_by",$user->id)->orWhere("lv_managing_director_id",$user->id)->orWhere(function ($query){
+                $query->where("status",config("constants.LEAVE_RQ_STATES.HR_MGR_APPROVED"))->whereNull("lv_managing_director_id");
+            });
         }else{
             $baseQ->where("created_by",$user->id);
         }
@@ -75,6 +78,23 @@ class LeaveRequestsController extends Controller
         return view("leave_requests.show",compact("user","document"));
 
     }
+    private function countBusinessDays(Carbon $startDate, Carbon $endDate)
+    {
+        $businessDays = 0;
+        $currentDate = $startDate->copy();
+    
+        while ($currentDate <= $endDate) {
+            // Exclude weekends (Saturday and Sunday)
+            if ($currentDate->isWeekday()) {
+                $businessDays++;
+            }
+    
+            // Move to the next day
+            $currentDate->addDay();
+        }
+    
+        return $businessDays;
+    }
     public function review(int $id, Request $request){
         $document = LeaveRequest::find($id);
         /** @var \App\User */
@@ -112,15 +132,24 @@ class LeaveRequestsController extends Controller
             $document->save();
         }
         elseif($action == config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED')){
-            $document->status = config('constants.LEAVE_RQ_STATES.LN_MGR_DENIED');
+            $document->status = config('constants.LEAVE_RQ_STATES.MG_DIR_APPROVED');
             $document->lv_managing_director_notes = $vcomment;
+            $document->lv_managing_director_id = $user->id;
             $document->lv_managing_directed_at = now();
+            $document->newActivity('Leave Request Approved by MD: '.$user->name);
+            // reduce leave days
+            /** @var \App\User */
+            $applicant = $document->createdBy;
+            $startDate = Carbon::parse($document->lv_start_date);
+            $endDate = Carbon::parse($document->lv_end_date);
+            $applicant->outstanding_leave_days -= $this->countBusinessDays($startDate,$endDate);
             $document->save();
         }elseif($action == config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED')){
             $document->status = config('constants.LEAVE_RQ_STATES.MG_DIR_DENIED');
             $document->lv_managing_director_notes = $vcomment;
             $document->lv_managing_director_id = $user->id;
             $document->lv_managing_directed_at = now();
+            $document->newActivity('Leave Request Denied by MD: '.$user->name);
             $document->save();
         }
         return redirect()->route('leave_requests.show', ['id' => $id]);

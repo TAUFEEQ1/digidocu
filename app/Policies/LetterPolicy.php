@@ -37,4 +37,7 @@ class LetterPolicy
     public function hr_manage_leave_requests(User $user){
         return $user->is_hr_manager;
     }
+    public function md_manage_leave_requests(User $user){
+        return $user->is_managing_director;
+    }
 }
