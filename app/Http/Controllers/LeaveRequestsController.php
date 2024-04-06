@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\LeaveRequest;
 use App\User;
+use Log;
 use Str;
 
 class LeaveRequestsController extends Controller
@@ -37,6 +38,7 @@ class LeaveRequestsController extends Controller
         /** @var \App\User */
         $user = $request->user();
         $data = $request->all();
+        Log::info($data);
         $ref_no = Str::uuid();
         $lv = LeaveRequest::create([
             "lv_reference_number"=>$ref_no,
@@ -58,9 +60,11 @@ class LeaveRequestsController extends Controller
         return redirect()->route('leave_requests.index');
     }
     public function show(int $id,Request $request){
-        $leave_request = LeaveRequest::find($id);
+        $document = LeaveRequest::find($id);
         /** @var \App\User */
         $user = $request->user();
+
+        return view("leave_requests.show",compact("user","document"));
 
     }
 }

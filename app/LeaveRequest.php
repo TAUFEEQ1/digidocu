@@ -43,7 +43,8 @@ class LeaveRequest extends Document
         'lv_start_date',
         'lv_end_date',
         "status",
-        "created_by"
+        "created_by",
+        "lv_line_manager_id"
     ];
     /**
      * Boot the model.

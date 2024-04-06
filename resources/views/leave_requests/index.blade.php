@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Letters')
+@section('title', 'Leave Requests')
 @section('content')
     <section class="content-header">
         <h1 class="pull-left">Leave Requests Dashboard</h1>
