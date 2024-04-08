@@ -22,6 +22,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property bool $is_managing_director
  * @property bool $is_line_manager
  * @property bool $is_hr_manager
+ * @property bool $is_hod
+ * @property bool $is_finance_manager
+ * @property bool $is_internal_auditor
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string $status

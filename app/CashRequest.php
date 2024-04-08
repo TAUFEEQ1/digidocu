@@ -5,7 +5,16 @@ namespace App;
 use App\Document;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Class CashRequest
+ * 
+ * @mixin \Eloquent
+ * @property string $cr_reference_number
+ * @property string $cr_department
+ * @property string $cr_title
+ * @property string $cr_purpose
+ * @property string $cr_amount
+ * */
 class CashRequest extends Document
 {
     use HasFactory;
