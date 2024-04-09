@@ -4,7 +4,8 @@ return [
         'LETTER'=>'LETTER',
         'LETTER_RESPONSE'=>'LETTER_RESPONSE',
         'LEAVE_REQUESTS'=>'LEAVE_REQUESTS',
-        'CASH_REQUEST' => 'CASH_REQUEST'
+        'CASH_REQUEST' => 'CASH_REQUEST',
+        'RECEIPT_PDF'=>'RECEIPT_PDF'
     ],
     'LETTER_STATES'=>[
         'SUBMITTED'=>'SUBMITTED',

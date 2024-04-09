@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\CashRequestsController;
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FileTypeController;
@@ -66,6 +67,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::post("leave_requests/store",[LeaveRequestsController::class,"store"])->name("leave_requests.store");
     Route::post("leave_requests/review/{id}",[LeaveRequestsController::class,"review"])->name("leave_requests.review");
 
+    Route::get("/cash_requests",[CashRequestsController::class,"index"])->name("cash_requests.index");
+    Route::get("/cash_requests/create",[CashRequestsController::class,"create"])->name("cash_requests.create");
+    Route::post("cash_requests/store",[CashRequestsController::class,"store"])->name("cash_requests.store");
+    Route::get("/cash_requests/{id}",[CashRequestsController::class,"show"])->name("cash_requests.show");
 
 
 

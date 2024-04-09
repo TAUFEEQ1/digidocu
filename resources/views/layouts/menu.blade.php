@@ -8,7 +8,7 @@
     <a href="{!! route('leave_requests.index') !!}"><i class="fa fa-address-card-o"></i><span>Leave Requests</span></a>
 </li>
 <li class="{{ Request::is('admin/cash_requests*')? 'active':'' }}">
-    <a href="{!! route('cash_requests.index') !!}"><i class="fa fa-address-card-o"></i><span>Cash Requests</span></a>
+    <a href="{!! route('cash_requests.index') !!}"><i class="fa fa-money"></i><span>Cash Requests</span></a>
 </li>
 @can('read users')
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
