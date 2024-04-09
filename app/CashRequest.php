@@ -24,7 +24,10 @@ class CashRequest extends Document
         'cr_department',
         'cr_title',
         'cr_purpose',
-        'cr_amount'
+        'cr_amount',
+        "status",
+        "name",
+        "created_by"
     ];
     /**
      * Boot the model.
