@@ -31,6 +31,15 @@ class LettersController extends AppBaseController
         } else {
             $baseQ->where("assigned_to", $user->id);
         }
+        if ($request->has("query") && $request->input("query")) {
+            $query = $request->input("query");
+            $baseQ->whereRaw("LOWER(subject) LIKE ?", ["%" . strtolower($query) . "%"])
+                // sender like
+                ->orWhereRaw("LOWER(sender) LIKE ?", ["%" . strtolower($query) . "%"])
+                // or where status
+                ->orWhereRaw("LOWER(status) LIKE ?", ["%" . strtolower($query) . "%"]);
+        }
+
         $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
         return view("letters.index", compact("documents", "user"));
     }
@@ -154,7 +163,7 @@ class LettersController extends AppBaseController
         $letter = Letter::find($id);
         $user = $request->user();
 
-        $this->authorize('respond_letters', [$letter,$user]);
+        $this->authorize('respond_letters', [$letter, $user]);
 
         $uploaded_file = $request->file('file_scan');
         $uploaded_file->store('files/original');
@@ -175,25 +184,26 @@ class LettersController extends AppBaseController
 
         return redirect()->route('letters.show', ['id' => $id]);
     }
-    public function comment(int $id,Request $request){
+    public function comment(int $id, Request $request)
+    {
         $user = $request->user();
         $letter = GlobalLetter::find($id);
         $action = $request->input('action');
-        $notes = $action=="approve"?'Approved by'.$user->name:$request->input('notes');
+        $notes = $action == "approve" ? 'Approved by' . $user->name : $request->input('notes');
         $letter->comments()->create([
-            "notes"=>$notes,
-            "created_by"=>$user->id
+            "notes" => $notes,
+            "created_by" => $user->id
         ]);
-        if($action == 'approve'){
-            if($user->is_executive_secretary){
+        if ($action == 'approve') {
+            if ($user->is_executive_secretary) {
                 $letter->status = config('constants.LETTER_STATES.RESPONSE_EXEC_APPROVED');
-            }elseif($user->is_managing_director){
+            } elseif ($user->is_managing_director) {
                 $letter->status = config('constants.LETTER_STATES.RESPONSE_MGR_APPROVED');
             }
         }
 
-        $letter->newActivity("New comment from: ".$user->name);
+        $letter->newActivity("New comment from: " . $user->name);
         $letter->save();
-        return redirect()->route("letters.show",["id"=>$id]);
+        return redirect()->route("letters.show", ["id" => $id]);
     }
 }
