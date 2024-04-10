@@ -19,6 +19,7 @@ class WelcomeController extends AppBaseController
      */
     public function index(Request $request)
     {
+        /** @var App\User */
         $user = $request->user();
         $letter_alias = config('constants.DOC_TYPES.LETTER');
         $leave_rqs = config('constants.DOC_TYPES.LEAVE_REQUESTS');
@@ -26,11 +27,22 @@ class WelcomeController extends AppBaseController
         $doc_ids = GlobalLetter::where("created_by",$user->id)->orWhere("assigned_to",$user->id)
         ->orWhere("executed_by",$user->id)->orWhere("managed_by",$user->id)->pluck("id");
         $activities = Activity::with(['createdBy', 'document'])
-            ->whereHas('document', function ($query) use ($user) {
+            ->orWhereHas('document', function ($query) use ($user) {
                 $query->where('created_by', $user->id)
                     ->orWhere('assigned_to', $user->id)
                     ->orWhere('executed_by', $user->id)
                     ->orWhere('managed_by', $user->id);
+            })->orWhereHas('document',function ($query) use($user){
+                // cash requests
+                if($user->is_hod){
+                    $query->where("cr_hod_id",$user->id)->orWhere("status",config("constants.CASH_RQ_STATES.SUBMITTED"));
+                }else if($user->is_finance_manager){
+                    $query->where("cr_finance_manager_id",$user->id)->orWhere("status",config("constants.CASH_RQ_STATES.HOD_APPROVED"));
+                }else if($user->is_internal_auditor){
+                    $query->where("cr_internal_auditor_id",$user->id)->orWhere("status",config("constants.CASH_RQ_STATES.FINANCE_APPROVED"));
+                }else{
+                    $query->where("cr_managing_director_id",$user->id)->orWhere("status",config("constants.CASH_RQ_STATES.AUDITOR_APPROVED"));
+                }
             });
         if ($request->has('activity_range')) {
             $dates = explode("to", $request->get('activity_range'));

@@ -60,6 +60,8 @@ class LetterPolicy
     }
     public function int_auditor_review(User $user){
         return $user->is_internal_auditor;
-
+    }
+    public function mgr_dir_review_cr(User $user){
+        return $user->is_managing_director;
     }
 }

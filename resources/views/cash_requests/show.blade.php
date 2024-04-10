@@ -267,6 +267,12 @@
                         @if ($document->cr_internal_auditor_id)
                         <li class=""><a href="#tab_int_aud_remarks" data-toggle="tab" aria-expanded="false">Auditor Remarks</a></li>
                         @endif
+                        @can("mgr_dir_review_cr",$user)
+                        <li class=""><a href="#tab_mgr_dir_review" data-toggle="tab" aria-expanded="false">MD Review</a></li>
+                        @endcan
+                        @if($document->cr_managing_director_id)
+                        <li class=""><a href="#tab_md_remarks" data-toggle="tab" aria-expanded="false">MD Remarks</a></li>
+                        @endif
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_files">
@@ -435,6 +441,54 @@
                             <div class="form-group">
                                 Reviewed At: <b>{{formatDateTime($document->cr_internal_auditor_at)}}</b>
                                 ({{\Carbon\Carbon::parse($document->cr_internal_auditor_at)->diffForHumans()}})
+                            </div>
+                        </div>
+                        @endif
+                        @can("mgr_dir_review_cr",$user)
+                        <div class="tab-pane" id="tab_mgr_dir_review">
+                            @if ($document->status==config("constants.CASH_RQ_STATES.AUDITOR_APPROVED"))
+                            {!! Form::open(['route' => ['cash_requests.review', $document->id], 'method' => 'post']) !!}
+                            <div class="form-group text-center">
+                                <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-success" type="submit" name="action" value="{{ config('constants.CASH_RQ_STATES.MG_DIR_APPROVED') }}"><i class="fa fa-check"></i> Approve
+                                </button>
+                                <button class="btn btn-danger" type="submit" name="action" value="{{ config('constants.CASH_RQ_STATES.MG_DIR_DENIED') }}"><i class="fa fa-close"></i> Reject
+                                </button>
+                            </div>
+                            {!! Form::close() !!}
+                            @else
+                            <div class="form-group">
+                                <span class="label label-success">Managind Director Reviewal</span>
+                            </div>
+                            <div class="form-group">
+                                Director: <b>{{$document->managingDirector->name}}</b>
+                            </div>
+                            <div class="form-group">
+                                Remarks: <b>{{$document->cr_managing_director_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_managing_director_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_managing_director_at)->diffForHumans()}})
+                            </div>
+                            @endif
+                        </div>
+                        @endcan
+                        @if ($document->cr_managing_director_id)
+                        <div class="tab-pane" id="tab_md_remarks">
+                        <div class="form-group">
+                                <span class="label label-success">Managind Director Reviewal</span>
+                            </div>
+                            <div class="form-group">
+                                Director: <b>{{$document->managingDirector->name}}</b>
+                            </div>
+                            <div class="form-group">
+                                Remarks: <b>{{$document->cr_managing_director_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_managing_director_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_managing_director_at)->diffForHumans()}})
                             </div>
                         </div>
                         @endif
