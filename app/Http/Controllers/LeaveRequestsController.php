@@ -35,7 +35,14 @@ class LeaveRequestsController extends Controller
         }else{
             $baseQ->where("created_by",$user->id);
         }
-
+        if ($request->has("query") && $request->input("query")) {
+            $query = $request->input("query");
+            $baseQ->whereRaw("LOWER(lv_department) LIKE ?", ["%" . strtolower($query) . "%"])
+                // sender like
+                ->orWhereRaw("LOWER(lv_type) LIKE ?", ["%" . strtolower($query) . "%"])
+                // or where status
+                ->orWhereRaw("LOWER(status) LIKE ?", ["%" . strtolower($query) . "%"]);
+        }
         $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
         return view("leave_requests.index", compact("documents", "user"));
     }
