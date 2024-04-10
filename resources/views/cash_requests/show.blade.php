@@ -204,11 +204,15 @@
                         </div>
                         <div class="form-group">
                             <label> Purpose:</label>
-                            <p>{{ $document->cr_purpose }}</p>
+                            <p>{!! $document->cr_purpose !!}</p>
                         </div>
                         <div class="form-group">
-                            <label>Amount:</label>
-                            <p>{!! $document->cr_amount !!}</p>
+                            <label>Amount (UGX):</label>
+                            <p>{!! number_format($document->cr_amount, 0, '.', ',') !!}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount In Words:</label>
+                            <p>{{ $document->cr_amount_words }} shillings</p>
                         </div>
                         <div class="form-group">
                             <label>Status:</label>
@@ -248,7 +252,7 @@
                         @can('hod_review_cr',$user)
                         <li class=""><a href="#tab_hod_review" data-toggle="tab" aria-expanded="false">HoD Review</a></li>
                         @endcan
-                        @if ($document->hod_id)
+                        @if ($document->cr_hod_id)
                         <li class=""><a href="#tab_hod_remarks" data-toggle="tab" aria-expanded="false">HoD Remarks</a></li>
                         @endif
                     </ul>
@@ -281,7 +285,7 @@
                         @can("hod_review_cr",$user)
                         <div class="tab-pane" id="tab_hod_review">
                             @if ($document->status==config('constants.CASH_RQ_STATES.SUBMITTED'))
-                            {!! Form::open(['route' => ['letters.review', $document->id], 'method' => 'post']) !!}
+                            {!! Form::open(['route' => ['cash_requests.review', $document->id], 'method' => 'post']) !!}
                             <div class="form-group text-center">
                                 <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
                             </div>
@@ -300,13 +304,16 @@
                                 HoD: <b>{{$document->hod->name}}</b>
                             </div>
                             <div class="form-group">
-                                Reviewed At: <b>{{formatDateTime($document->hod_at)}}</b>
-                                ({{\Carbon\Carbon::parse($document->hod_at)->diffForHumans()}})
+                                HoD Remarks: <b>{{$document->cr_hod_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_hod_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_hod_at)->diffForHumans()}})
                             </div>
                             @endif
                         </div>
                         @endcan
-                        @if($document->hod_id)
+                        @if($document->cr_hod_id)
                         <div class="tab-pane" id="tab_hod_remarks">
                             <div class="form-group">
                                 <span class="label label-success">HoD Remarks</span>
@@ -315,12 +322,15 @@
                                 HoD: <b>{{$document->hod->name}}</b>
                             </div>
                             <div class="form-group">
-                                Reviewed At: <b>{{formatDateTime($document->hod_at)}}</b>
-                                ({{\Carbon\Carbon::parse($document->hod_at)->diffForHumans()}})
+                                HoD Remarks: <b>{{$document->cr_hod_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_hod_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_hod_at)->diffForHumans()}})
                             </div>
                         </div>
                         @endif
-                        
+
                     </div>
                 </div>
             </div>

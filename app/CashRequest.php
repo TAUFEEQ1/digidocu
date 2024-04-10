@@ -5,6 +5,7 @@ namespace App;
 use App\Document;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use NumberFormatter;
 /**
  * Class CashRequest
  * 
@@ -67,4 +68,8 @@ class CashRequest extends Document
         return $this->belongsTo(\App\User::class, 'cr_managing_director_id', 'id');
     }
 
+    public function getCrAmountWordsAttribute(){
+        $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        return $f->format($this->cr_amount);
+    }
 }

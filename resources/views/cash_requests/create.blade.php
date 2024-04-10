@@ -29,23 +29,23 @@
 <div class="content">
     <div class="box box-primary">
         <div class="box-body">
-            {!! Form::open(['route' => 'cash_requests.store']) !!}
+            {!! Form::open(['route' => 'cash_requests.store','files' => true]) !!}
             <div class="form-group">
                 {!! Form::label('name', 'Name:') !!}
                 {!! Form::text('name', $user->name, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('department', 'Department:') !!}
-                {!! Form::select('cr_department', config('constants.DEPARTMENTS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
+                {!! Form::select('department', config('constants.DEPARTMENTS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('title', 'Title:') !!}
-                {!! Form::text('cr_title', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                {!! Form::text('title', null, ['class' => 'form-control', 'required' => 'required']) !!}
             </div>
 
             <div class="form-group">
                 {!! Form::label('Purpose', 'Purpose:') !!}
-                {!! Form::textarea('cr_purpose', null, ['class'=>'form-control b-wysihtml5-editor']) !!}
+                {!! Form::textarea('purpose', null, ['class'=>'form-control b-wysihtml5-editor']) !!}
             </div>
 
             <div class="form-group">
@@ -55,7 +55,7 @@
 
             <div class="form-group">
                 {!! Form::label('amount', 'Amount:') !!}
-                {!! Form::number('cr_amount', null, ['class' => 'form-control','required' => 'required', 'id' => 'amount']) !!}
+                {!! Form::number('amount', null, ['class' => 'form-control','required' => 'required', 'id' => 'amount']) !!}
             </div>
 
             <div class="form-group">

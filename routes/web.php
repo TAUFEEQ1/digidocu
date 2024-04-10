@@ -70,6 +70,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("/cash_requests",[CashRequestsController::class,"index"])->name("cash_requests.index");
     Route::get("/cash_requests/create",[CashRequestsController::class,"create"])->name("cash_requests.create");
     Route::post("cash_requests/store",[CashRequestsController::class,"store"])->name("cash_requests.store");
+    Route::post("/cash_requests/review/{id}",[CashRequestsController::class,"review"])->name("cash_requests.review");
     Route::get("/cash_requests/{id}",[CashRequestsController::class,"show"])->name("cash_requests.show");
 
 

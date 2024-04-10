@@ -22,19 +22,19 @@ class CashRequestsController extends Controller
 
         if($user->is_hod){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
-                $query->where("status",config("constants.CASH_RQ_STATES.SUBMITTED"))->whereNull("hod_id");
-            });
+                $query->where("status",config("constants.CASH_RQ_STATES.SUBMITTED"))->whereNull("cr_hod_id");
+            })->orWhere("cr_hod_id",$user->id);
         }else if($user->is_finance_manager){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
-                $query->where("status",config("constants.CASH_RQ_STATES.HOD_APPROVED"))->whereNull("finance_manager_id");
+                $query->where("status",config("constants.CASH_RQ_STATES.HOD_APPROVED"))->whereNull("cr_finance_manager_id");
             });
         }else if($user->is_internal_auditor){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
-                $query->where("status",config("constants.CASH_RQ_STATES.FINANCE_APPROVED"))->whereNull("internal_auditor_id");
+                $query->where("status",config("constants.CASH_RQ_STATES.FINANCE_APPROVED"))->whereNull("cr_internal_auditor_id");
             });
         }else if($user->is_managing_director){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
-                $query->where("status",config("constants.CASH_RQ_STATES.AUDITOR_APPROVED"))->whereNull("managing_director_id");
+                $query->where("status",config("constants.CASH_RQ_STATES.AUDITOR_APPROVED"))->whereNull("cr_managing_director_id");
             });
         }else{
             $baseQ->where("created_by",$user->id);
@@ -88,7 +88,7 @@ class CashRequestsController extends Controller
     }
 
     private function hod_review(CashRequest $document,User $user,string $vcomment){
-        $document->hod_id = $user->id;
+        $document->cr_hod_id = $user->id;
         $document->cr_hod_notes = $vcomment;
         $document->cr_hod_at = now();
     }
