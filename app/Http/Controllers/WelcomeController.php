@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Document;
 use App\Activity;
 use App\Letter as GlobalLetter;
+use App\User;
 use Illuminate\Http\Request;
 use Log;
 
@@ -19,7 +20,7 @@ class WelcomeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        /** @var App\User */
+        /** @var \App\User */
         $user = $request->user();
         $letter_alias = config('constants.DOC_TYPES.LETTER');
         $leave_rqs = config('constants.DOC_TYPES.LEAVE_REQUESTS');
@@ -28,6 +29,7 @@ class WelcomeController extends AppBaseController
         ->orWhere("executed_by",$user->id)->orWhere("managed_by",$user->id)->pluck("id");
         $activities = Activity::with(['createdBy', 'document'])
             ->orWhereHas('document', function ($query) use ($user) {
+                // letters
                 $query->where('created_by', $user->id)
                     ->orWhere('assigned_to', $user->id)
                     ->orWhere('executed_by', $user->id)
@@ -42,6 +44,15 @@ class WelcomeController extends AppBaseController
                     $query->where("cr_internal_auditor_id",$user->id)->orWhere("status",config("constants.CASH_RQ_STATES.FINANCE_APPROVED"));
                 }else{
                     $query->where("cr_managing_director_id",$user->id)->orWhere("status",config("constants.CASH_RQ_STATES.AUDITOR_APPROVED"));
+                }
+            })->orWhereHas("document",function ($query) use ($user){
+                // leave requests
+                if($user->is_line_manager){
+                    $query->where("status",config("constants.LEAVE_RQ_STATES.SUBMITTED"))->where("lv_line_manager_id",$user->id);
+                }else if($user->is_hr_manager){
+                    $query->where("status", config('constants.LEAVE_RQ_STATES.LN_MGR_APPROVED'));
+                }else{
+                    $query->where("status",config("constants.LEAVE_RQ_STATES.HR_MGR_APPROVED"));
                 }
             });
         if ($request->has('activity_range')) {
