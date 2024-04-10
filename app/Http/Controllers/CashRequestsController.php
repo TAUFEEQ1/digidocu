@@ -27,15 +27,15 @@ class CashRequestsController extends Controller
         }else if($user->is_finance_manager){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
                 $query->where("status",config("constants.CASH_RQ_STATES.HOD_APPROVED"))->whereNull("cr_finance_manager_id");
-            });
+            })->orWhere("cr_finance_manager_id",$user->id);
         }else if($user->is_internal_auditor){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
                 $query->where("status",config("constants.CASH_RQ_STATES.FINANCE_APPROVED"))->whereNull("cr_internal_auditor_id");
-            });
+            })->orWhere("cr_internal_auditor_id",$user->id);
         }else if($user->is_managing_director){
             $baseQ->where("created_by",$user->id)->orWhere(function ($query){
                 $query->where("status",config("constants.CASH_RQ_STATES.AUDITOR_APPROVED"))->whereNull("cr_managing_director_id");
-            });
+            })->orWhere("cr_managing_director_id",$user->id);
         }else{
             $baseQ->where("created_by",$user->id);
         }

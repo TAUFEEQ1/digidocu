@@ -220,7 +220,7 @@
                             <span class="label label-success">{{$document->status}}</span>
                             @elseif($document->status==config('constants.CASH_RQ_STATES.AUDITOR_APPROVED'))
                             <span class="label label-info">{{$document->status}}</span>
-                            @elseif($document->status==config('constants.CASH_RQ_STATES.FINANCE_APPROVED'))
+                            @elseif(str_contains($document->status,"DENIED"))
                             <span class="label label-danger">{{$document->status}}</span>
                             @else
                             <span class="label label-warning">{{$document->status}}</span>
@@ -254,6 +254,18 @@
                         @endcan
                         @if ($document->cr_hod_id)
                         <li class=""><a href="#tab_hod_remarks" data-toggle="tab" aria-expanded="false">HoD Remarks</a></li>
+                        @endif
+                        @can("fin_mgr_review_cr",$user)
+                        <li class=""><a href="#tab_fin_mgr_review" data-toggle="tab" aria-expanded="false">Fin Mgr Review</a></li>
+                        @endcan
+                        @if ($document->cr_finance_manager_id)
+                        <li class=""><a href="#tab_fin_mgr_remarks" data-toggle="tab" aria-expanded="false">Fin Mgr Remarks</a></li>
+                        @endif
+                        @can("int_auditor_review",$user)
+                        <li class=""><a href="#tab_int_aud_review" data-toggle="tab" aria-expanded="false">Auditor Review</a></li>
+                        @endcan
+                        @if ($document->cr_internal_auditor_id)
+                        <li class=""><a href="#tab_int_aud_remarks" data-toggle="tab" aria-expanded="false">Auditor Remarks</a></li>
                         @endif
                     </ul>
                     <div class="tab-content">
@@ -330,7 +342,102 @@
                             </div>
                         </div>
                         @endif
-
+                        @can("fin_mgr_review_cr",$user)
+                        <div class="tab-pane" id="tab_fin_mgr_review">
+                            @if ($document->status==config("constants.CASH_RQ_STATES.HOD_APPROVED"))
+                            {!! Form::open(['route' => ['cash_requests.review', $document->id], 'method' => 'post']) !!}
+                            <div class="form-group text-center">
+                                <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-success" type="submit" name="action" value="{{ config('constants.CASH_RQ_STATES.FINANCE_APPROVED') }}"><i class="fa fa-check"></i> Approve
+                                </button>
+                                <button class="btn btn-danger" type="submit" name="action" value="{{ config('constants.CASH_RQ_STATES.FINANCE_DENIED') }}"><i class="fa fa-close"></i> Reject
+                                </button>
+                            </div>
+                            {!! Form::close() !!}
+                            @else
+                            <div class="form-group">
+                                <span class="label label-success">Fin Mgr Reviewal</span>
+                            </div>
+                            <div class="form-group">
+                                Finance Mgr: <b>{{$document->financeManager->name}}</b>
+                            </div>
+                            <div class="form-group">
+                                Remarks: <b>{{$document->cr_finance_manager_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_finance_manager_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_finance_manager_at)->diffForHumans()}})
+                            </div>
+                            @endif
+                        </div>
+                        @endcan
+                        @if($document->cr_finance_manager_id)
+                        <div class="tab-pane" id="tab_fin_mgr_remarks">
+                            <div class="form-group">
+                                <span class="label label-success">Fin Mgr Reviewal</span>
+                            </div>
+                            <div class="form-group">
+                                Finance Mgr: <b>{{$document->financeManager->name}}</b>
+                            </div>
+                            <div class="form-group">
+                                Remarks: <b>{{$document->cr_finance_manager_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_finance_manager_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_finance_manager_at)->diffForHumans()}})
+                            </div>
+                        </div>
+                        @endif
+                        @can("int_auditor_review",$user)
+                        <div class="tab-pane" id="tab_int_aud_review">
+                            @if ($document->status==config("constants.CASH_RQ_STATES.FINANCE_APPROVED"))
+                            {!! Form::open(['route' => ['cash_requests.review', $document->id], 'method' => 'post']) !!}
+                            <div class="form-group text-center">
+                                <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-success" type="submit" name="action" value="{{ config('constants.CASH_RQ_STATES.AUDITOR_APPROVED') }}"><i class="fa fa-check"></i> Approve
+                                </button>
+                                <button class="btn btn-danger" type="submit" name="action" value="{{ config('constants.CASH_RQ_STATES.AUDITOR_DENIED') }}"><i class="fa fa-close"></i> Reject
+                                </button>
+                            </div>
+                            {!! Form::close() !!}
+                            @else
+                            <div class="form-group">
+                                <span class="label label-success">Internal Auditor Reviewal</span>
+                            </div>
+                            <div class="form-group">
+                                Auditor: <b>{{$document->internalAuditor->name}}</b>
+                            </div>
+                            <div class="form-group">
+                                Remarks: <b>{{$document->cr_internal_auditor_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_internal_auditor_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_internal_auditor_at)->diffForHumans()}})
+                            </div>
+                            @endif
+                        </div>
+                        @endcan
+                        @if ($document->cr_internal_auditor_id)
+                        <div class="tab-pane" id="tab_int_aud_remarks">
+                            <div class="form-group">
+                                <span class="label label-success">Internal Auditor Reviewal</span>
+                            </div>
+                            <div class="form-group">
+                                Auditor: <b>{{$document->internalAuditor->name}}</b>
+                            </div>
+                            <div class="form-group">
+                                Remarks: <b>{{$document->cr_internal_auditor_notes}}</b>
+                            </div>
+                            <div class="form-group">
+                                Reviewed At: <b>{{formatDateTime($document->cr_internal_auditor_at)}}</b>
+                                ({{\Carbon\Carbon::parse($document->cr_internal_auditor_at)->diffForHumans()}})
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

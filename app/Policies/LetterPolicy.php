@@ -55,4 +55,11 @@ class LetterPolicy
     public function hod_review_cr(User $user){
         return $user->is_hod;
     }
+    public function fin_mgr_review_cr(User $user){
+        return $user->is_finance_manager;
+    }
+    public function int_auditor_review(User $user){
+        return $user->is_internal_auditor;
+
+    }
 }

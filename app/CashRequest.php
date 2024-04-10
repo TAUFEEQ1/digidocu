@@ -72,4 +72,14 @@ class CashRequest extends Document
         $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
         return $f->format($this->cr_amount);
     }
+    public function newActivity($activity_text,$include_document=true){
+        if($include_document){
+            $activity_text .= " : ".'<a href="'.route('cash_requests.show',$this->id).'">'.$this->name."</a>";
+        }
+        Activity::create([
+            'activity' => $activity_text,
+            'created_by' => \Auth::id(),
+            'document_id' => $this->id,
+        ]);
+    }
 }
