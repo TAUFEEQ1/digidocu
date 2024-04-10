@@ -14,6 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $cr_title
  * @property string $cr_purpose
  * @property string $cr_amount
+ * @property int|null $finance_manager_id
+ * @property int|null $hod_id
+ * @property string $cr_hod_notes
+ * @property int|null $internal_auditor_id
+ * @property int|null $managing_director_id
+ * @property string $cr_hod_at
  * */
 class CashRequest extends Document
 {

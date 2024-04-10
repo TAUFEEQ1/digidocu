@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CashRequest;
 use App\FileType;
+use App\User;
 use Str;
 
 class CashRequestsController extends Controller
@@ -79,7 +80,80 @@ class CashRequestsController extends Controller
         return redirect()->route('cash_requests.index'); 
     }
     public function show(int $id, Request $request){
-        
+        $document = CashRequest::find($id);
+        /** @var \App\User */
+        $user = $request->user();
 
+        return view("cash_requests.show",compact("user","document"));
+    }
+
+    private function hod_review(CashRequest $document,User $user,string $vcomment){
+        $document->hod_id = $user->id;
+        $document->cr_hod_notes = $vcomment;
+        $document->cr_hod_at = now();
+    }
+    private function fin_mgr_review(CashRequest $document,User $user,string $vcomment){
+        $document->cr_finance_manager_id = $user->id;
+        $document->cr_finance_manager_notes = $vcomment;
+        $document->cr_finance_manager_at = now();
+    }
+    private function auditor_review(CashRequest $document,User $user,string $vcomment){
+        $document->cr_internal_auditor_id = $user->id;
+        $document->cr_internal_auditor_notes = $vcomment;
+        $document->cr_internal_auditor_at = now();   
+    }
+    private function mgr_review(CashRequest $document,$user,string $vcomment){
+        $document->cr_managing_director_id = $user->id;
+        $document->cr_managing_director_notes = $vcomment;
+        $document->cr_managing_director_at = now();
+    }
+    public function review(int $id,Request $request){
+        /** @var \App\User */
+        $user = $request->user();
+        $document = CashRequest::find($id);
+        $action = $request->input('action');
+        $vcomment = $request->input('vcomment');
+        if($action == config("constants.CASH_RQ_STATES.HOD_APPROVED")){
+            $document->status = $action;
+            $this->hod_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Approved by HoD '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.HOD_DENIED")){
+            $document->status = $action;
+            $this->hod_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Denied by HoD '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.FINANCE_APPROVED")){
+            $document->status = $action;
+            $this->fin_mgr_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Approved by Finance Mgr. '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.FINANCE_DENIED")){
+            $document->status = $action;
+            $this->fin_mgr_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Denied by Finance Mgr. '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.AUDITOR_APPROVED")){
+            $document->status = $action;
+            $this->auditor_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Approved by Int Auditor '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.AUDITOR_DENIED")){
+            $document->status = $action;
+            $this->auditor_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Denied by Int Auditor '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.MG_DIR_APPROVED")){
+            $document->status = $action;
+            $this->mgr_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Approved by Mgr Dir. '.$user->name);
+            $document->save();
+        }else if($action == config("constants.CASH_RQ_STATES.MG_DIR_DENIED")){
+            $document->status = $action;
+            $this->mgr_review($document,$user,$vcomment);
+            $document->newActivity('Cash Request Denied by Mgr Dir. '.$user->name);
+            $document->save();
+        }
+        return redirect()->route('cash_requests.show', ['id' => $id]);
     }
 }

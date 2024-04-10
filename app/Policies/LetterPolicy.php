@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\CashRequest;
 use App\User;
 use App\Letter;
 use App\LeaveRequest;
@@ -39,5 +40,19 @@ class LetterPolicy
     }
     public function md_manage_leave_requests(User $user){
         return $user->is_managing_director;
+    }
+    public function review_cash_request(User $user,CashRequest $cashRequest){
+        if($cashRequest->status == config("constants.CASH_RQ_STATES.SUBMITTED")){
+            return $user->is_hod;
+        }else if($cashRequest->hod_id && !$cashRequest->finance_manager_id){
+            return $user->is_finance_manager;
+        }else if($cashRequest->finance_manager_id && !$cashRequest->internal_auditor_id){
+            return $user->is_internal_auditor;
+        }else if($cashRequest->internal_auditor_id && !$cashRequest->managing_director_id){
+            return $user->is_managing_director;
+        }
+    }
+    public function hod_review_cr(User $user){
+        return $user->is_hod;
     }
 }
