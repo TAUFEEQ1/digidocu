@@ -10,6 +10,21 @@
 <li class="{{ Request::is('admin/cash_requests*')? 'active':'' }}">
     <a href="{!! route('cash_requests.index') !!}"><i class="fa fa-money"></i><span>Cash Requests</span></a>
 </li>
+<li class="treeview {{ Request::is('admin/plugin*') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa fa-plug"></i>
+        <span>Plugins</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('admin/plugins/image2pdf*') ? 'active' : '' }}">
+            <a href="{!! route('image2pdf.create') !!}"><i class="fa fa-file-image-o"></i><span>Images to PDF</span></a>
+        </li>
+    </ul>
+</li>
+
 @can('read users')
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
         <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>

@@ -22,6 +22,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\LeaveRequestsController;
+use App\Http\Controllers\Image2PDFController;
 
 Route::get('/', [HomeController::class,'welcome'])->name('home');
 
@@ -72,6 +73,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::post("cash_requests/store",[CashRequestsController::class,"store"])->name("cash_requests.store");
     Route::post("/cash_requests/review/{id}",[CashRequestsController::class,"review"])->name("cash_requests.review");
     Route::get("/cash_requests/{id}",[CashRequestsController::class,"show"])->name("cash_requests.show");
+
+    Route::get("/plugins/image2pdf/create",[Image2PDFController::class,"create"])->name("image2pdf.create");
+    Route::post("/plugins/image2pdf/store",[Image2PDFController::class,"store"])->name("image2pdf.store");
 
 
 

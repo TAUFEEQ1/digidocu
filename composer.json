@@ -12,6 +12,7 @@
         "ext-fileinfo": "*",
         "ext-zip": "*",
         "barryvdh/laravel-dompdf": "^2.0",
+        "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.5.0",
         "intervention/image": "^2.5",
         "laracasts/flash": "^3.2",
