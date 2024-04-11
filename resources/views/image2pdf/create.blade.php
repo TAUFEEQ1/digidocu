@@ -134,22 +134,8 @@ https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js
                 headers
             })
             .then(response => {
-                // Handle success
-                const blob = new Blob([response.data], {
-                    type: 'application/pdf'
-                });
-                // Create a URL for the blob
-                const url = window.URL.createObjectURL(blob);
-                // Create a link element to trigger the download
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'file.pdf'; // Set the desired file name
-                // Append the link to the document and trigger the download
-                document.body.appendChild(link);
-                link.click();
-                // Clean up
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(link);
+                window.open(response.data["pdf_url"],"_blank");
+          
             })
             .catch(error => {
                 // Handle error
