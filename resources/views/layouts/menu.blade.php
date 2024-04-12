@@ -7,6 +7,11 @@
 <li class="{{ Request::is('admin/leave_requests*')? 'active':'' }}">
     <a href="{!! route('leave_requests.index') !!}"><i class="fa fa-address-card-o"></i><span>Leave Requests</span></a>
 </li>
+@can("view_leave_roster",auth()->user())
+<li class="{{ Request::is('admin/leave_roster*')? 'active':'' }}">
+    <a href="{!! route('leave_roster.index') !!}"><i class="fa fa-address-card-o"></i><span>Leave Roster</span></a>
+</li>
+@endcan
 <li class="{{ Request::is('admin/cash_requests*')? 'active':'' }}">
     <a href="{!! route('cash_requests.index') !!}"><i class="fa fa-money"></i><span>Cash Requests</span></a>
 </li>

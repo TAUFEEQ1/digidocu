@@ -35,6 +35,9 @@ class LetterPolicy
     public function line_manage_leave_requests(User $user){
         return $user->is_line_manager;
     }
+    public function view_leave_roster(User $user){
+        return $user->is_line_manager;
+    }
     public function hr_manage_leave_requests(User $user){
         return $user->is_hr_manager;
     }

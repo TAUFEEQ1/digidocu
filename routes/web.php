@@ -23,6 +23,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\LeaveRequestsController;
 use App\Http\Controllers\Image2PDFController;
+use App\Http\Controllers\LeaveRosterController;
 
 Route::get('/', [HomeController::class,'welcome'])->name('home');
 
@@ -67,6 +68,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("/leave_requests/{id}",[LeaveRequestsController::class,"show"])->name("leave_requests.show");
     Route::post("leave_requests/store",[LeaveRequestsController::class,"store"])->name("leave_requests.store");
     Route::post("leave_requests/review/{id}",[LeaveRequestsController::class,"review"])->name("leave_requests.review");
+
+    Route::get("/leave_roster",[LeaveRosterController::class,"index"])->name("leave_roster.index");
 
     Route::get("/cash_requests",[CashRequestsController::class,"index"])->name("cash_requests.index");
     Route::get("/cash_requests/create",[CashRequestsController::class,"create"])->name("cash_requests.create");
