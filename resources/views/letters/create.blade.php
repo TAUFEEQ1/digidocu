@@ -7,6 +7,7 @@
         border: 1px dashed #a0a0a0;
         height: 282px;
         border-radius: 3px;
+        overflow-y: auto;
     }
 </style>
 @stop
@@ -14,6 +15,9 @@
 <script>
     $(document).ready(function() {
         // Initialize the wysihtml5 editor
+        if(!window.env.production){
+            return false;
+        }
         const desc_lbl = $("label[for='description']").first();
         const ocrBadgeBtn = $('<button data-toggle="modal" data-target="#ocrModal" type="button">')
             .addClass("btn btn-primary badge")
@@ -61,7 +65,8 @@
                     },
                     success: function(response) {
                         // Handle success response
-                        console.log("OCR successful:", response);
+                        $(".ocr-result").text(response["text"]);
+                        $("#cp-btn").prop("disabled", false);
                     },
                     error: function(xhr, status, error) {
                         // Handle error response
@@ -73,7 +78,19 @@
                 alert("Please select an image before running OCR");
             }
         });
+        $("#cp-btn").click(function() {
+            // Get the content from the source element
+            var contentToCopy = $(".ocr-result").text();
 
+            // Use the native Clipboard API to copy the content to the clipboard
+            navigator.clipboard.writeText(contentToCopy)
+                .then(function() {
+                    console.log('Text copied to clipboard');
+                })
+                .catch(function(err) {
+                    console.error('Failed to copy text to clipboard:', err);
+                });
+        })
     });
 </script>
 
@@ -106,7 +123,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" disabled>
+                <button type="button" class="btn btn-info" disabled id="cp-btn">
                     <i class="fa fa-copy"></i>
                 </button>
                 <button type="button" class="btn btn-primary" id="run-ocr">Run OCR</button>

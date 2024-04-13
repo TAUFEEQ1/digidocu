@@ -4,6 +4,8 @@ $(document).ready(function () {
     $('.b-wysihtml5-editor').wysihtml5();
     registerIcheck();
     registerTypeahead();
+    window.env = {};
+    window.env.production = false;
 });
 
 function registerIcheck() {

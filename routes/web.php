@@ -62,6 +62,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::get("/letters/{id}",[LettersController::class,"show"])->name("letters.show");
     Route::post("/letters/{id}/status",[LettersController::class,"editStatus"])->name("letters.review"); 
     Route::post("letters/store",[LettersController::class,"store"])->name("letters.store");
+    Route::post("letters/ocr",[LettersController::class,"ocr"])->name("letters.ocr");
+
 
     Route::get("/leave_requests",[LeaveRequestsController::class,"index"])->name("leave_requests.index");
     Route::get("/leave_requests/create",[LeaveRequestsController::class,"create"])->name("leave_requests.create");

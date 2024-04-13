@@ -8,6 +8,8 @@ use App\File;
 use App\FileType;
 use Illuminate\Http\Request;
 use App\Letter as GlobalLetter;
+use thiagoalessio\TesseractOCR\TesseractOCR;
+
 
 class LettersController extends AppBaseController
 {
@@ -83,7 +85,15 @@ class LettersController extends AppBaseController
         $letter->files()->insert([$fileData]);
         return redirect()->route('letters.index');
     }
-
+    public function ocr(Request $request){
+        $file = $request->file("file_scan");
+        $filePath = $file->storeAs('temp', $file->getClientOriginalName());
+        // Get the full path of the stored file
+        $fullPath = storage_path('app/' . $filePath);
+        $tessaract = new TesseractOCR($fullPath);
+        $text = $tessaract->run();
+        return response()->json(["text"=>$text]);
+    }
     public function editStatus(int $id, Request $request)
     {
         /** @var \App\User */
