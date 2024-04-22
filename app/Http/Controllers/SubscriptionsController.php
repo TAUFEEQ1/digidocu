@@ -17,4 +17,17 @@ class SubscriptionsController extends Controller{
 
         return view("subscriptions.index",compact("documents"));
     }
+
+    public function create(Request $request){
+        /** @var \App\User */
+        $user = $request->user();
+
+        return view("subscriptions.create",compact("user"));
+    }
+    public function store(Request $request){
+
+    }
+    public function show(int $id, Request $request){
+
+    }
 }

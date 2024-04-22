@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::table('documents', function (Blueprint $table) {
             //
             $table->string('sub_type')->nullable();
-            $table->string('sub_start_date')->nullable();
-            $table->string('sub_end_date')->nullable();
+            $table->date('sub_start_date')->nullable();
+            $table->date('sub_end_date')->nullable();
             $table->string('sub_payment_method')->nullable();
             $table->string('sub_payment_mobile_network')->nullable();
             $table->string('sub_payment_mobile_no')->nullable();

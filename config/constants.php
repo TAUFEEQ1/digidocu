@@ -3,6 +3,8 @@ return [
     'DOC_TYPES'=>[
         'SUBSCRIPTION'=>'SUBSCRIPTION'
     ],
+    'MOBILE_NETWORKS'=>['AIRTEL','MTN'],
+    'SUB_TYPES'=>['ANNUAL'],
     'STATUS' => [
         "PENDING" => 'PENDING',
         "ACTIVE" => 'ACTIVE',

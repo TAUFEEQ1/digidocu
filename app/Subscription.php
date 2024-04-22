@@ -6,6 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Document;
 
+/**
+ * Class Subscription
+ * @mixin \Eloquent
+ * @property string $sub_type
+ * @property string $sub_start_date
+ * @property string $sub_end_date
+ * @property int $sub_amount
+ * @property string $sub_payment_status
+ * @property string $sub_payment_method
+ * @property string $sub_payment_mobile_network
+ * @property string $sub_payment_mobile_no
+ * */
+
 class Subscription extends Document
 {
     public $table = 'documents';
@@ -45,6 +58,11 @@ class Subscription extends Document
             'created_by' => $this->created_by,
             'document_id' => $this->id,
         ]);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(\App\User::class, 'created_by', 'id');
     }
 
 

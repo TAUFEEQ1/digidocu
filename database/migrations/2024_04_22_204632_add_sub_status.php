@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('documents', function (Blueprint $table) {
             //
-            $table->string('sub_status')->nullable();
+            $table->string('sub_payment_status')->nullable();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('documents', function (Blueprint $table) {
             //
-            $table->dropColumn('sub_status');
+            $table->dropColumn('sub_payment_status');
         });
     }
 };

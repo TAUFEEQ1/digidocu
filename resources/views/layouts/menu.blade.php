@@ -2,7 +2,7 @@
     <a href="{!! route('admin.dashboard') !!}"><i class="fa fa-home"></i><span>Home</span></a>
 </li>
 <li class="{{ Request::is('admin/subscriptions*') ? 'active' : '' }}">
-    <a href="{!! route('admin.subscriptions') !!}"><i class="fa fa-money"></i><span>Subscriptions</span></a>
+    <a href="{!! route('subscriptions.index') !!}"><i class="fa fa-money"></i><span>Subscriptions</span></a>
 </li>
 @if(auth()->user()->is_super_admin)
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
