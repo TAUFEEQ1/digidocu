@@ -87,7 +87,11 @@
                     </span>
                 @endif
             </div>
-
+                <div class="form-group">
+                    <label for="is_subscribing">
+                        <input type="checkbox" name="is_subscribing" checked> Subcribing to E-Gazette
+                    </label>
+                </div>
             <div class="row">
                 <div class="col-xs-8">
                     <div class="checkbox icheck">

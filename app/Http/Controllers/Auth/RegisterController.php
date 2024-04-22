@@ -42,7 +42,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        abort(404);
+        return view("auth.register");
     }
 
 
@@ -69,11 +69,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        abort(404);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['email'],
+            'status' => config('constants.STATUS.ACTIVE'),
             'password' => Hash::make($data['password']),
+            'is_client' => TRUE
         ]);
     }
 }
