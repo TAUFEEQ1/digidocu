@@ -1,5 +1,8 @@
 <?php
 return [
+    'DOC_TYPES'=>[
+        'SUBSCRIPTION'=>'SUBSCRIPTION'
+    ],
     'STATUS' => [
         "PENDING" => 'PENDING',
         "ACTIVE" => 'ACTIVE',

@@ -2,7 +2,8 @@
 
 namespace App;
 
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Document
@@ -128,7 +129,7 @@ class Document extends Model
         }
         Activity::create([
             'activity' => $activity_text,
-            'created_by' => \Auth::id(),
+            'created_by' => $this->created_by,
             'document_id' => $this->id,
         ]);
     }

@@ -108,7 +108,7 @@ class User extends Authenticatable
 
     public function getIsSuperAdminAttribute()
     {
-        return ($this->id == 1) ? true : false;
+        return ($this->username == 'super') ? true : false;
     }
 
 //    public function scopePermission($query, $permissions)

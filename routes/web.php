@@ -16,6 +16,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FileTypeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Artisan;
@@ -36,6 +37,7 @@ Auth::routes();
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], function () {
     Route::get('/home', [HomeController::class,'index'])->name('admin.dashboard');
+    
     Route::match(['get','post'],'/profile', [HomeController::class,'profile'])->name('profile.manage');
     Route::group(['prefix' => 'advanced'], function () {
         Route::resource('settings', SettingController::class);
@@ -55,7 +57,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::post('/{id}', [DocumentController::class,'storeFiles'])->name('store');
         Route::delete('/{id}', [DocumentController::class,'deleteFile'])->name('destroy');
     });
-
+    Route::resource('subscriptions',SubscriptionsController::class);
     Route::get('/_files/{dir?}/{file?}',[HomeController::class,'showFile'])->name('files.showfile');
     Route::get('/_zip/{id}/{dir?}',[HomeController::class,'downloadZip'])->name('files.downloadZip');
     Route::post('/_pdf',[HomeController::class,'downloadPdf'])->name('files.downloadPdf');

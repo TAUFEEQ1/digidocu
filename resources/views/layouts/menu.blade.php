@@ -1,11 +1,14 @@
 <li class="{{ Request::is('admin/home*') ? 'active' : '' }}">
     <a href="{!! route('admin.dashboard') !!}"><i class="fa fa-home"></i><span>Home</span></a>
 </li>
-@can('read users')
+<li class="{{ Request::is('admin/subscriptions*') ? 'active' : '' }}">
+    <a href="{!! route('admin.subscriptions') !!}"><i class="fa fa-money"></i><span>Subscriptions</span></a>
+</li>
+@if(auth()->user()->is_super_admin)
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
         <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
     </li>
-@endcan
+@endif
 @can('read tags')
     <li class="{{ Request::is('admin/tags*') ? 'active' : '' }}">
         <a href="{!! route('tags.index') !!}"><i
