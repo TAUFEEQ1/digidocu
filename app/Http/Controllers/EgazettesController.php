@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Egazette;
+use App\FileType;
+use mikehaertl\pdftk\Pdf;
+use Illuminate\Support\Str;
 
 class EgazettesController extends Controller
 {
@@ -62,7 +65,31 @@ class EgazettesController extends Controller
             "category"=>config('constants.DOC_TYPES.EGAZETTE')
         ]);
         $egazette->newActivity('Gazette uploaded by: '.$user->name);
+        $password = Str::random(30);
+        $egazette->gaz_passkey = $password; 
         $egazette->save();
+        // save file.
+        $uploaded_file = $request->file('file_scan');
+        $stored_path = $uploaded_file->store('files/original');
+
+        // Get the full path
+        $full_path = storage_path('app/' . $stored_path);
+
+        
+        $pdf = new Pdf($full_path);        
+        $pdf->setPassword($password);
+        $pdf->saveAs($full_path);
+
+        $fileData['name'] =  $uploaded_file->getClientOriginalName();
+        $fileData['created_by'] = $user->id;
+        $fileData['file'] = $uploaded_file->hashName();
+        $fileData['custom_fields'] = json_encode([]);
+        $fileData['created_at'] = now();
+        $fileData['updated_at'] = now();
+        $file_type = FileType::where('name', "Gazette")->first();
+        $fileData['file_type_id'] = $file_type->id;
+        $fileData['document_id'] = $egazette->id;
+        $egazette->files()->insert([$fileData]);
         return redirect()->route('egazettes.index');
     }
 
@@ -72,7 +99,8 @@ class EgazettesController extends Controller
     public function show(int $id)
     {
         //
-        
+        $egazette = Egazette::find($id);
+
     }
 
     /**

@@ -12,6 +12,7 @@ use App\Activity;
  * @property string $gaz_published_on
  * @property string $gaz_issue_no
  * @property string $gaz_sub_category
+ * @property string $gaz_passkey
  * @property string $status
  * @property-read \App\User $createdBy
  * */

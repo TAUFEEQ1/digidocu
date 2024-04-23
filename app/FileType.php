@@ -3,7 +3,8 @@
 namespace App;
 
 use App\Rules\ValidationRuleSyntaxChecker;
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
+
 
 /**
  * Class FileType
