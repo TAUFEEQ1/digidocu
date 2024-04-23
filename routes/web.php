@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EgazettesController;
 use App\Http\Controllers\FileTypeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
@@ -45,6 +46,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::resource('file-types', FileTypeController::class, ['names' => 'fileTypes']);
     });
     Route::resource('users', UserController::class);
+    Route::resource('egazettes',EgazettesController::class);
     Route::get('/users-block/{user}',[UserController::class,'blockUnblock'])->name('users.blockUnblock');
     Route::resource('tags', TagController::class);
 

@@ -110,6 +110,9 @@ class User extends Authenticatable
     {
         return ($this->username == 'super') ? true : false;
     }
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class, 'created_by', 'id');
+    }
 
 //    public function scopePermission($query, $permissions)
 //    {

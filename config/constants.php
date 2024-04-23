@@ -1,7 +1,8 @@
 <?php
 return [
     'DOC_TYPES'=>[
-        'SUBSCRIPTION'=>'SUBSCRIPTION'
+        'SUBSCRIPTION'=>'SUBSCRIPTION',
+        'EGAZETTE'=>'EGAZETTE'
     ],
     'MOBILE_NETWORKS'=>['AIRTEL','MTN'],
     'SUB_STATUSES'=>[
@@ -9,6 +10,10 @@ return [
         "PAYMENT FAILED"=>"PAYMENT FAILED",
         "ACTIVE"=>"ACTIVE",
         "EXPIRED"=>"EXPIRED"
+    ],
+    'GAZETTE_STATUSES'=>[
+        'PUBLISHED'=>'PUBLISHED',
+        'DRAFTED'=>'DRAFTED'
     ],
     'SUB_PAY_STATES'=>[
         "PENDING"=>"PENDING",
