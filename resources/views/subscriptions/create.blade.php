@@ -1,11 +1,18 @@
 @extends('layouts.app')
 @section('title', 'Subscriptions')
 @section("scripts")
+<script type="text/uppc-fees" id="uppc-fees">
+    @json(config("constants.SUB_FEES"))
+</script>
 <script>
     $(document).ready(()=>{
         const today = new Date();
-        console.log(today.toISOString().split('T')[0]);
         $("#sub_end_date").val(today.toISOString().split('T')[0])
+        const sub_fees = JSON.parse($("#uppc-fees").text());
+        $("#sub_type").on("change",(e)=>{
+            const selected = parseInt(e.target.value);
+            $("#sub_type").val(sub_fees[selected]);
+        });
     })
 </script>
 @stop
@@ -27,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('sub_type', 'Subscription Type:') !!}
-                        {!! Form::select('sub_type', config('constants.SUB_TYPES'), null, ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! Form::select('sub_type', config('constants.SUB_TYPES'), null, ['class' => 'form-control','id'=>'sub_type','required' => 'required']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('sub_end_date', 'End Date:') !!}
@@ -37,6 +44,10 @@
                     <div class="form-group">
                         {!! Form::label('sub_payment_mobile_network', 'Mobile Network:') !!}
                         {!! Form::select('sub_payment_mobile_network', config('constants.MOBILE_NETWORKS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('sub_amount', 'Amount:') !!}
+                        {!! Form::text('sub_amount',config("constants.SUB_FEES")[0], ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('sub_payment_mobile_no', 'Mobile No:') !!}

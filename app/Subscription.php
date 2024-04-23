@@ -38,7 +38,7 @@ class Subscription extends Document
         'sub_payment_method',
         'sub_payment_mobile_network',
         'sub_payment_mobile_no',
-        'sub_payment_status'
+        'sub_payment_status',
     ];    
 
     protected static function boot()

@@ -16,6 +16,7 @@ return [
         "COMPLETED"=>"COMPLETED"
     ],
     'SUB_TYPES'=>['ANNUAL'],
+    'SUB_FEES'=>[1400000],
     'STATUS' => [
         "PENDING" => 'PENDING',
         "ACTIVE" => 'ACTIVE',

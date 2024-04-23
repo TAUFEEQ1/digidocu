@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Jobs\PaymentProcessor;
 use Illuminate\Http\Request;
 
 use App\Subscription;
@@ -28,6 +30,7 @@ class SubscriptionsController extends Controller{
         $user = $request->user();
         $networks = config("constants.MOBILE_NETWORKS");
         $sub_types = config("constants.SUB_TYPES");
+        $sub_fees = config("constants.SUB_FEES");
         /** @var \App\Subscription */
         $subscription = Subscription::create(
             [
@@ -36,13 +39,14 @@ class SubscriptionsController extends Controller{
                 "sub_payment_status"=>config("constants.SUB_PAY_STATES.PENDING"),
                 "category"=>config("constants.DOC_TYPES.SUBSCRIPTION"),
                 "created_by"=>$user->id,
+                "sub_amount"=>$sub_fees[(int)$request->input("sub_type")],
                 "sub_type" => $sub_types[(int)$request->input("sub_type")],
                 "sub_payment_method"=>"MOBILE",
                 "sub_payment_mobile_network"=>$networks[(int)$request->input("sub_payment_mobile_network")],
                 "sub_payment_mobile_no"=>$request->input("sub_payment_mobile_no")
             ]
         );
-        
+        PaymentProcessor::dispatch($subscription);
         $subscription->newActivity("Subscription created by ".$user->name);
         $subscription->save();
 
