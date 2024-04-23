@@ -28,6 +28,7 @@ class Subscription extends Document
         'status',
         'created_by',
         'custom_fields',
+        'category',
         // subscription fields.
         'sub_type',
         'sub_start_date',
@@ -36,7 +37,8 @@ class Subscription extends Document
         'sub_amount',
         'sub_payment_method',
         'sub_payment_mobile_network',
-        'sub_payment_mobile_no'
+        'sub_payment_mobile_no',
+        'sub_payment_status'
     ];    
 
     protected static function boot()

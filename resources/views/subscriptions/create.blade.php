@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('sub_payment_mobile_no', 'Mobile No:') !!}
-                        {!! Form::text('sub_payment_mobile_no','', ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! Form::tel('sub_payment_mobile_no','', ['class' => 'form-control', 'required' => 'required', 'pattern' => '0[0-9]{9}']) !!}
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-8 col-md-4">

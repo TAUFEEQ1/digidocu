@@ -4,6 +4,17 @@ return [
         'SUBSCRIPTION'=>'SUBSCRIPTION'
     ],
     'MOBILE_NETWORKS'=>['AIRTEL','MTN'],
+    'SUB_STATUSES'=>[
+        "PENDING PAYMENT"=>"PENDING PAYMENT",
+        "PAYMENT FAILED"=>"PAYMENT FAILED",
+        "ACTIVE"=>"ACTIVE",
+        "EXPIRED"=>"EXPIRED"
+    ],
+    'SUB_PAY_STATES'=>[
+        "PENDING"=>"PENDING",
+        "FAILED"=>"FAILED",
+        "COMPLETED"=>"COMPLETED"
+    ],
     'SUB_TYPES'=>['ANNUAL'],
     'STATUS' => [
         "PENDING" => 'PENDING',
