@@ -71,7 +71,7 @@
                                 <td>
                                     @if($document->status == config('constants.SUB_STATUSES.ACTIVE'))
                                     <span class="text-success">
-                                        {{ $document->status }}
+                                        <b>{{ $document->status }}</b>
                                     </span>
                                     @else
                                         {{ $document->status }}
