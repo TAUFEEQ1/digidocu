@@ -2,16 +2,16 @@
 @section('title', 'E-Gazettes')
 @section("scripts")
 <script>
-    $(document).ready(()=>{
+    $(document).ready(() => {
         const passkeyInputs = $('input[name="passkey"]');
         passkeyInputs.each(function(index, input) {
             const passkey = $(input).val();
             const obfuscatedPasskey = passkey.slice(0, 5) + '*'.repeat(passkey.length - 5); // Obfuscate the passkey
-            var newElement = $('<span>' +obfuscatedPasskey+ '</span>');
+            var newElement = $('<span>' + obfuscatedPasskey + '</span>');
             // Add the new sibling element after the current input element
             $(input).after(newElement);
         });
-        $(".key-copy").click(function(){
+        $(".key-copy").click(function() {
             const passkey = $(this).val();
             // Create a temporary textarea and append it to the body
             $('<textarea>').appendTo('body').val(passkey).select();
@@ -20,6 +20,22 @@
             // Remove the temporary textarea
             $('textarea').remove();
             alert('Key has been copied to clipboard');
+        });
+        $(".gazette-download").click(function(){
+            const req = new XMLHttpRequest();
+            const url = $(this).val();
+            req.open("GET", url, true);
+            req.responseType = "blob";
+
+            req.onload = function(event) {
+                var blob = req.response;
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "Dossier_" + new Date() + ".pdf";
+                link.click();
+            };
+
+            req.send()
         });
     });
 </script>
@@ -75,17 +91,17 @@
                                 <td>{{ $document->status }}</td>
                                 <td>
                                     @if ($document->gaz_passkey)
-                                        <input type="hidden" name="passkey" value="{{ $document->gaz_passkey }}">
-                                        <button class="btn btn-info key-copy" value="{{ $document->gaz_passkey }}">
-                                            <i class="fa fa-copy"></i>
-                                        </button>
+                                    <input type="hidden" name="passkey" value="{{ $document->gaz_passkey }}">
+                                    <button class="btn btn-info key-copy" value="{{ $document->gaz_passkey }}">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
                                     @endif
                                 </td>
                                 <td>{{ $document->gaz_published_on }}</td>
                                 <td>
-                                    <a href="{{ route('subscriptions.show', $document->id) }}" class="btn btn-primary">
+                                    <button class="btn btn-primary gazette-download" value="{{route('egazettes.download',['id'=>$document->id])}}">
                                         <i class="fa fa-download"></i> Download
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                             @endforeach

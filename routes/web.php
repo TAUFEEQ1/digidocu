@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::resource('file-types', FileTypeController::class, ['names' => 'fileTypes']);
     });
     Route::resource('users', UserController::class);
+    Route::get("/egazettes/{id}/download",[EgazettesController::class,'show'])->name('egazettes.download');
     Route::resource('egazettes',EgazettesController::class);
     Route::get('/users-block/{user}',[UserController::class,'blockUnblock'])->name('users.blockUnblock');
     Route::resource('tags', TagController::class);

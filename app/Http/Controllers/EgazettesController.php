@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Egazette;
 use App\FileType;
+use Illuminate\Support\Facades\Log;
 use mikehaertl\pdftk\Pdf;
 use Illuminate\Support\Str;
 
@@ -100,7 +101,10 @@ class EgazettesController extends Controller
     {
         //
         $egazette = Egazette::find($id);
-        
+        $files = $egazette->files;
+        $file = $files->first();
+        $filePath = storage_path('app/files/original/' . $file->file);
+        return response()->download($filePath, $file->name);
     }
 
     /**
