@@ -100,7 +100,7 @@ class EgazettesController extends Controller
     {
         //
         $egazette = Egazette::find($id);
-
+        
     }
 
     /**
