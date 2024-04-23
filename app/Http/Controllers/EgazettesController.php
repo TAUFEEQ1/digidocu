@@ -22,11 +22,11 @@ class EgazettesController extends Controller
             if(!$subscription){
                 return [];
             }
-            $baseQ->whereBetween('gaz_published_on',[$subscription->sub_start_date,$subscription->sub_end_date]);
+            $baseQ->where('gaz_published_on','<',$subscription->sub_end_date);
         }
 
-        if($request->has('search_term')){
-            $search_term = $request->input('search_term');
+        if($request->has('query')){
+            $search_term = $request->input('query');
             $baseQ->where('gaz_issue_no',$search_term);
         }
         $documents = $baseQ->paginate(10);
@@ -56,8 +56,10 @@ class EgazettesController extends Controller
             "gaz_published_on"=>$request->input('gaz_published_on'),
             "gaz_issue_no"=>$request->input("gaz_issue_no"),
             "gaz_sub_category"=>$request->input("gaz_sub_category"),
+            "created_by"=>$user->id,
             "name"=>"Uganda Gazette issued ".$request->input("gaz_issue_no"),
-            "status"=>config('constants.GAZETTE_STATUSES.PUBLISHED')
+            "status"=>config('constants.GAZETTE_STATUSES.PUBLISHED'),
+            "category"=>config('constants.DOC_TYPES.EGAZETTE')
         ]);
         $egazette->newActivity('Gazette uploaded by: '.$user->name);
         $egazette->save();
