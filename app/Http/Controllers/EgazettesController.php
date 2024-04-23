@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Egazette;
 use App\FileType;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use mikehaertl\pdftk\Pdf;
 use Illuminate\Support\Str;
@@ -77,13 +78,17 @@ class EgazettesController extends Controller
         $full_path = storage_path('app/' . $stored_path);
 
         
-        $pdf = new Pdf($full_path);        
-        $pdf->setPassword($password);
-        $pdf->saveAs($full_path);
+        $new_name = Str::random(50).".pdf";
+        $result = str_replace($uploaded_file->hashName(),$new_name,$full_path);
+        Artisan::call('app:encrypt-pdf',[
+            'inputFile' => $full_path,
+            'outputFile' => $result,
+            'userPassword' => $password
+        ]);
 
         $fileData['name'] =  $uploaded_file->getClientOriginalName();
         $fileData['created_by'] = $user->id;
-        $fileData['file'] = $uploaded_file->hashName();
+        $fileData['file'] = $new_name;
         $fileData['custom_fields'] = json_encode([]);
         $fileData['created_at'] = now();
         $fileData['updated_at'] = now();
