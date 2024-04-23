@@ -9,6 +9,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use App\Subscription;
+use Illuminate\Support\Facades\Log;
+
 class PaymentProcessor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -28,15 +30,15 @@ class PaymentProcessor implements ShouldQueue
      */
     public function handle(): void
     {
-        //
-        sleep(60);
+        // Simulate the payment callback after 60 seconds
+        sleep(20);
         $current_date = now();
+
         $this->subscription->update([
-            "status"=>config("constants.SUB_STATUSES.ACTIVE"),
-            "sub_payment_status"=>config("constants.SUB_PAY_STATES.COMPLETED"),
-            "sub_start_date"=>$current_date,
-            "sub_end_date"=>$current_date->addYear(1)
+            "status" => config("constants.SUB_STATUSES.ACTIVE"),
+            "sub_payment_status" => config("constants.SUB_PAY_STATES.COMPLETED"),
+            "sub_start_date" => $current_date,
+            "sub_end_date" => $current_date->addYear(1)
         ]);
-        
     }
 }
