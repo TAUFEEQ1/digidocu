@@ -66,7 +66,7 @@ class AdvertsController extends Controller
         $fileData['custom_fields'] = json_encode([]);
         $fileData['created_at'] = now();
         $fileData['updated_at'] = now();
-        $file_type = FileType::where('name', "Gazette")->first();
+        $file_type = FileType::where('name', "Advert")->first();
         $fileData['file_type_id'] = $file_type->id;
         $fileData['document_id'] = $advert->id;
         $advert->files()->insert([$fileData]);
