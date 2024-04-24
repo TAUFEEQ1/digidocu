@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $ad_payment_mobile_no
  * @property string $description
  * @property string $created_at
+ * @property string $ad_paid_at
  * @property-read \App\User $createdBy
  */
 class Advert extends Document
@@ -33,7 +34,8 @@ class Advert extends Document
         'ad_payment_method',
         'ad_payment_mobile_network',
         'ad_amount',
-        'ad_category'
+        'ad_category',
+        'ad_paid_at'
     ];
     protected static function boot()
     {

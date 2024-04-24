@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Advert;
 use App\FileType;
-
+use App\Jobs\AdvertPayment;
 
 class AdvertsController extends Controller
 {
@@ -20,7 +20,7 @@ class AdvertsController extends Controller
         if ($user->is_client) {
             $baseQ->where("created_by", $user->id);
         }
-        $documents = $baseQ->paginate(15);
+        $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
         return view("adverts.index", compact("documents", "user"));
     }
 
@@ -70,6 +70,8 @@ class AdvertsController extends Controller
         $fileData['file_type_id'] = $file_type->id;
         $fileData['document_id'] = $advert->id;
         $advert->files()->insert([$fileData]);
+        $advert->save();
+        AdvertPayment::dispatch($advert);
         return redirect()->route("adverts.index");
     }
 
