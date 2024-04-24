@@ -22,7 +22,8 @@ class AdvertsController extends Controller
         }else if($user->is_registrar){
             $baseQ->where('ad_registrar_id',$user->id)->orWhereNull('ad_registrar_id');
         }else{
-            return [];
+            $documents = Advert::where("id",0)->get();
+            return view("adverts.index", compact("documents", "user"));
         }
         $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
         return view("adverts.index", compact("documents", "user"));
