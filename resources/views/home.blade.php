@@ -41,7 +41,7 @@
                 <div class="box-body">
                     <h4>Apply For Ads </h4>
                     <p class="card-text">Access the most recent official documents.</p>
-                    <a href="{{ route('egazettes.index') }}" class="btn btn-primary">Download Now</a>
+                    <a href="#" class="btn btn-primary">Download Now</a>
                 </div>
             </div>
         </div>

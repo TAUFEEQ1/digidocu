@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\AdvertsController;
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EgazettesController;
@@ -48,6 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::resource('users', UserController::class);
     Route::get("/egazettes/{id}/download",[EgazettesController::class,'show'])->name('egazettes.download');
     Route::resource('egazettes',EgazettesController::class);
+    Route::resource('adverts',AdvertsController::class);
     Route::get('/users-block/{user}',[UserController::class,'blockUnblock'])->name('users.blockUnblock');
     Route::resource('tags', TagController::class);
 

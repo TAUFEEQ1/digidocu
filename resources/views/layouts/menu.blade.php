@@ -7,6 +7,9 @@
 <li class="{{ Request::is('admin/egazettes*') ? 'active' : '' }}">
     <a href="{!! route('egazettes.index') !!}"><i class="fa fa-newspaper-o"></i><span>E-Gazettes</span></a>
 </li>
+<li class="{{ Request::is('admin/adverts*') ? 'active' : '' }}">
+    <a href="{!! route('adverts.index') !!}"><i class="fa fa-newspaper-o"></i><span>Adverts</span></a>
+</li>
 @if(auth()->user()->is_super_admin)
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
         <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
