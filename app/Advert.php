@@ -50,4 +50,15 @@ class Advert extends Document
     {
         return $this->belongsTo(\App\User::class, 'ad_registrar_id', 'id');
     }
+
+    public function newActivity($activity_text,$include_document=true){
+        if($include_document){
+            $activity_text .= " : ".'<a href="'.route('adverts.show',$this->id).'">'.$this->name."</a>";
+        }
+        Activity::create([
+            'activity' => $activity_text,
+            'created_by' => $this->created_by,
+            'document_id' => $this->id,
+        ]);
+    }
 }

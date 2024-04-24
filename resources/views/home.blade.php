@@ -40,8 +40,8 @@
             <div class="box text-center">
                 <div class="box-body">
                     <h4>Apply For Ads </h4>
-                    <p class="card-text">Access the most recent official documents.</p>
-                    <a href="#" class="btn btn-primary">Download Now</a>
+                    <p class="card-text">Apply for an advert in the Gazette.</p>
+                    <a href="{{ route('adverts.create') }}" class="btn btn-primary">Apply Now</a>
                 </div>
             </div>
         </div>

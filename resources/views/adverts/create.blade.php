@@ -41,8 +41,8 @@
                         {!! Form::select('ad_category', $services, null, ['class' => 'form-control','id'=>'ad_category','required' => 'required']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('ad_sub_title', 'Subtitle:') !!}
-                        {!! Form::text('ad_sub_title','', ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! Form::label('ad_subtitle', 'Subtitle:') !!}
+                        {!! Form::text('ad_subtitle','', ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                     {!! Form::bsTextarea('description', null, ['class'=>'form-control b-wysihtml5-editor']) !!}
                     <div class="form-group">
