@@ -19,6 +19,10 @@ class AdvertsController extends Controller
         $baseQ = Advert::query();
         if ($user->is_client) {
             $baseQ->where("created_by", $user->id);
+        }else if($user->is_registrar){
+            $baseQ->where('ad_registrar_id',$user->id)->orWhereNull('ad_registrar_id');
+        }else{
+            return [];
         }
         $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
         return view("adverts.index", compact("documents", "user"));

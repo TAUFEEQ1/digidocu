@@ -21,6 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $status
  * @property string|null $remember_token
  * @property boolean $is_client
+ * @property boolean $is_registrar
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
