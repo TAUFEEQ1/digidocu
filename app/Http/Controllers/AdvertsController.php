@@ -83,10 +83,12 @@ class AdvertsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(int $id,Request $request)
     {
         //
-
+        $user = $request->user();
+        $advert = Advert::find($id);
+        return view("adverts.show",compact("advert","user"));
     }
 
     /**
