@@ -38,7 +38,18 @@ class AdvertsController extends Controller
     public function store(Request $request)
     {
         //
-
+        $user = $request->user();
+        $advert = Advert::create(
+            [
+                "name"=>"Advert application by ".$user->name,
+                "description" => $request->input("description"),
+                "category"=>config("constants.DOC_TYPES.ADVERT"),
+                "status"=>config('constants.ADVERT_STATES.PENDING PAYMENT'),
+                "ad_category"=>$request->input('ad_category'),
+                "ad_sub_title"=>$request->input('ad_sub_title')
+            ]
+        );
+        return redirect()->route("adverts.index");
     }
 
     /**
