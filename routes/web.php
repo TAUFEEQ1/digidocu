@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::resource('users', UserController::class);
     Route::get("/egazettes/{id}/download",[EgazettesController::class,'show'])->name('egazettes.download');
     Route::resource('egazettes',EgazettesController::class);
+    Route::post('adverts/register/{id}',[AdvertsController::class,"register"])->name("adverts.register");
     Route::resource('adverts',AdvertsController::class);
     Route::get('/users-block/{user}',[UserController::class,'blockUnblock'])->name('users.blockUnblock');
     Route::resource('tags', TagController::class);

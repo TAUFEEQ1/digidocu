@@ -91,6 +91,15 @@ class AdvertsController extends Controller
         return view("adverts.show",compact("document","user"));
     }
 
+    public function register(int $id, Request $request){
+        $user = $request->user();
+        $document = Advert::find($id);
+        $document->status = config("constants.ADVERT_STATES.REGISTERED");
+        $document->ad_registrar_id = $user->id;
+        $document->newActivity("Advert Registered by ".$user->name);
+        $document->save();
+        return redirect()->route("adverts.index");
+    }
     /**
      * Show the form for editing the specified resource.
      */

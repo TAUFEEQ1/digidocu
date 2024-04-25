@@ -183,7 +183,7 @@
         $("input[name='topdf_check[]']").trigger('ifToggled');
     });
 
-    $(".show-file-modal").on('click',function(){
+    $(".show-file-modal").on('click', function() {
         showFileModal($(this).data("encodedfile"));
     })
 </script>
@@ -248,6 +248,13 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab_files" data-toggle="tab" aria-expanded="true">{{ucfirst(config('settings.file_label_plural'))}}</a>
                         </li>
+                        @if ($user->is_registrar)
+                        <li>
+                            <a href="#tab_register" data-toggle="tab">
+                                Register
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_files">
@@ -275,6 +282,24 @@
 
                             </div>
                         </div>
+                        @if ($user->is_registrar)
+                        <div class="tab-pane" id="tab_register">
+                            @if($document->status == config("constants.ADVERT_STATES.PAID"))
+                            {!! Form::open(['route' => ['adverts.register', $document->id], 'method' => 'post']) !!}
+                            <div class="form-group text-center">
+                                <textarea class="form-control" name="vcomment" id="vcomment" rows="4" placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success" type="submit" name="action"><i class="fa fa-check"></i> Register
+                                </button>
+                            </div>
+                            {!! Form::close() !!}
+                            @else
+                            <span class="badge badge-success">REGISTERED</span>
+                            @endif
+
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
