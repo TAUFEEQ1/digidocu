@@ -57,7 +57,8 @@ class HomeController extends AppBaseController
         })->pluck('id');
         $documentCounts = $allDocs->count();
         $filesCounts = File::whereIn('document_id',$allDocs->toArray())->count();
-        return view('home',compact('documents','activities','tagCounts','documentCounts','filesCounts'));
+        $user = $request->user();
+        return view('home',compact('documents','activities','tagCounts','documentCounts','filesCounts',"user"));
     }
 
     public function welcome()

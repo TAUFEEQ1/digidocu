@@ -2,7 +2,7 @@
 @section('title', 'Portal Home')
 @section("css")
 <style>
-    .card-text{
+    .card-text {
         font-size: 15px;
     }
 </style>
@@ -23,7 +23,12 @@
                 <div class="box-body">
                     <h4>Subscribe</h4>
                     <p class="card-text">Stay updated with the latest news and updates.</p>
+                    @if(!$user->is_client)
+                    <span class="btn btn-primary disabled">Subscribe Now</span>
+                    @else
                     <a href="{{ route('subscriptions.create') }}" class="btn btn-primary">Subscribe Now</a>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -41,7 +46,11 @@
                 <div class="box-body">
                     <h4>Apply For Ads </h4>
                     <p class="card-text">Apply for an advert in the Gazette.</p>
+                    @if(!$user->is_client)
+                    <span class="btn btn-primary disabled">Apply Now</span>
+                    @else
                     <a href="{{ route('adverts.create') }}" class="btn btn-primary">Apply Now</a>
+                    @endif
                 </div>
             </div>
         </div>
