@@ -87,8 +87,8 @@ class AdvertsController extends Controller
     {
         //
         $user = $request->user();
-        $advert = Advert::find($id);
-        return view("adverts.show",compact("advert","user"));
+        $document = Advert::find($id);
+        return view("adverts.show",compact("document","user"));
     }
 
     /**
