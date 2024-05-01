@@ -18,7 +18,8 @@
             font-weight: 200;
             height: 100vh;
             margin: 0;
-            background-image: url("https://images.unsplash.com/photo-1468779036391-52341f60b55d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1521&q=80");
+            /* background-image: url("https://unsplash.com/photos/Tzm3Oyu_6sk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8cHJpbnRpbmclMjBjb3Jwb3JhdGlvbnxlbnwwfHx8fDE3MTQ1OTE2Nzd8MA&auto=format&fit=crop&w=1521&q=80"); */
+            background-image: url("https://unsplash.com/photos/ZCTh4f4mv18/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8cHJpbnRpbmclMjBjb3Jwb3JhdGlvbnxlbnwwfHx8fDE3MTQ1OTE2Nzd8MA&auto=format&fit=crop&w=1521&q=80");
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -51,15 +52,18 @@
             font-size: 84px;
         }
 
+        .text-light{
+            color:white;
+        }
         .links > a {
-            color: #636b6f;
+            color: white;
             padding: 5px 20px;
             font-size: 13px;
             font-weight: 600;
             letter-spacing: .1rem;
             text-decoration: none;
             text-transform: uppercase;
-            border: 1px solid #636b6f;
+            border: 1px solid white;
             border-radius: 10px;
         }
 
@@ -75,12 +79,14 @@
             @auth
                 <a href="{{ route('admin.dashboard') }}">Home</a>
             @else
-                <a href="{{ route('login') }}">Login</a>
+                <a href="{{ route('login') }}" class="text-light">Login</a>
+                <a href="{{ route('register') }}" class="text-light">Register</a>
+
             @endauth
         </div>
     @endif
 
-    <div class="content">
+    <div class="content text-light">
         <div class="title m-b-md">
             {{config('settings.system_title')}}
         </div>

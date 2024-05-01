@@ -3,12 +3,12 @@
 @section('css')
 <style>
     .box.custom-box {
-        border: 1px solid #3c8dbc;
+        border: 1px solid black;
         box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.08)
     }
 
     .box.custom-box .box-header {
-        background-color: #3c8dbc;
+        background-color: black;
         color: #fff;
         padding: 3px 5px;
     }

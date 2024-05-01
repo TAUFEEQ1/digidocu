@@ -32,6 +32,15 @@
     <![endif]-->
 
 </head>
+<style>
+    .btn-primary{
+    background-color:#343a40;
+    border-color: black;
+}
+.btn-primary:hover{
+    background-color: black;
+}
+</style>
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">

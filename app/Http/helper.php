@@ -95,7 +95,8 @@ function buildPreviewUrl($file)
     $extension = last(explode('.', $file));
     return checkIsFileIsImage($file) ?
         route('files.showfile', ['dir' => 'thumb', 'file' => $file]) :
-        'http://dummyimage.com/400x200/3c8dbc/FFFFFF&text=' . $extension;
+        // 'http://dummyimage.com/400x200/3c8dbc/FFFFFF&text=' . $extension;
+        'https://dummyimage.com/400x200/000000/FFFFFF&text='.$extension;
 }
 
 /**

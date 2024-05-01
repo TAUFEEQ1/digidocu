@@ -92,7 +92,7 @@
                                 <td>
                                     @if ($document->gaz_passkey)
                                     <input type="hidden" name="passkey" value="{{ $document->gaz_passkey }}">
-                                    <button class="btn btn-info key-copy" value="{{ $document->gaz_passkey }}">
+                                    <button class="btn btn-primary key-copy" value="{{ $document->gaz_passkey }}">
                                         <i class="fa fa-copy"></i>
                                     </button>
                                     @endif
