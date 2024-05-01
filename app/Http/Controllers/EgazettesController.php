@@ -25,7 +25,8 @@ class EgazettesController extends Controller
             /** @var \App\Subscription */
             $subscription = $user->subscriptions->where('status', config('constants.SUB_STATUSES.ACTIVE'))->first();
             if(!$subscription){
-                return [];
+                $documents = [];
+                return view("egazettes.index",compact("documents"));
             }
             $baseQ->where('gaz_published_on','<',$subscription->sub_end_date);
         }
