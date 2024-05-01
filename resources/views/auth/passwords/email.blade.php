@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,64 +34,67 @@
 
 </head>
 <style>
-    .btn-primary{
-    background-color:#343a40;
-    border-color: black;
-}
-.btn-primary:hover{
-    background-color: black;
-}
+    .btn-primary {
+        background-color: #343a40;
+        border-color: black;
+    }
+
+    .btn-primary:hover {
+        background-color: black;
+    }
 </style>
+
 <body class="hold-transition login-page">
-<div class="login-box">
-    <div class="login-logo">
-        <a href="{{ route('home') }}"><b>{{config('settings.system_title')}} </b></a>
-    </div>
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="{{ route('home') }}"><b>{{config('settings.system_title')}} </b></a>
+        </div>
 
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <p class="login-box-msg">Enter Email to reset password</p>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Enter Email to reset password</p>
 
-        @if (session('status'))
+            @if (session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
             </div>
-        @endif
+            @endif
 
-        <form method="post" action="{{ url('/password/email') }}">
-            {!! csrf_field() !!}
+            <form method="post" action="{{ url('/password/email') }}">
+                {!! csrf_field() !!}
 
-            <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                @if ($errors->has('email'))
+                <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    @if ($errors->has('email'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-                @endif
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary pull-right">
-                        <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
-                    </button>
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                    @endif
                 </div>
-            </div>
 
-        </form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary pull-right">
+                            <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
+                        </button>
+                    </div>
+                </div>
 
+            </form>
+
+        </div>
+        <!-- /.login-box-body -->
     </div>
-    <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
+    <!-- /.login-box -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<!-- AdminLTE App -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.3/js/adminlte.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.3/js/adminlte.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
 </body>
+
 </html>
