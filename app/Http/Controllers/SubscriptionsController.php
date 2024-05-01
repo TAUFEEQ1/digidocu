@@ -17,7 +17,7 @@ class SubscriptionsController extends Controller{
         }
         $documents = $baseQ->orderByDesc('id')->paginate(25);
 
-        return view("subscriptions.index",compact("documents"));
+        return view("subscriptions.index",compact("documents","user"));
     }
 
     public function create(Request $request){

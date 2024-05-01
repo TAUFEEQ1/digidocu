@@ -2,35 +2,42 @@
 @section('title', 'Subscriptions')
 @section("css")
 <style>
-.badge-success {
-  background-color: #5cc45e;
-}
-.badge-success:hover {
-  background-color: #356635;
-}
-.badge-warning {
-  background-color: #f89406;
-}
-.badge-warning:hover {
-  background-color: #c67605;
-}
-.badge-error {
-  background-color: #b94a48;
-}
-.badge-error:hover {
-  background-color: #953b39;
-}
+    .badge-success {
+        background-color: #5cc45e;
+    }
+
+    .badge-success:hover {
+        background-color: #356635;
+    }
+
+    .badge-warning {
+        background-color: #f89406;
+    }
+
+    .badge-warning:hover {
+        background-color: #c67605;
+    }
+
+    .badge-error {
+        background-color: #b94a48;
+    }
+
+    .badge-error:hover {
+        background-color: #953b39;
+    }
 </style>
 @stop
 @section('content')
 <section class="content-header">
     <h1 class="pull-left">Subscriptions</h1>
+    @if($user->is_client && !$user->is_subscribed)
     <div class="pull-right">
         <a href="{{ route('subscriptions.create') }}" class="btn btn-primary">
             <i class="fa fa-plus"></i>
             Add New
         </a>
     </div>
+    @endif
 </section>
 <section class="content" style="margin-top: 20px;">
     <div class="clearfix"></div>
@@ -74,7 +81,7 @@
                                         <b>{{ $document->status }}</b>
                                     </span>
                                     @else
-                                        {{ $document->status }}
+                                    {{ $document->status }}
                                     @endif
                                 </td>
                                 <td>

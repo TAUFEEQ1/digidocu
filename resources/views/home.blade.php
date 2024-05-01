@@ -25,6 +25,8 @@
                     <p class="card-text">Stay updated with the latest news and updates.</p>
                     @if(!$user->is_client)
                     <span class="btn btn-primary disabled">Subscribe Now</span>
+                    @elseif ($user->is_subscribed)
+                    <span class="btn btn-primary disabled">Subscribe Now</span>
                     @else
                     <a href="{{ route('subscriptions.create') }}" class="btn btn-primary">Subscribe Now</a>
                     @endif

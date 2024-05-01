@@ -31,14 +31,8 @@ class PaymentProcessor implements ShouldQueue
     public function handle(): void
     {
         // Simulate the payment callback after 60 seconds
-        sleep(20);
-        $current_date = now();
 
         $this->subscription->update([
-            "status" => config("constants.SUB_STATUSES.ACTIVE"),
-            "sub_payment_status" => config("constants.SUB_PAY_STATES.COMPLETED"),
-            "sub_start_date" => $current_date,
-            "sub_end_date" => $current_date->addYear(1)
         ]);
     }
 }

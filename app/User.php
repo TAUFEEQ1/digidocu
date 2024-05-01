@@ -115,6 +115,11 @@ class User extends Authenticatable
         return $this->hasMany(Subscription::class, 'created_by', 'id');
     }
 
+    public function getIsSubscribedAttribute()
+    {
+        return $this->subscriptions()->where('status', config('constants.SUB_STATUSES.ACTIVE'))->exists();
+    }
+
 //    public function scopePermission($query, $permissions)
 //    {
 //        if ($permissions instanceof Collection) {
