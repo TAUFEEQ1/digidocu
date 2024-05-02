@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use App\Subscription;
+use App\GovPayApi;
 use Illuminate\Support\Facades\Log;
 
 class PaymentProcessor implements ShouldQueue
@@ -32,7 +33,16 @@ class PaymentProcessor implements ShouldQueue
     {
         // Simulate the payment callback after 60 seconds
 
-        $this->subscription->update([
+        $api = new GovPayApi([
+            "mobile_network" => $this->subscription->sub_payment_mobile_network,
+            "amount" => $this->subscription->sub_amount,
+            "phone_no" => $this->subscription->sub_payment_mobile_no,
+            "name" => $this->subscription->createdBy->name
         ]);
+        $reference = $api->initialize();
+        $this->subscription->sub_payment_ref= $reference;
+        $this->subscription->save();
+        $api->confirm($reference);
+        
     }
 }

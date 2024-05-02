@@ -17,6 +17,7 @@ use App\Document;
  * @property string $sub_payment_method
  * @property string $sub_payment_mobile_network
  * @property string $sub_payment_mobile_no
+ * @property string $sub_payment_ref
  * */
 
 class Subscription extends Document
@@ -39,6 +40,7 @@ class Subscription extends Document
         'sub_payment_mobile_network',
         'sub_payment_mobile_no',
         'sub_payment_status',
+        'sub_payment_ref'
     ];    
 
     protected static function boot()
