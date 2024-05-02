@@ -8,8 +8,8 @@ use App\Subscription;
 class PaymentsController extends Controller
 {
     //
-    private function setStatus(Subscription $subscription,string $tx_status){
-        switch($tx_status){
+    private function setStatus(Subscription $subscription,array $tx){
+        switch($tx["status"]){
             case "COMPLETE":
                 $subscription->sub_payment_status = config("constants.SUB_PAY_STATES.COMPLETED");
                 $subscription->status = config("constants.SUB_STATUSES.ACTIVE");
@@ -21,6 +21,7 @@ class PaymentsController extends Controller
             case "FAILED":
                 $subscription->sub_payment_status = config("constants.SUB_PAY_STATES.COMPLETED");
                 $subscription->status = config("constants.SUB_STATUSES.ACTIVE");
+                $subscription->sub_payment_notes = $tx["notes"];
                 $subscription->save();
                 break;
             default:
@@ -31,8 +32,10 @@ class PaymentsController extends Controller
     public function callback(Request $request){
         $reference = $request->json("payload")["internal_reference"];
         $tx_status = $request->json("payload")["transaction_status"];
+        $tx_notes = $request->json("payload")["status_message"];
+        $tx = ["status"=>$tx_status,"notes"=>$tx_notes];
         $subscription = Subscription::where("sub_payment_ref",$reference)->first();
-        $this->setStatus($subscription,$tx_status);
+        $this->setStatus($subscription,$tx);
         
         return ["message"=>"Callback received"];
     }

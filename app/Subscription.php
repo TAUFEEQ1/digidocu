@@ -18,6 +18,7 @@ use App\Document;
  * @property string $sub_payment_mobile_network
  * @property string $sub_payment_mobile_no
  * @property string $sub_payment_ref
+ * @property string $sub_payment_notes
  * */
 
 class Subscription extends Document
