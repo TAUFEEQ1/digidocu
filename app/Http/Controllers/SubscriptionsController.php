@@ -53,6 +53,8 @@ class SubscriptionsController extends Controller{
         return redirect()->route("subscriptions.index");
     }
     public function show(int $id, Request $request){
-
+        $document = Subscription::find($id);
+        $user = $request->user();
+        return view("subscriptions.show",compact("document","user"));
     }
 }
