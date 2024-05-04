@@ -187,6 +187,26 @@
         showFileModal($(this).data("encodedfile"));
     })
 </script>
+<script>
+    function getsubId() {
+        // Get the current URL
+        var url = window.location.pathname;
+
+        // Split the URL by '/'
+        var parts = url.split('/');
+
+        // Get the last part of the URL, which should be '8'
+        var value = parts[parts.length - 1];
+
+        return value;
+
+    }
+
+    function downloadPDF() {
+        const subId = getsubId();
+        window.open('/admin/subscriptions/'+subId+'/receipt','_blank');
+    }
+</script>
 @stop
 @section('content')
 <div id="modal-space">
@@ -241,6 +261,39 @@
                                 ({{\Carbon\Carbon::parse($document->updated_at)->diffForHumans()}})
                             </p>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_receipt" data-toggle="tab">Receipt</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab_receipt">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <h4>Subscription Receipt</h4>
+                                    <hr>
+
+                                    <div>
+                                        <p><strong>Name:</strong> {{ $document->createdBy->name }}</p>
+                                        <p><strong>Email:</strong> {{ $document->createdBy->email }}</p>
+                                        <p><strong>Category:</strong> {{ $document->sub_type }}</p>
+                                        <p><strong>Amount (UGX):</strong> {!! number_format($document->sub_amount, 0, '.', ',') !!}</p>
+                                        <p><strong>Paid At:</strong> {{ $document->sub_start_date }}</p>
+                                        <p><strong>Valid Untill:</strong> {{ $document->sub_end_date }}</p>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary" onclick="downloadPDF()">
+                                        <i class="fa fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>

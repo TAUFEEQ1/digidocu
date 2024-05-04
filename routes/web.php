@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::post('/{id}', [DocumentController::class,'storeFiles'])->name('store');
         Route::delete('/{id}', [DocumentController::class,'deleteFile'])->name('destroy');
     });
+    Route::get('subscriptions/{id}/receipt',[SubscriptionsController::class,'getReceipt']);
     Route::resource('subscriptions',SubscriptionsController::class);
     Route::get('/_files/{dir?}/{file?}',[HomeController::class,'showFile'])->name('files.showfile');
     Route::get('/_zip/{id}/{dir?}',[HomeController::class,'downloadZip'])->name('files.downloadZip');
