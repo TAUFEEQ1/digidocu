@@ -267,9 +267,12 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
+                        @if($document->sub_payment_status == config("constants.SUB_PAY_STATES.COMPLETED"))
                         <li class="active"><a href="#tab_receipt" data-toggle="tab">Receipt</a></li>
+                        @endif
                     </ul>
                     <div class="tab-content">
+                        @if($document->sub_payment_status == config("constants.SUB_PAY_STATES.COMPLETED"))
                         <div id="tab_receipt">
                             <div class="panel">
                                 <div class="panel-body">
@@ -293,7 +296,7 @@
                             </div>
 
                         </div>
-
+                        @endif
                     </div>
                 </div>
             </div>
