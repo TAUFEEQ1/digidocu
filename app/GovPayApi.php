@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\GovException;
 
 class GovPayApi{
 
@@ -60,8 +61,18 @@ class GovPayApi{
         
         
         $response = Http::withHeaders($this->getHeaders())->post($this->base_url."/initialize",$data);
-        $reference = $response->json("data")["internal_reference"];
-        return $reference;
+        $jsonData = $response->json();
+        Log::info($jsonData);
+        if(array_key_exists('internal_reference',$jsonData["data"])){
+            $reference = $jsonData['data']['internal_reference'];
+            return $reference;
+        }else{
+            
+            if(array_key_exists('message',$jsonData)){
+                throw new GovException($jsonData['message']);
+            }
+            throw new GovException();
+        }
     }
 
     public function confirm(string $reference){

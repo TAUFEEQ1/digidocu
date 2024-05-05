@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\GovException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -39,8 +40,15 @@ class PaymentProcessor implements ShouldQueue
             "phone_no" => $this->subscription->sub_payment_mobile_no,
             "name" => $this->subscription->createdBy->name
         ]);
-        $reference = $api->initialize();
-        $this->subscription->sub_payment_ref= $reference;
-        $this->subscription->save();
+        try{
+            $reference = $api->initialize();
+            $this->subscription->sub_payment_ref= $reference;
+            $this->subscription->save();
+        }catch(GovException $e){
+            $this->subscription->sub_payment_status = config("constants.SUB_PAY_STATES.FAILED");
+            $this->subscription->status = config("constants.SUB_STATUSES.PAYMENT FAILED");
+            $this->subscription->sub_payment_notes = $e->getMessage();
+            $this->subscription->save();
+        }
     }
 }

@@ -270,6 +270,9 @@
                         @if($document->sub_payment_status == config("constants.SUB_PAY_STATES.COMPLETED"))
                         <li class="active"><a href="#tab_receipt" data-toggle="tab">Receipt</a></li>
                         @endif
+                        @if($document->sub_payment_status == config("constants.SUB_PAY_STATES.FAILED"))
+                        <li><a href="#tab_failure" data-toggle="tab">Failure Notes</a></li>
+                        @endif
                     </ul>
                     <div class="tab-content">
                         @if($document->sub_payment_status == config("constants.SUB_PAY_STATES.COMPLETED"))
@@ -295,6 +298,17 @@
                                 </div>
                             </div>
 
+                        </div>
+                        @endif
+                        @if($document->sub_payment_status == config("constants.SUB_PAY_STATES.FAILED"))
+                        <div id="tab_failure">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <blockquote>
+                                        {{ $document->sub_payment_notes }}
+                                    </blockquote>
+                                </div>
+                            </div>
                         </div>
                         @endif
                     </div>
