@@ -8,9 +8,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Advert;
+use App\Exceptions\GovException;
 use App\GovPayApi;
 use Illuminate\Support\Facades\Log;
-
+use App\Payments\AdvertPayment as AdPayment;
 class AdvertPayment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -30,7 +31,6 @@ class AdvertPayment implements ShouldQueue
      */
     public function handle(): void
     {
-        try {
 
             $api = new GovPayApi(
                 [
@@ -40,19 +40,17 @@ class AdvertPayment implements ShouldQueue
                     "name" => $this->advert->createdBy->name
                 ]
             );
+            try{
+                $reference = $api->initialize();
+                $this->advert->ad_payment_ref= $reference;
+                $this->advert->save();
+            }catch(GovException $e){
+                $tx = ["status"=>"FAILED","notes"=>$e->getMessage()];
+                $payment = new AdPayment();
+                $payment->setDocument($this->advert);
+                $payment->setStatus($tx);
+            }
             
-            // Update the advert status and payment time
-            $this->advert->update([
-                "status" => config("constants.ADVERT_STATES.PAID"),
-                "ad_paid_at" => $current_date
-            ]);
-            
-            // Log success message
-            Log::info('Advert status updated successfully.', ['advert_id' => $this->advert->id]);
-        } catch (\Exception $e) {
-            // Log any errors that occurred
-            Log::error('Error updating advert status: ' . $e->getMessage(), ['advert_id' => $this->advert->id]);
-        }
     }
     
 }
