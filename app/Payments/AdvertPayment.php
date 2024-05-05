@@ -17,15 +17,13 @@ class AdvertPayment extends BasePayment{
         $advert = $this->document;
         switch($tx["status"]){
             case "COMPLETED":
-                $advert->ad_payment_status = config("constants.SUB_PAY_STATES.COMPLETED");
-                $advert->status = config("constants.SUB_STATUSES.ACTIVE");
+                $advert->status = config("constants.ADVERT_STATES.PAID");
                 $current_date = now();
                 $advert->ad_paid_at = $current_date;
                 $advert->save();
                 break;
             case "FAILED":
-                $advert->ad_payment_status = config("constants.SUB_PAY_STATES.FAILED");
-                $advert->status = config("constants.SUB_STATUSES.PAYMENT FAILED");
+                $advert->status = config("constants.ADVERT_STATES.PAYMENT FAILED");
                 $advert->ad_payment_notes = $tx["notes"];
                 $advert->save();
                 break;
