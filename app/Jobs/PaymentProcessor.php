@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Subscription;
 use App\GovPayApi;
 use Illuminate\Support\Facades\Log;
-
+use App\Payments\SubscriptionPayment;
 class PaymentProcessor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -45,10 +45,10 @@ class PaymentProcessor implements ShouldQueue
             $this->subscription->sub_payment_ref= $reference;
             $this->subscription->save();
         }catch(GovException $e){
-            $this->subscription->sub_payment_status = config("constants.SUB_PAY_STATES.FAILED");
-            $this->subscription->status = config("constants.SUB_STATUSES.PAYMENT FAILED");
-            $this->subscription->sub_payment_notes = $e->getMessage();
-            $this->subscription->save();
+            $tx = ["status"=>"FAILED","notes"=>$e->getMessage()];
+            $payment = new SubscriptionPayment();
+            $payment->setDocument($this->subscription);
+            $payment->setStatus($tx);
         }
     }
 }
