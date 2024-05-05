@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property string $created_at
  * @property string $ad_paid_at
+ * @property int $ad_amount
+ * @property string $ad_payment_mobile_network
  * @property-read \App\User $createdBy
  */
 class Advert extends Document

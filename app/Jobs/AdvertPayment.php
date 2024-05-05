@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Advert;
+use App\GovPayApi;
 use Illuminate\Support\Facades\Log;
 
 class AdvertPayment implements ShouldQueue
@@ -30,11 +31,15 @@ class AdvertPayment implements ShouldQueue
     public function handle(): void
     {
         try {
-            // Simulate some processing time
-            sleep(20);
-            
-            // Get the current date and time
-            $current_date = now();
+
+            $api = new GovPayApi(
+                [
+                    "mobile_network" => $this->advert->ad_payment_mobile_network,
+                    "amount" => $this->advert->ad_amount,
+                    "phone_no" => $this->advert->ad_payment_mobile_no,
+                    "name" => $this->advert->createdBy->name
+                ]
+            );
             
             // Update the advert status and payment time
             $this->advert->update([
