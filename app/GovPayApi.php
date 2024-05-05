@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GovPayApi{
 
@@ -49,7 +50,7 @@ class GovPayApi{
           "merchant_reference" => "auto", 
           "transaction_method" => "MOBILE_MONEY", 
           "currency" => "UGX", 
-          "amount" => $details["amount"], 
+          "amount" => $details["amount"]*0.01, 
           "provider_code" => $details["mobile_network"], 
           "msisdn" => $details["phone_no"], 
           "customer_name" => $this->details["name"], 
@@ -68,6 +69,6 @@ class GovPayApi{
         $data = [
             "internal_reference"=>$reference
         ];
-        Http::withHeaders($this->getHeaders())->post($this->base_url."/initialize",$data);
+        Http::withHeaders($this->getHeaders())->post($this->base_url."/confirm",$data);
     }
 }
