@@ -42,7 +42,5 @@ class PaymentProcessor implements ShouldQueue
         $reference = $api->initialize();
         $this->subscription->sub_payment_ref= $reference;
         $this->subscription->save();
-        $api->confirm($reference);
-        
     }
 }
