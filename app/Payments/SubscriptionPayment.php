@@ -7,9 +7,9 @@ use App\Subscription;
 
 class SubscriptionPayment extends BasePayment{
 
-    private Subscription $document;
+    private Document|Subscription $document;
     
-    public function setDocument(Document $document)
+    public function setDocument(Document|Subscription $document)
     {
         $this->document = $document;
     }

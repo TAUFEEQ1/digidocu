@@ -4,6 +4,7 @@ namespace App\Payments;
 use App\Payments\SubscriptionPayment;
 use App\Payments\AdvertPayment;
 use App\Document;
+use Illuminate\Support\Facades\Log;
 
 class PaymentFactory{
     public static function make(string $reference){

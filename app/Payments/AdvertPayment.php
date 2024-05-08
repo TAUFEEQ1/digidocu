@@ -3,12 +3,13 @@ namespace App\Payments;
 use App\Payments\BasePayment;
 use App\Advert;
 use App\Document;
+use App\Subscription;
 
 class AdvertPayment extends BasePayment{
 
-    private Advert $document;
+    private Document|Advert $document;
 
-    public function setDocument(Document $document)
+    public function setDocument(Document|Advert $document)
     {
         $this->document = $document;
     }
