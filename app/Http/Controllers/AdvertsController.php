@@ -47,6 +47,7 @@ class AdvertsController extends Controller
         //
         $user = $request->user();
         $service = config("constants.ADVERT_SERVICES")[(int)$request->input('ad_category')];
+        $networks = config("constants.MOBILE_NETWORKS");
         $advert = Advert::create(
             [
                 "name" => "Advert application by " . $user->name,
@@ -56,7 +57,8 @@ class AdvertsController extends Controller
                 "ad_category" => $service['name'],
                 "ad_amount" => $service['price'],
                 "ad_payment_method" => $request->input("ad_payment_method"),
-                "ad_payment_mobile_network" => $request->input("ad_payment_mobile_network"),
+                "ad_payment_mobile_network" => $networks[(int)$request->input("ad_payment_mobile_network")],
+                "ad_payment_mobile_no"=>$request->input("ad_payment_mobile_no"),
                 "ad_subtitle" => $request->input('ad_subtitle'),
                 "created_by"=>$user->id
             ]

@@ -35,6 +35,7 @@ class Advert extends Document
         'ad_registrar_id',
         'ad_payment_method',
         'ad_payment_mobile_network',
+        "ad_payment_mobile_no",
         'ad_amount',
         'ad_category',
         'ad_paid_at'

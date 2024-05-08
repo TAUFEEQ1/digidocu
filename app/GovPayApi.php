@@ -62,7 +62,6 @@ class GovPayApi{
         
         $response = Http::withHeaders($this->getHeaders())->post($this->base_url."/initialize",$data);
         $jsonData = $response->json();
-        Log::info($jsonData);
         if(array_key_exists('internal_reference',$jsonData["data"])){
             $reference = $jsonData['data']['internal_reference'];
             return $reference;
