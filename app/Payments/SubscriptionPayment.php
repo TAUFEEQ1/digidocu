@@ -21,7 +21,7 @@ class SubscriptionPayment extends BasePayment{
                 $subscription->sub_payment_status = config("constants.SUB_PAY_STATES.COMPLETED");
                 $subscription->status = config("constants.SUB_STATUSES.ACTIVE");
                 $current_date = now();
-                $subscription->sub_start_date = $current_date;
+                $subscription->sub_start_date = clone $current_date;
                 $subscription->sub_end_date = $current_date->addYear(1);
                 $subscription->save();
                 break;
