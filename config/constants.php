@@ -33,77 +33,108 @@ return [
         [
             'name' => 'The Marriage Act - (Notice of place for celebration of marriages)',
             'price' => 345000,
-            'currency'=>'UGX'
+            'currency'=>'UGX',
+            'meta'=>[]
         ],
         [
             'name' => 'The Companies Act - (Notice of change of company name, resolutions)',
             'price' => 300000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'The Insolvency Act- Notice',
             'price' => 300000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta'=>[],
         ],
         [
             'name' => 'Appointments/Replacements to Board of Governors Notice',
             'price' => 650000,
-            'currency'=>'UGX'
+            'currency'=>'UGX',
+            'meta' => []
+        ],
+        [
+            'name'=>'Gazetting of Professionals (Accountants, Surveyors, Engineers,Medics etc)',
+            'price'=>2400000,
+            'currency'=>'UGX',
+            'meta' => [
+                ['label'=>'Page Count','type'=>'number','name'=>'pages','default'=>1]
+            ]
         ],
         [
             'name' => 'The Advocates Act (Notice of Application for Certificate of Eligibility)',
             'price' => 300000,
-            'currency'=>'UGX'
+            'currency'=>'UGX',
+            'meta' => []
         ],
         [
             'name' => 'The Commissioners for Oaths (Advocates) Act Notice',
             'price' => 345000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Gazetting of Security Uniforms/Change of Security Uniforms',
             'price' => 450000,
-            'currency'=>'UGX'
+            'currency'=>'UGX',
+            'meta' => []
         ],
         [
             'name' => 'The Mining Act - Notice',
             'price' => 345000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Trademark Applications - Local Adverts',
             'price' => 100000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Alteration of a registered Trademark - Local Adverts',
             'price' => 100000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Copyright & Patents',
             'price' => 150000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Industrial Design',
             'price' => 100000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Caveats',
             'price' => 300000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
         ],
         [
             'name' => 'Administrator General Notice',
             'price' => 150000,
-            'currency' => 'UGX'
+            'currency' => 'UGX',
+            'meta' => []
+        ],
+        [
+            'name' => 'Special Certificate of Title',
+            'price' => 230000,
+            'currency' => 'UGX',
+            'meta' => [
+                ['label'=>'Plot Count','type'=>'number','name'=>'plot_count', "default"=>1]
+            ]
         ],
         [
             'name' => 'Deed Poll',
             'price' => 345000,
-            'currency'=>'UGX'
+            'currency'=>'UGX',
+            'meta' => []
         ]
     ],
     

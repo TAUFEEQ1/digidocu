@@ -1,19 +1,45 @@
 @extends('layouts.app')
 @section('title', 'Create Advert')
 @section("scripts")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js" integrity="sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/uppc-services" id="uppc-pricing">
     @php
         $pricing = array_map(fn($service):string=>$service['price'],config('constants.ADVERT_SERVICES'));
     @endphp
     @json($pricing)
 </script>
+<script type="text/uppc-services" id="uppc-meta">
+    @php
+        $service_map = array_reduce(config('constants.ADVERT_SERVICES'), function ($accumulator, $service) {
+        $accumulator[$service['name']] = $service['meta'];
+        return $accumulator;}, []);
+    @endphp
+    @json($service_map)
+</script>
+@verbatim
+<script id="handlebars-template" type="text/x-handlebars-template">
+    {{#each inputs}}
+    <div class="form-group">
+        <label>{{label}}</label>
+        <input type="number" class="form-control" name="{{name}}" value="{{default}}" min="1" required>
+    </div>
+    {{/each}}
+</script>
+@endverbatim
 <script>
     $(document).ready(()=>{
         const pricing = JSON.parse(document.getElementById("uppc-pricing").textContent);
+        const service_map = JSON.parse(document.getElementById("uppc-meta").textContent);
         $("#ad_category").on("change",function(){
             const service = parseInt($(this).val());
             $("#ad_amount").val(pricing[service]);
-        })
+            // Compile Handlebars template
+            const template = Handlebars.compile(document.getElementById("handlebars-template").textContent);
+            const service_name = $(this).find("option:selected").text();
+            const html = template({'inputs':service_map[service_name]});
+            $("#meta-fields").html(html);
+        });
+
     });
 </script>
 @stop
@@ -39,6 +65,8 @@
                         $services = array_map(fn($service):string=>$service['name'],config('constants.ADVERT_SERVICES'));
                         @endphp
                         {!! Form::select('ad_category', $services, null, ['class' => 'form-control','id'=>'ad_category','required' => 'required']) !!}
+                    </div>
+                    <div id="meta-fields">
                     </div>
                     <div class="form-group">
                         {!! Form::label('ad_subtitle', 'Subtitle:') !!}
