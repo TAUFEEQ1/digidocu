@@ -34,25 +34,29 @@ return [
             'name' => 'The Marriage Act - (Notice of place for celebration of marriages)',
             'price' => 345000,
             'currency'=>'UGX',
-            'meta'=>[]
+            'meta'=>[],
+            'source'=>'URSB/SOLICITOR GENERAL'
         ],
         [
             'name' => 'The Companies Act - (Notice of change of company name, resolutions)',
             'price' => 300000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'URSB'
         ],
         [
             'name' => 'The Insolvency Act- Notice',
             'price' => 300000,
             'currency' => 'UGX',
             'meta'=>[],
+            'source'=>'URSB'
         ],
         [
             'name' => 'Appointments/Replacements to Board of Governors Notice',
             'price' => 650000,
             'currency'=>'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'MINISTRY OF EDUCATION AND SPORTS'
         ],
         [
             'name'=>'Gazetting of Professionals (Accountants, Surveyors, Engineers,Medics etc)',
@@ -60,25 +64,29 @@ return [
             'currency'=>'UGX',
             'meta' => [
                 ['label'=>'Page Count','type'=>'number','name'=>'pages','default'=>1]
-            ]
+            ],
+            'source'=>'RESPONSIBLE MINISTRIES'
         ],
         [
             'name' => 'The Advocates Act (Notice of Application for Certificate of Eligibility)',
             'price' => 300000,
             'currency'=>'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'LAW COUNCIL'
         ],
         [
             'name' => 'The Commissioners for Oaths (Advocates) Act Notice',
             'price' => 345000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'JUDICIARY/MINISTRY OF JUSTICE'
         ],
         [
             'name' => 'Gazetting of Security Uniforms/Change of Security Uniforms',
             'price' => 450000,
             'currency'=>'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'UGANDA POLICE'
         ],
         [
             'name' => 'The Mining Act - Notice',
