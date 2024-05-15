@@ -36,8 +36,17 @@
             // Compile Handlebars template
             const template = Handlebars.compile(document.getElementById("handlebars-template").textContent);
             const service_name = $(this).find("option:selected").text();
-            const html = template({'inputs':service_map[service_name]});
+            const data = {'inputs':service_map[service_name]};
+            const html = template(data);
             $("#meta-fields").html(html);
+            if(data['inputs'].length){
+                const inputName = data['inputs'][0]['name'];
+                const inputElement = $("input[name='" + inputName + "']").first();
+                inputElement.on("change",(e)=>{
+                    $("#ad_amount").val(e.target.value * pricing[service]);
+                });
+            }
+
         });
 
     });
