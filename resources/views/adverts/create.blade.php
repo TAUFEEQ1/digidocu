@@ -16,6 +16,12 @@
     @endphp
     @json($service_map)
 </script>
+<script type="text/uppc-services" id="uppc-sources">
+    @php
+        $sources = array_map(fn($service):string=>$service['source'],config('constants.ADVERT_SERVICES'));
+    @endphp
+    @json($sources)
+</script>
 @verbatim
 <script id="handlebars-template" type="text/x-handlebars-template">
     {{#each inputs}}
@@ -30,9 +36,11 @@
     $(document).ready(()=>{
         const pricing = JSON.parse(document.getElementById("uppc-pricing").textContent);
         const service_map = JSON.parse(document.getElementById("uppc-meta").textContent);
+        const sources = JSON.parse(document.getElementById("uppc-sources").textContent);
         $("#ad_category").on("change",function(){
             const service = parseInt($(this).val());
             $("#ad_amount").val(pricing[service]);
+            $("#ad_source").text(sources[service]);
             // Compile Handlebars template
             const template = Handlebars.compile(document.getElementById("handlebars-template").textContent);
             const service_name = $(this).find("option:selected").text();
@@ -83,7 +91,10 @@
                     </div>
                     {!! Form::bsTextarea('description', null, ['class'=>'form-control b-wysihtml5-editor']) !!}
                     <div class="form-group">
-                        <label for="file" class="control-label">Scanned PDF</label>
+                        <label for="file" class="control-label">
+                            Scanned PDF
+                            &lpar; <span id="ad_source">URSB</span> &rpar;
+                        </label>
                         <div class="col-md-12">
                             {!! Form::file('file_scan', ['class'=>'form-control']) !!} <!-- File upload field -->
                         </div>
