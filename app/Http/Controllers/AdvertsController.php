@@ -48,6 +48,14 @@ class AdvertsController extends Controller
         $user = $request->user();
         $service = config("constants.ADVERT_SERVICES")[(int)$request->input('ad_category')];
         $networks = config("constants.MOBILE_NETWORKS");
+        
+        $price = $service['price'];
+        $ad_meta = [];
+        if(count($service['meta'])){
+            $value = $request->input($service['meta'][0]['name']);
+            $price = $value * $service['price']; 
+            $ad_meta = [array_merge($service['meta'][0],['value'=>$value])];
+        }
         $advert = Advert::create(
             [
                 "name" => "Advert application by " . $user->name,
@@ -55,7 +63,8 @@ class AdvertsController extends Controller
                 "category" => config("constants.DOC_TYPES.ADVERT"),
                 "status" => config('constants.ADVERT_STATES.PENDING PAYMENT'),
                 "ad_category" => $service['name'],
-                "ad_amount" => $service['price'],
+                "ad_amount" => $price,
+                "ad_meta"=>$ad_meta,
                 "ad_payment_method" => $request->input("ad_payment_method"),
                 "ad_payment_mobile_network" => $networks[(int)$request->input("ad_payment_mobile_network")],
                 "ad_payment_mobile_no"=>$request->input("ad_payment_mobile_no"),

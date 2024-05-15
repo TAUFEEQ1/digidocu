@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $ad_subtitle
  * @property string $ad_category
  * @property string $ad_payment_mobile_no
+ * @property array $ad_meta
  * @property string $description
  * @property string $created_at
  * @property string $ad_paid_at
@@ -38,7 +39,11 @@ class Advert extends Document
         "ad_payment_mobile_no",
         'ad_amount',
         'ad_category',
-        'ad_paid_at'
+        'ad_paid_at',
+        'ad_meta'
+    ];
+    protected $casts = [
+        'ad_meta' => 'array',
     ];
     protected static function boot()
     {
