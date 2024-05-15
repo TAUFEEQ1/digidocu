@@ -21,7 +21,11 @@ class SubscriptionsController extends Controller
         if ($user->is_client) {
             $baseQ->where("created_by", $user->id);
         }
-        $documents = $baseQ->orderByDesc('id')->paginate(25);
+        if($request->has('sub_payment_status') && $request->input('sub_payment_status')!='ALL'){
+            $status = $request->input('sub_payment_status');
+            $baseQ->where('sub_payment_status',$status);
+        }
+        $documents = $baseQ->orderByDesc('id')->paginate(10);
 
         return view("subscriptions.index", compact("documents", "user"));
     }

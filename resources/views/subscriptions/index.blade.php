@@ -27,6 +27,15 @@
     }
 </style>
 @stop
+@section("scripts")
+<script>
+    $(document).ready(function(){
+        $("#sub_payment_status").on("change",()=>{
+            $("#search-form").submit();
+        })
+    });
+</script>
+@stop
 @section('content')
 <section class="content-header">
     <h1 class="pull-left">Subscriptions</h1>
@@ -48,13 +57,17 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Subscriptions List</h3>
                     <div class="box-tools">
-                        <form action="{{ route('subscriptions.index') }}" method="GET" class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input type="text" name="query" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                </span>
+                        <form action="{{ route('subscriptions.index') }}" method="GET" class="form-inline" id="search-form">
+                            <div class="form-group" style="margin-right: 20px;">
+                            @php
+                                $payment_states = array_merge(["ALL"=>"ALL"],config('constants.SUB_PAY_STATES'));
+                                $sub_payment_status = request()->query('sub_payment_status');
+                                $default_status = isset($payment_states[$sub_payment_status]) ? $sub_payment_status : 'ALL';
+                            @endphp
+                            {!! Form::label('sub_payment_status', 'Payment Status:') !!}
+                            {!! Form::select('sub_payment_status',$payment_states, $default_status, ['class' => 'form-control','id'=>'sub_payment_status','required' => 'required']) !!}
                             </div>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </form>
                     </div>
                 </div>
