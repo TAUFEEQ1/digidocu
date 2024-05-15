@@ -92,43 +92,50 @@ return [
             'name' => 'The Mining Act - Notice',
             'price' => 345000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=> 'MINISTRY OF ENERGY'
         ],
         [
             'name' => 'Trademark Applications - Local Adverts',
             'price' => 100000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'URSB'
         ],
         [
             'name' => 'Alteration of a registered Trademark - Local Adverts',
             'price' => 100000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'URSB'
         ],
         [
             'name' => 'Copyright & Patents',
             'price' => 150000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source'=>'URSB'
         ],
         [
             'name' => 'Industrial Design',
             'price' => 100000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source' => 'URSB'
         ],
         [
             'name' => 'Caveats',
             'price' => 300000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source' => 'MINISTRY OF LANDS'
         ],
         [
             'name' => 'Administrator General Notice',
             'price' => 150000,
             'currency' => 'UGX',
-            'meta' => []
+            'meta' => [],
+            'source' => 'ADMNISTRATOR GENERAL’S OFFICE'
         ],
         [
             'name' => 'Special Certificate of Title',
@@ -136,13 +143,15 @@ return [
             'currency' => 'UGX',
             'meta' => [
                 ['label'=>'Plot Count','type'=>'number','name'=>'plot_count', "default"=>1]
-            ]
+            ],
+            'source' => 'MINISTRY OF LANDS'
         ],
         [
             'name' => 'Deed Poll',
             'price' => 345000,
             'currency'=>'UGX',
-            'meta' => []
+            'meta' => [],
+            'source' => 'URSB'
         ]
     ],
     
