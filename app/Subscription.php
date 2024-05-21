@@ -52,7 +52,13 @@ class Subscription extends Document
             $builder->where('category', config('constants.DOC_TYPES.SUBSCRIPTION'));
         });
     }
-    
+    public function getIsActiveAttribute()
+    {
+        
+        $today = now();
+        
+        return $this->sub_start_date <= $today && $this->sub_end_date >= $today;
+    }
    
     public function newActivity($activity_text,$include_document=true){
         if($include_document){

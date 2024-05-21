@@ -23,12 +23,11 @@ class EgazettesController extends Controller
         if($user->is_client){
             // determine sub_start and end
             /** @var \App\Subscription */
-            $subscription = $user->subscriptions->where('status', config('constants.SUB_STATUSES.ACTIVE'))->first();
-            if(!$subscription){
+            if(!$user->is_subscribed){
                 $documents = [];
                 return view("egazettes.index",compact("documents"));
             }
-            $baseQ->where('gaz_published_on','<',$subscription->sub_end_date);
+            
         }
 
         if($request->has('query')){

@@ -121,7 +121,12 @@ class User extends Authenticatable
 
     public function getIsSubscribedAttribute()
     {
-        return $this->subscriptions()->where('status', config('constants.SUB_STATUSES.ACTIVE'))->exists();
+        return $this->subscriptions()
+        ->where('sub_payment_status', config('constants.SUB_PAY_STATES.COMPLETED'))
+        ->whereDate('sub_start_date', '<=', now())
+        ->whereDate('sub_end_date', '>=', now())
+        ->exists();
+    
     }
 
 //    public function scopePermission($query, $permissions)

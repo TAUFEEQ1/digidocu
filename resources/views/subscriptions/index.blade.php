@@ -55,7 +55,7 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Subscriptions List</h3>
+                    <h3 class="box-title">Subscriptions History</h3>
                     <div class="box-tools">
                         <form action="{{ route('subscriptions.index') }}" method="GET" class="form-inline" id="search-form">
                             <div class="form-group" style="margin-right: 20px;">
