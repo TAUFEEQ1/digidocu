@@ -11,7 +11,7 @@
         const sub_fees = JSON.parse($("#uppc-fees").text());
         $("#sub_type").on("change",(e)=>{
             const selected = parseInt(e.target.value);
-            $("#sub_type").val(sub_fees[selected]);
+            $("#sub_amount").val(sub_fees[selected]);
         });
     })
 </script>
