@@ -4,14 +4,37 @@
 <script type="text/uppc-fees" id="uppc-fees">
     @json(config("constants.SUB_FEES"))
 </script>
+<script type="text/uppc-sub-types" id="uppc-sub-types">
+    @json(config("constants.SUB_TYPES"))
+</script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 <script>
+    function getEndDate(sub_type,today){
+        switch(sub_type){
+            case 'One-Off':
+                today.add(1,'days');
+                break;
+            case '3-Months':
+                today.add(3,'months');
+                break;
+            case '6-Months':
+                today.add(6,'months');
+                break;
+            default:
+                today.add(1,'years');
+        }
+        return today.format('YYYY-MM-DD');
+    }
     $(document).ready(()=>{
-        const today = new Date();
-        $("#sub_end_date").val(today.toISOString().split('T')[0])
         const sub_fees = JSON.parse($("#uppc-fees").text());
+        const sub_types = JSON.parse($("#uppc-sub-types").text());
+        $("#sub_end_date").val(getEndDate('ANNUAL',moment()));
         $("#sub_type").on("change",(e)=>{
             const selected = parseInt(e.target.value);
+            const sub_type = sub_types[selected];
+            const today = moment();
             $("#sub_amount").val(sub_fees[selected]);
+            $("#sub_end_date").val(getEndDate(sub_type,today));
         });
     })
 </script>
