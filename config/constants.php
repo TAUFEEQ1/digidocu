@@ -21,8 +21,8 @@ return [
         "FAILED"=>"FAILED",
         "COMPLETED"=>"COMPLETED"
     ],
-    'SUB_TYPES'=>['ANNUAL'],
-    'SUB_FEES'=>[1400000],
+    'SUB_TYPES'=>['ANNUAL','3-Months','6-Months','One-Off'],
+    'SUB_FEES'=>[800000,300000,550000,3000],
     'ADVERT_STATES'=>[
         'PENDING PAYMENT'=>'PENDING PAYMENT',
         'PAID'=>'PAID',
