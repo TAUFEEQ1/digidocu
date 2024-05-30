@@ -36,7 +36,7 @@ class PublicationsController extends Controller
             });
         }
 
-        $documents = $baseQ->orderBy('created_at', 'desc')->paginate(15);
+        $documents = $baseQ->orderBy('documents.created_at', 'desc')->paginate(15);
     
         return view('publications.index', compact('documents','user'));
     }

@@ -59,6 +59,15 @@
         <div class="col-md-4">
             <div class="box text-center">
                 <div class="box-body">
+                    <h4>Publications</h4>
+                    <p class="card-text">Download publications available on the portal.</p>
+                    <a href="{{ route('publications.index') }}" class="btn btn-primary">Download</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box text-center">
+                <div class="box-body">
                     <h4>More Resources</h4>
                     <p class="card-text">Additional resources available on the portal.</p>
                     <a href="#" class="btn btn-primary">Explore</a>
