@@ -3,7 +3,8 @@ return [
     'DOC_TYPES'=>[
         'SUBSCRIPTION'=>'SUBSCRIPTION',
         'EGAZETTE'=>'EGAZETTE',
-        'ADVERT'=>'ADVERT'
+        'ADVERT'=>'ADVERT',
+        'PUBLICATION'=>'PUBLICATION'
     ],
     'MOBILE_NETWORKS'=>['AIRTEL','MTN'],
     'SUB_STATUSES'=>[

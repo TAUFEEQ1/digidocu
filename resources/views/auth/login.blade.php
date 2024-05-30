@@ -33,17 +33,8 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05) !important;
             border-radius: 3px;
         }
-
-        .btn-primary {
-            background-color: #343a40;
-            border-color: black;
-        }
-
-        .btn-primary:hover {
-            background-color: black;
-        }
     </style>
-
+<link rel="stylesheet" href="{{asset('css/digidocu-custom.css')}}">
 </head>
 
 <body class="hold-transition login-page">

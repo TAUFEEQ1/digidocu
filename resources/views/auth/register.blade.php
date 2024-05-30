@@ -32,17 +32,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<style>
-            .btn-primary {
-            background-color: #343a40;
-            border-color: black;
-        }
-
-        .btn-primary:hover {
-            background-color: black;
-        }
-</style>
-
+<link rel="stylesheet" href="{{asset('css/digidocu-custom.css')}}">
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="register-logo">
