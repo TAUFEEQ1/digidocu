@@ -23,7 +23,11 @@ class Publication extends Document
     public $fillable = [
         'pub_title',
         'pub_fees',
-        'pub_author'
+        'pub_author',
+        "name",
+        "created_by",
+        "status",
+        "category"
     ];
 
     protected static function boot()
@@ -34,5 +38,5 @@ class Publication extends Document
             $builder->where('category', config('constants.DOC_TYPES.PUBLICATION'));
         });
     }
-    
+
 }
