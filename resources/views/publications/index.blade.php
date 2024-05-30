@@ -38,7 +38,6 @@
                                 <th>Title</th>
                                 <th>Price</th>
                                 <th>Author</th>
-                                <th>Created At</th>
                                 @if ($user->is_client)
                                 <th>Action</th> 
                                 @endif
@@ -50,7 +49,6 @@
                                 <td>{{ $document->pub_title }}</td>
                                 <td>{{ $document->pub_fees }}</td>
                                 <td>{{ $document->pub_author }}</td>
-                                <td>{{ $document->created_at }}</td>
                                 @if ($user->is_client)
                                 <td>
                                     @if($document->bought)

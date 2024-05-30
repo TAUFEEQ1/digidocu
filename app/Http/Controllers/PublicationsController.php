@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
 use App\FileType;
+use App\Jobs\PublicationPayment;
 
 class PublicationsController extends Controller
 {
@@ -50,6 +51,18 @@ class PublicationsController extends Controller
         return view('publications.create');
     }
 
+    public function buy(int $id,Request $request){
+        $user = $request->user();
+        $publication = Publication::findorFail($id);
+        $publication_buyer = PublicationBuyer::create([
+            "publication_id"=>$publication->id,
+            "buyer_id"=>$user->id,
+            "status"=>config('constants.ADVERT_STATES.PENDING PAYMENT'),
+            "payment_ref"=>"NA"
+        ]);
+        PublicationPayment::dispatch($publication_buyer);
+        
+    }
     /**
      * Store a newly created resource in storage.
      */
