@@ -94,7 +94,7 @@ class PublicationsController extends Controller
         $fileData['custom_fields'] = json_encode([]);
         $fileData['created_at'] = now();
         $fileData['updated_at'] = now();
-        $file_type = FileType::where('name', "Gazette")->first();
+        $file_type = FileType::where('name', "Publication")->first();
         $fileData['file_type_id'] = $file_type->id;
         $fileData['document_id'] = $publication->id;
         $publication->files()->insert([$fileData]);
