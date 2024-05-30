@@ -63,7 +63,7 @@ class PublicationsController extends Controller
             "pub_fees"=>$request->input("pub_fees"),
             "pub_author"=>$request->input("pub_author"),
             "created_by"=>$user->id,
-            "name"=>"Uganda Gazette issued ".$request->input("gaz_issue_no"),
+            "name"=>$request->input("pub_title"),
             "status"=>config('constants.GAZETTE_STATUSES.PUBLISHED'),
             "category"=>config('constants.DOC_TYPES.PUBLICATION')
         ]);
