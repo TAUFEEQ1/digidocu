@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('publication_buyers', function (Blueprint $table) {
             $table->id();
-            $table->foreign('publication_id')->references('id')->on('documents');
+            $table->integer('publication_id')->unsigned();
+            $table->unsignedBigInteger('buyer_id');
+            $table->foreign('publication_id')->references('id')->on('documents')->cascadeOnDelete();
             $table->foreign('buyer_id')->references('id')->on('users');
             $table->string('payment_ref');
             $table->string('status');
