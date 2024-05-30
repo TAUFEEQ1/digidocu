@@ -18,12 +18,12 @@
                         {!! Form::text('pub_title','', ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('pub_fees', 'Fees:') !!}
+                        {!! Form::label('pub_fees', 'Price:') !!}
                         {!! Form::number('pub_fees',0, ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('pub_author', 'Author') !!}
-                        {!! Form::date('pub_author','', ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! Form::text('pub_author','', ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                     <div class="form-group">
                         <label for="file" class="control-label">Scanned PDF</label>

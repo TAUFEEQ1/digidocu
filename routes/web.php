@@ -17,6 +17,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EgazettesController;
 use App\Http\Controllers\FileTypeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PublicationsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TagController;
@@ -63,6 +64,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::post('/{id}', [DocumentController::class,'storeFiles'])->name('store');
         Route::delete('/{id}', [DocumentController::class,'deleteFile'])->name('destroy');
     });
+    Route::resource('publications',PublicationsController::class);
     Route::get('subscriptions/{id}/receipt',[SubscriptionsController::class,'getReceipt']);
     Route::resource('subscriptions',SubscriptionsController::class);
     Route::get('/_files/{dir?}/{file?}',[HomeController::class,'showFile'])->name('files.showfile');

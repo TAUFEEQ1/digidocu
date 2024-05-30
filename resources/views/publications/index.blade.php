@@ -3,14 +3,14 @@
 @section("content")
 <section class="content-header">
     <h1 class="pull-left"></h1>
-    @if($user->is_editor)
+    @can("create egazette")
     <div class="pull-right">
         <a href="{{ route('publications.create') }}" class="btn btn-primary">
             <i class="fa fa-plus"></i>
             Add New
         </a>
     </div>
-    @endif
+    @endcan
 </section>
 <section class="content" style="margin-top: 20px;">
     <div class="clearfix"></div>

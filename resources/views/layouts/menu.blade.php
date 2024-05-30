@@ -1,14 +1,19 @@
 <li class="{{ Request::is('admin/home*') ? 'active' : '' }}">
     <a href="{!! route('admin.dashboard') !!}"><i class="fa fa-home"></i><span>Home</span></a>
 </li>
+@if(auth()->user()->is_super_admin || auth()->user()->is_client )
 <li class="{{ Request::is('admin/subscriptions*') ? 'active' : '' }}">
     <a href="{!! route('subscriptions.index') !!}"><i class="fa fa-money"></i><span>Subscriptions</span></a>
 </li>
+@endif
 <li class="{{ Request::is('admin/egazettes*') ? 'active' : '' }}">
     <a href="{!! route('egazettes.index') !!}"><i class="fa fa-newspaper-o"></i><span>E-Gazettes</span></a>
 </li>
+<li class="{{ Request::is('admin/publications*') ? 'active':'' }}">
+    <a href="{!! route('publications.index') !!}"><i class="fa fa-book"></i><span>Publications</span></a>
+</li>
 <li class="{{ Request::is('admin/adverts*') ? 'active' : '' }}">
-    <a href="{!! route('adverts.index') !!}"><i class="fa fa-newspaper-o"></i><span>Adverts</span></a>
+    <a href="{!! route('adverts.index') !!}"><i class="fa fa-bullhorn"></i><span>Adverts</span></a>
 </li>
 @if(auth()->user()->is_super_admin)
     <li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
