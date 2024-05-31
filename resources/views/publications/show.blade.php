@@ -111,10 +111,9 @@
                     </ul>
                     <div class="tab-content">
                         @if ($user->is_client)
-                        <div class="tab-pane" id="tab_buy">
-                            @if($document->status == config("constants.ADVERT_STATES.PAID"))
+                        <div class="tab-pane active" id="tab_buy">
+                            @if(!$document->is_bought)
                             {!! Form::open(['route' => ['publications.buy', $document->id], 'method' => 'post']) !!}
-                            <div class="col-md-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Name:') !!}
                                     {!! Form::text('name', $user->name, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
@@ -125,20 +124,19 @@
                                     {!! Form::select('mobile_network', config('constants.MOBILE_NETWORKS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('pub_fees', 'Fees:') !!}
-                                    {!! Form::text('pub_fees',$document->pub_fees, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
-                                </div>
-                                <div class="form-group">
                                     {!! Form::label('mobile_no', 'Mobile No:') !!}
                                     {!! Form::tel('mobile_no','', ['class' => 'form-control', 'required' => 'required', 'pattern' => '0[0-9]{9}']) !!}
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-offset-8 col-md-4">
-                                        {!! Form::submit('Buy', ['class' => 'btn btn-primary pull-right']) !!}
-                                    </div>
+                                    {!! Form::label('pub_fees', 'Fees:') !!}
+                                    {!! Form::text('pub_fees',$document->pub_fees, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    {!! Form::submit('Buy', ['class' => 'btn btn-primary']) !!}
+                                </div>
                             {!! Form::close() !!}
+                            @elseif($document->being_bought)
+                            <span class="badge badge-primary">PAYMENT PENDING</span>
                             @else
                             <input type="hidden" name="passkey" value="{{ $document->pub_key }}">
                             <button class="btn btn-primary key-copy" value="{{ $document->pub_key }}">

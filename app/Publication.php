@@ -50,4 +50,12 @@ class Publication extends Document
         ->where("status",config("constants.ADVERT_STATES.PAID"))
         ->exists();
     }
+    
+    public function getBeingBoughtAttribute()
+    {
+        $latestBuyer = $this->buyers()
+        ->where("buyer_id",auth()->id())
+        ->latest();
+        return $latestBuyer ? $latestBuyer->status === config('constants.ADVERT_STATES.PENDING PAYMENT') : false;
+    }
 }
