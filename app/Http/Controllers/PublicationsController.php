@@ -119,6 +119,14 @@ class PublicationsController extends Controller
         return view("publications.show",compact("document","user"));
     }
 
+    public function download(int $id){
+        $egazette = Publication::find($id);
+        $files = $egazette->files;
+        $file = $files->first();
+        $filePath = storage_path('app/files/original/' . $file->file);
+        return response()->download($filePath, $file->name);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
