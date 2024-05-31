@@ -38,9 +38,8 @@
                                 <th>Title</th>
                                 <th>Price</th>
                                 <th>Author</th>
-                                @if ($user->is_client)
+                                <th>Created at</th>
                                 <th>Action</th> 
-                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -49,15 +48,12 @@
                                 <td>{{ $document->pub_title }}</td>
                                 <td>{{ $document->pub_fees }}</td>
                                 <td>{{ $document->pub_author }}</td>
-                                @if ($user->is_client)
+                                <td>{{ $document->created_at }}</td>
                                 <td>
-                                    @if($document->bought)
-                                    <button class="btn btn-primary">Download</button>
-                                    @else
-                                    <button class="btn btn-primary">Buy</button>
-                                    @endif
+                                    <a href="{{ route('publications.show', ['publication' => $document->id]) }}" class="btn btn-primary">
+                                        <i class="fa fa-eye"></i> View More
+                                    </a>
                                 </td>
-                                @endif
                             </tr>
                             @endforeach
                         </tbody>

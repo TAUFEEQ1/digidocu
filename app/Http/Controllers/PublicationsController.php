@@ -28,15 +28,6 @@ class PublicationsController extends Controller
             $baseQ->where('pub_title', 'LIKE', '%' . $searchQuery . '%');
         }
 
-        if($user->is_client){
-            $baseQ->leftJoin('publication_buyers',function($join) use ($user){
-                $join->on('documents.id', '=', 'publication_buyers.publication_id')
-                ->where('publication_buyers.buyer_id', '=', $user->id)
-                ->where('publication_buyers.status', '=',config('constants.ADVERT_STATES.PAID'))
-                ->select('documents.*', DB::raw('CASE WHEN publication_buyers.id IS NOT NULL THEN TRUE ELSE FALSE END AS bought'));
-            });
-        }
-
         $documents = $baseQ->orderBy('documents.created_at', 'desc')->paginate(15);
     
         return view('publications.index', compact('documents','user'));
