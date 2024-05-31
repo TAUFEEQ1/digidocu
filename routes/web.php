@@ -64,6 +64,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::post('/{id}', [DocumentController::class,'storeFiles'])->name('store');
         Route::delete('/{id}', [DocumentController::class,'deleteFile'])->name('destroy');
     });
+    Route::post('publications/{id}/buy',[PublicationsController::class,'buy']);
+    
     Route::resource('publications',PublicationsController::class);
     Route::get('subscriptions/{id}/receipt',[SubscriptionsController::class,'getReceipt']);
     Route::resource('subscriptions',SubscriptionsController::class);

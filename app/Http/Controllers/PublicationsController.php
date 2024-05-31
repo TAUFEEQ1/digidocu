@@ -52,7 +52,7 @@ class PublicationsController extends Controller
             "payment_ref"=>"NA"
         ]);
         PublicationPayment::dispatch($publication_buyer);
-        
+        return $publication;
     }
     /**
      * Store a newly created resource in storage.
@@ -108,9 +108,13 @@ class PublicationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $publication, Request $request)
     {
         //
+        $document = Publication::find($publication);
+        $user = $request->user();
+        
+        return view("publications.show",compact("document","user"));
     }
 
     /**

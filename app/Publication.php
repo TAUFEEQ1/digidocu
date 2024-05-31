@@ -39,4 +39,15 @@ class Publication extends Document
         });
     }
 
+    public function buyers(){
+        return $this->hasMany(PublicationBuyer::class, 'publication_id', 'id');
+    }
+
+    public function getIsBoughtAttribute()
+    {
+        return $this->buyers()
+        ->where("buyer_id",auth()->id())
+        ->where("status",config("constants.ADVERT_STATES.PAID"))
+        ->exists();
+    }
 }
