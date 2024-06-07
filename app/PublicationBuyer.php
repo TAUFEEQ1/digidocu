@@ -15,8 +15,16 @@ class PublicationBuyer extends Model
         'payment_ref',
         'status',
         'buyer_id',
-        'purchased_at'
+        'purchased_at',
+        'mobile_network',
+        'mobile_no'
     ];
 
+    public function publication(){
+        return $this->belongsTo(Publication::class,'publication_id','id');
+    }
 
+    public function buyer(){
+        return $this->belongsTo(User::class,'buyer_id','id');
+    }
 }

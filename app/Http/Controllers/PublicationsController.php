@@ -45,16 +45,17 @@ class PublicationsController extends Controller
     public function buy(int $id,Request $request){
         $user = $request->user();
         $publication = Publication::findorFail($id);
+        $networks = config("constants.MOBILE_NETWORKS");
         $publication_buyer = PublicationBuyer::create([
             "publication_id"=> $publication->id,
             "buyer_id"=> $user->id,
-            "mobile_network"=> $request->input('mobile_network'),
+            "mobile_network"=> $networks[(int)$request->input("mobile_network")],
             "mobile_no"=> $request->input("mobile_no"),
             "status"=> config('constants.ADVERT_STATES.PENDING PAYMENT'),
             "payment_ref"=>"NA"
         ]);
         PublicationPayment::dispatch($publication_buyer);
-        return $publication;
+        return redirect()->route("publications.show",["publication"=>$id]);
     }
     /**
      * Store a newly created resource in storage.

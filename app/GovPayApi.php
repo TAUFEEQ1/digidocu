@@ -27,8 +27,7 @@ class GovPayApi{
         // prepare mobile network
         $networks = config("govnet.NETWORKS");
         $this->details["mobile_network"] = $networks[$this->details["mobile_network"]];
-        // 
-
+        //
     }
 
     public function getDetails(){
@@ -51,7 +50,7 @@ class GovPayApi{
           "merchant_reference" => "auto", 
           "transaction_method" => "MOBILE_MONEY", 
           "currency" => "UGX", 
-          "amount" => $details["amount"]*0.01, 
+          "amount" => $details["amount"], 
           "provider_code" => $details["mobile_network"], 
           "msisdn" => $details["phone_no"], 
           "customer_name" => $this->details["name"], 
