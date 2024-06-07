@@ -112,7 +112,17 @@
                     <div class="tab-content">
                         @if ($user->is_client)
                         <div class="tab-pane active" id="tab_buy">
-                            @if(!$document->is_bought)
+                            @if($document->is_bought)
+                            <input type="hidden" name="passkey" value="{{ $document->pub_key }}">
+                            <button class="btn btn-primary key-copy" value="{{ $document->pub_key }}">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                            <button class="btn btn-primary" value="{{route('publications.download',['id'=>$document->id])}}">
+                                <i class="fa fa-download"></i> Download
+                            </button>
+                            @elseif ($document->is_being_bought)
+                            <span class="badge badge-primary">PAYMENT PENDING</span>
+                            @else
                             {!! Form::open(['route' => ['publications.buy', $document->id], 'method' => 'post']) !!}
                                 <div class="form-group">
                                     {!! Form::label('name', 'Name:') !!}
@@ -135,16 +145,6 @@
                                     {!! Form::submit('Buy', ['class' => 'btn btn-primary']) !!}
                                 </div>
                             {!! Form::close() !!}
-                            @elseif($document->being_bought)
-                            <span class="badge badge-primary">PAYMENT PENDING</span>
-                            @else
-                            <input type="hidden" name="passkey" value="{{ $document->pub_key }}">
-                            <button class="btn btn-primary key-copy" value="{{ $document->pub_key }}">
-                                <i class="fa fa-copy"></i>
-                            </button>
-                            <button class="btn btn-primary" value="{{route('publications.download',['id'=>$document->id])}}">
-                                <i class="fa fa-download"></i> Download
-                            </button>
                             @endif
                         </div>
                         @endif

@@ -55,7 +55,8 @@ class GovPayApi{
           "msisdn" => $details["phone_no"], 
           "customer_name" => $this->details["name"], 
           "description" => "MM Collection", 
-          "charge_customer" => config("govnet.CHARGE_CUSTOMER")
+          "charge_customer" => config("govnet.CHARGE_CUSTOMER"),
+          "require_confirmation" =>FALSE
        ]; 
         
         

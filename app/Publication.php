@@ -12,6 +12,8 @@ use App\Document;
  * @property string $pub_title
  * @property int $pub_fees
  * @property string $pub_author
+ * @property bool $is_being_bought
+ * @property bool
  * 
  * **/
 class Publication extends Document
@@ -51,11 +53,11 @@ class Publication extends Document
         ->exists();
     }
     
-    public function getBeingBoughtAttribute()
+    public function getIsBeingBoughtAttribute()
     {
         $latestBuyer = $this->buyers()
         ->where("buyer_id",auth()->id())
-        ->latest();
+        ->latest()->first();
         return $latestBuyer ? $latestBuyer->status === config('constants.ADVERT_STATES.PENDING PAYMENT') : false;
     }
 }

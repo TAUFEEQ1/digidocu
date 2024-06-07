@@ -23,7 +23,6 @@ class PaymentsController extends Controller
         $event = $request->json("event");
 
         $payment = PaymentFactory::make($reference);
-
         if($event == "transaction.charges"){
             $api->confirm($reference);
         }elseif($event == "transaction.completed"){

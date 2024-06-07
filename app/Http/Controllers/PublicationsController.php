@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
 use App\FileType;
 use App\Jobs\PublicationPayment;
+use Illuminate\Support\Facades\Log;
 
 class PublicationsController extends Controller
 {
@@ -116,7 +117,6 @@ class PublicationsController extends Controller
         //
         $document = Publication::find($publication);
         $user = $request->user();
-        
         return view("publications.show",compact("document","user"));
     }
 
