@@ -49,6 +49,35 @@
 @stop
 @section('scripts')
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+        $(".key-copy").click(function() {
+            const passkey = $(this).val();
+            // Create a temporary textarea and append it to the body
+            $('<textarea>').appendTo('body').val(passkey).select();
+            // Copy the selected text to the clipboard
+            document.execCommand('copy');
+            // Remove the temporary textarea
+            $('textarea').remove();
+            alert('Key has been copied to clipboard');
+        });
+        $(".publication-download").click(function(){
+            const req = new XMLHttpRequest();
+            const url = $(this).val();
+            req.open("GET", url, true);
+            req.responseType = "blob";
+
+            req.onload = function(event) {
+                var blob = req.response;
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "Dossier_" + new Date() + ".pdf";
+                link.click();
+            };
+
+            req.send()
+        });
+</script>
+@stop
 @section('content')
 <section class="content-header" style="margin-bottom: 27px;">
     <h1 class="pull-left">
@@ -117,7 +146,7 @@
                             <button class="btn btn-primary key-copy" value="{{ $document->pub_key }}">
                                 <i class="fa fa-copy"></i>
                             </button>
-                            <button class="btn btn-primary" value="{{route('publications.download',['id'=>$document->id])}}">
+                            <button class="btn btn-primary publication-download" value="{{route('publications.download',['id'=>$document->id])}}">
                                 <i class="fa fa-download"></i> Download
                             </button>
                             @elseif ($document->is_being_bought)
