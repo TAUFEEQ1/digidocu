@@ -70,7 +70,7 @@
                 var blob = req.response;
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
-                link.download = "Dossier_" + new Date() + ".pdf";
+                link.download = "{{ $document->pub_title}} " + new Date() + ".pdf";
                 link.click();
             };
 
