@@ -128,6 +128,25 @@ class PublicationsController extends Controller
         return response()->download($filePath, $file->name);
     }
 
+    public function view(int $id){
+        $egazette = Publication::find($id);
+        $files = $egazette->files;
+        $file = $files->first();
+        $filePath = storage_path('app/files/original/' . $file->file);
+    
+        // If the file is password-protected, decrypt it temporarily before serving
+        if ($egazette->pub_key) {
+            $tempDecryptedFilePath = tempnam(sys_get_temp_dir(), 'decrypted_pdf_');
+            Artisan::call('app:decrypt-pdf', [
+                'inputFile' => $filePath,
+                'outputFile' => $tempDecryptedFilePath,
+                'userPassword' => $egazette->pub_key
+            ]);
+            $filePath = $tempDecryptedFilePath;
+        }
+    
+        return response()->download($filePath, $file->name)->deleteFileAfterSend(true);
+    }
     /**
      * Show the form for editing the specified resource.
      */

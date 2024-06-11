@@ -44,10 +44,26 @@
         bottom: -4px;
         right: 10px;
     }
+    #btn-download{
+        display: none;
+    }
+    #btn-print{
+        display: none;
+    }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<link rel="stylesheet" href="{{asset('css/pdfviewer.jquery.css')}}">
 @stop
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js" integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ asset('js/pdfviewer.jquery.js') }}"></script>
+<script>
+$('#pdfviewer').pdfViewer("{{route('publications.view',['id'=>$document->id])}}",{ 
+  width:880,
+  height: 500,
+  title:"Publication : {{ $document->pub_title }}"
+});
+</script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
         $(".key-copy").click(function() {
@@ -149,6 +165,7 @@
                             <button class="btn btn-primary publication-download" value="{{route('publications.download',['id'=>$document->id])}}">
                                 <i class="fa fa-download"></i> Download
                             </button>
+                            <div id="pdfviewer" style="width: 100%; height: 600px; margin-top:10px;"></div>
                             @elseif ($document->is_being_bought)
                             <span class="badge badge-primary">PAYMENT PENDING</span>
                             @else
