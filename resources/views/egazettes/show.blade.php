@@ -19,6 +19,7 @@
 $('#pdfviewer').pdfViewer("{{route('egazettes.view',['id'=>$document->id])}}",{ 
   width: 1280,
   height: 800,
+  title:"E-Gazette : {{$document->gaz_issue_no}}"
 });
 </script>
 @stop

@@ -9,6 +9,12 @@
     let version = $().jquery;
     version = version.split('.');
     //Define the pdf viewer plugin
+    /**
+     * 
+     * @param {*} url 
+     * @param {Object} options 
+     * @param {string} options.title - The title string.
+     */
     $.fn.pdfViewer = function (url, options) {
         const date = new Date();
         const defaultOptions = {
@@ -23,7 +29,6 @@
 
         let settings = $.extend({}, defaultOptions, options);
         let documentName = settings.documentUrl;
-
         //The separator of the base64 pdf data and its mime type
         const base64Marker = ';base64,';
         let rawPdfData = null;
@@ -41,7 +46,7 @@
 
         //Add the toolbar to the pdf viewer
         $(this).append('<div class="pdf-toolbar">' +
-            '<span class="pdf-toolbar-title" id="doc-title">Pdf Viewer 1.0</span>' +
+            `<span class="pdf-toolbar-title" id="doc-title">${options.title}</span>` +
             '<span class="pdf-toolbar-btn" id="btn-print" title="Print">&#x1F5B6;</span>' +
             '<span class="pdf-toolbar-btn" id="btn-download" title="Download">&#x2193;</span>' +
             '<span class="pdf-toolbar-btn" id="btn-first" title="First page">&#8249;&#8249;</span>' +
