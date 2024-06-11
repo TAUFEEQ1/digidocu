@@ -1,28 +1,32 @@
 @extends('layouts.app')
 
 @section('title', 'View E-Gazette')
-@section("css")
-<link rel="stylesheet" href="{{asset('css/pdfviewer.jquery.css')}}">
-<style>
-    #btn-download{
-        display: none;
-    }
-    #btn-print{
-        display: none;
-    }
-</style>
-@stop
 @section("scripts")
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js" integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{asset('js/pdfviewer.jquery.js')}}"></script>
+<script src="{{asset('/lib/webviewer.min.js')}}"></script>
 <script>
-$('#pdfviewer').pdfViewer("{{route('egazettes.view',['id'=>$document->id])}}",{ 
-  width: 1280,
-  height: 800,
-  title:"E-Gazette : {{$document->gaz_issue_no}}"
-});
+  WebViewer({
+    path: '{{ asset("lib")}}', // path to the PDF.js Express'lib' folder on your server
+    licenseKey: '{{env("PDFJS_EXPRESS_KEY")}}',
+    initialDoc: '{{route("egazettes.view",["id"=>$document->id])}}',
+    // initialDoc: '/path/to/my/file.pdf',  // You can also use documents on your server
+  }, document.getElementById('viewer'))
+  .then(instance => {
+    // now you can access APIs through the WebViewer instance
+    const { Core, UI } = instance;
+
+    // adding an event listener for when a document is loaded
+    Core.documentViewer.addEventListener('documentLoaded', () => {
+      console.log('document loaded');
+    });
+
+    // adding an event listener for when the page number has changed
+    Core.documentViewer.addEventListener('pageNumberUpdated', (pageNumber) => {
+      console.log(`Page number is: ${pageNumber}`);
+    });
+    instance.UI.disableElements(['downloadButton','printButton']);
+  });
 </script>
 @stop
 @section('content')
-<div id="pdfviewer" style="width: 100%; height: 600px;"></div>
+<div id="viewer" style="width:100%;height:90vh;"></div>
 @endsection
