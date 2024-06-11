@@ -70,7 +70,7 @@
                 <div class="box-body">
                     <h4>More Resources</h4>
                     <p class="card-text">Additional resources available on the portal.</p>
-                    <a href="#" class="btn btn-primary">Explore</a>
+                    <a href="https://uppc.go.ug/" class="btn btn-primary" target="_blank">Explore</a>
                 </div>
             </div>
         </div>

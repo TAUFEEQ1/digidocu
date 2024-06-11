@@ -52,17 +52,31 @@
     }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-<link rel="stylesheet" href="{{asset('css/pdfviewer.jquery.css')}}">
 @stop
 @section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js" integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ asset('js/pdfviewer.jquery.js') }}"></script>
+<script src="{{asset('/lib/webviewer.min.js')}}"></script>
 <script>
-$('#pdfviewer').pdfViewer("{{route('publications.view',['id'=>$document->id])}}",{ 
-  width:880,
-  height: 500,
-  title:"Publication : {{ $document->pub_title }}"
-});
+  WebViewer({
+    path: '{{ asset("lib")}}', // path to the PDF.js Express'lib' folder on your server
+    licenseKey: '{{env("PDFJS_EXPRESS_KEY")}}',
+    initialDoc: '{{route("publications.view",["id"=>$document->id])}}',
+    // initialDoc: '/path/to/my/file.pdf',  // You can also use documents on your server
+  }, document.getElementById('viewer'))
+  .then(instance => {
+    // now you can access APIs through the WebViewer instance
+    const { Core, UI } = instance;
+
+    // adding an event listener for when a document is loaded
+    Core.documentViewer.addEventListener('documentLoaded', () => {
+      console.log('document loaded');
+    });
+
+    // adding an event listener for when the page number has changed
+    Core.documentViewer.addEventListener('pageNumberUpdated', (pageNumber) => {
+      console.log(`Page number is: ${pageNumber}`);
+    });
+    instance.UI.disableElements(['downloadButton','printButton']);
+  });
 </script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
@@ -165,7 +179,7 @@ $('#pdfviewer').pdfViewer("{{route('publications.view',['id'=>$document->id])}}"
                             <button class="btn btn-primary publication-download" value="{{route('publications.download',['id'=>$document->id])}}">
                                 <i class="fa fa-download"></i> Download
                             </button>
-                            <div id="pdfviewer" style="width: 100%; height: 600px; margin-top:10px;"></div>
+                            <div id='viewer' style="width:890px;height:600px;"></div>
                             @elseif ($document->is_being_bought)
                             <span class="badge badge-primary">PAYMENT PENDING</span>
                             @else
