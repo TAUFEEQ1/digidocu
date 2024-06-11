@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\FileType;
 use App\Jobs\PublicationPayment;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class PublicationsController extends Controller
 {
@@ -117,7 +118,8 @@ class PublicationsController extends Controller
         //
         $document = Publication::find($publication);
         $user = $request->user();
-        return view("publications.show",compact("document","user"));
+        $signedUrl = URL::temporarySignedRoute('publications.view', now()->addMinutes(5), ['id' => $publication]);
+        return view("publications.show",compact("document","user","signedUrl"));
     }
 
     public function download(int $id){

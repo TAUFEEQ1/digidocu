@@ -59,7 +59,7 @@
   WebViewer({
     path: '{{ asset("lib")}}', // path to the PDF.js Express'lib' folder on your server
     licenseKey: '{{env("PDFJS_EXPRESS_KEY")}}',
-    initialDoc: '{{route("publications.view",["id"=>$document->id])}}',
+    initialDoc: '{!! $signedUrl !!}',
     // initialDoc: '/path/to/my/file.pdf',  // You can also use documents on your server
   }, document.getElementById('viewer'))
   .then(instance => {

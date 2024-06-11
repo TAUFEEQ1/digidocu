@@ -67,7 +67,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     });
     Route::post('publications/{id}/buy',[PublicationsController::class,'buy'])->name('publications.buy');
     Route::get('publications/{id}/download',[PublicationsController::class,'download'])->name('publications.download');
-    Route::get("/publications/{id}/view",[PublicationsController::class,'view'])->name("publications.view");
+    Route::get("/publications/{id}/view",[PublicationsController::class,'view'])->name("publications.view")->middleware("signed");
 
     
     Route::resource('publications',PublicationsController::class);
