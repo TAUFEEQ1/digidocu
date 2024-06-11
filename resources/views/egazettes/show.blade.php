@@ -7,6 +7,9 @@
     #btn-download{
         display: none;
     }
+    #btn-print{
+        display: none;
+    }
 </style>
 @stop
 @section("scripts")
