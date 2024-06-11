@@ -11,17 +11,17 @@
             // Add the new sibling element after the current input element
             $(input).after(newElement);
         });
-        $(".key-copy").click(function() {
+        $("#key-copy").click(function() {
             const passkey = $(this).val();
             // Create a temporary textarea and append it to the body
-            $('<textarea>').appendTo('body').val(passkey).select();
-            // Copy the selected text to the clipboard
-            document.execCommand('copy');
-            // Remove the temporary textarea
-            $('textarea').remove();
+            navigator.clipboard.writeText(passkey);
             alert('Key has been copied to clipboard');
         });
-        $(".gazette-download").click(function(){
+        $(".dload-btn").click(function() {
+            $("#key-copy").val($(this).data("key"));
+            $("#gazette-download").val($(this).data("link"));
+        });
+        $("#gazette-download").click(function() {
             const req = new XMLHttpRequest();
             const url = $(this).val();
             req.open("GET", url, true);
@@ -41,6 +41,26 @@
 </script>
 @stop
 @section('content')
+<div class="modal fade" id="passkeyModal" tabindex="-1" role="dialog" aria-labelledby="passkeyModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="passkeyModalLabel">Download instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>Copy this passkey and proceed with the download.</p>
+                <button class="btn btn-primary" id="key-copy">
+                    <i class="fa fa-copy"></i> Copy passkey
+                </button>
+                <!-- Add any additional instructions here -->
+                <button id="gazette-download" class="btn btn-primary">
+                    <i class="fa fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <section class="content-header">
     <h1 class="pull-left">E-Gazettes</h1>
     @can("create egazette")
@@ -59,7 +79,7 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">E-Gazette List</h3>
+                    <h3 class="box-title">E-Gazettes</h3>
                     <div class="box-tools">
                         <form action="{{ route('egazettes.index') }}" method="GET" class="form-inline">
                             <div class="input-group input-group-sm">
@@ -72,41 +92,30 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Issue No</th>
-                                <th>Sub Category</th>
-                                <th>Status</th>
-                                <th>Passkey</th>
-                                <th>Published On</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($documents as $document)
-                            <tr>
-                                <td>{{ $document->gaz_issue_no }}</td>
-                                <td>{{ $document->gaz_sub_category }}</td>
-                                <td>{{ $document->status }}</td>
-                                <td>
-                                    @if ($document->gaz_passkey)
-                                    <input type="hidden" name="passkey" value="{{ $document->gaz_passkey }}">
-                                    <button class="btn btn-primary key-copy" value="{{ $document->gaz_passkey }}">
-                                        <i class="fa fa-copy"></i>
-                                    </button>
-                                    @endif
-                                </td>
-                                <td>{{ $document->gaz_published_on }}</td>
-                                <td>
-                                    <button class="btn btn-primary gazette-download" value="{{route('egazettes.download',['id'=>$document->id])}}">
+                    <div class="row">
+                        @foreach($documents as $document)
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Issue No: {{ $document->gaz_issue_no }}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p><strong>Sub Category:</strong> {{ $document->gaz_sub_category }}</p>
+                                    <p><strong>Status:</strong> {{ $document->status }}</p>
+                                    <p><strong>Published On:</strong> {{ $document->gaz_published_on }}</p>
+                                    <a class="btn btn-warning" href="{{route('egazettes.show',['egazette'=>$document->id])}}">
+                                        <i class="fa fa-eye"></i> Read More
+                                    </a>
+                                    <button class="btn btn-primary dload-btn" data-toggle="modal" data-target="#passkeyModal" data-key="{{$document->gaz_passkey}}" 
+                                    data-link="{{route('egazettes.download',['id'=>$document->id])}}">
                                         <i class="fa fa-download"></i> Download
                                     </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+
                 </div>
             </div>
         </div>
