@@ -118,7 +118,7 @@ class PublicationsController extends Controller
         //
         $document = Publication::find($publication);
         $user = $request->user();
-        $signedUrl = URL::temporarySignedRoute('publications.view', now()->addMinute(), ['id' => $publication]);
+        $signedUrl = URL::temporarySignedRoute('publications.view', now()->addSeconds(30), ['id' => $publication]);
         return view("publications.show",compact("document","user","signedUrl"));
     }
 
