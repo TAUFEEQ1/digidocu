@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use mikehaertl\pdftk\Pdf;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 
 class EgazettesController extends Controller
 {
@@ -124,7 +125,8 @@ class EgazettesController extends Controller
     }
     public function show(int $id){
         $document = Egazette::find($id);
-        return view("egazettes.show",compact("document"));
+        $signedUrl = URL::temporarySignedRoute('egazettes.view', now()->addSeconds(30), ['id' => $id]);
+        return view("egazettes.show",compact("document","signedUrl"));
     }
 
     public function download(int $id){

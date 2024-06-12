@@ -49,7 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     });
     Route::resource('users', UserController::class);
     Route::get("/egazettes/{id}/download",[EgazettesController::class,'download'])->name('egazettes.download');
-    Route::get("/egazettes/{id}/view",[EgazettesController::class,'view'])->name("egazettes.view");
+    Route::get("/egazettes/{id}/view",[EgazettesController::class,'view'])->name("egazettes.view")->middleware("signed");
     Route::resource('egazettes',EgazettesController::class);
     Route::post('adverts/register/{id}',[AdvertsController::class,"register"])->name("adverts.register");
     Route::resource('adverts',AdvertsController::class);
