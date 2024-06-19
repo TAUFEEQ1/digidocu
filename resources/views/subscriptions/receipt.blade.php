@@ -36,6 +36,7 @@
             <p><strong>Name:</strong> {{ $document->createdBy->name }}</p>
             <p><strong>Email:</strong> {{ $document->createdBy->email }}</p>
             <p><strong>Category:</strong> {{ $document->sub_type }}</p>
+            <p><strong>Mode Of Payment:</strong> {{ $document->sub_payment_method }}</p>
             <p><strong>Amount (UGX):</strong> {!! number_format($document->sub_amount, 0, '.', ',') !!}</p>
             <p><strong>Paid At:</strong> {{ $document->sub_start_date }}</p>
             <p><strong>Valid Until:</strong> {{ $document->sub_end_date }}</p>

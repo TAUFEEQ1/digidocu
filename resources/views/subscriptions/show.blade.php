@@ -235,6 +235,10 @@
                             <p>{!! number_format($document->sub_amount, 0, '.', ',') !!}</p>
                         </div>
                         <div class="form-group">
+                            <label>Mode of Payment</label>
+                            <p>{!! $document->sub_payment_method !!}</p>
+                        </div>
+                        <div class="form-group">
                             <label>Status:</label>
                             @if ($document->status==config('constants.SUB_STATUSES.ACTIVE'))
                             <span class="label label-success">{{$document->status}}</span>
