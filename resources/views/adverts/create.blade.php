@@ -63,7 +63,7 @@
 @section('content')
 <section class="content-header">
     <h1>
-        Create Advert
+        Submit Advert
     </h1>
 </section>
 <div class="content">
