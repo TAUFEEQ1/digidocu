@@ -74,7 +74,8 @@ class PublicationsController extends Controller
             "created_by"=>$user->id,
             "name"=>$request->input("pub_title"),
             "status"=>config('constants.GAZETTE_STATUSES.PUBLISHED'),
-            "category"=>config('constants.DOC_TYPES.PUBLICATION')
+            "category"=>config('constants.DOC_TYPES.PUBLICATION'),
+            "pub_isbn"=>$request->input("pub_isbn")
         ]);
         $publication->newActivity('Publication uploaded by: '.$user->name);
         

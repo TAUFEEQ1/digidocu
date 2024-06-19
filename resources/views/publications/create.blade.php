@@ -26,6 +26,10 @@
                         {!! Form::text('pub_author','', ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('pub_isbn', 'ISBN') !!}
+                        {!! Form::text('pub_isbn','', ['class' => 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
                         <label for="file" class="control-label">Scanned PDF</label>
                         {!! Form::file('file_scan', ['class'=>'form-control']) !!} <!-- File upload field -->
                     </div>

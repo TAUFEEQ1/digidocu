@@ -13,6 +13,7 @@ use App\Document;
  * @property int $pub_fees
  * @property string $pub_author
  * @property bool $is_being_bought
+ * @property string $pub_isbn
  * @property bool
  * 
  * **/
@@ -29,7 +30,8 @@ class Publication extends Document
         "name",
         "created_by",
         "status",
-        "category"
+        "category",
+        "pub_isbn"
     ];
 
     protected static function boot()
