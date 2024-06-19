@@ -24,6 +24,7 @@ return [
     ],
     'SUB_TYPES'=>['ANNUAL','3-Months','6-Months','One-Off'],
     'SUB_FEES'=>[800000,300000,550000,3000],
+    'SUB_CATEGORY'=>['ORDINARY','EXTRA-ORDINARY'],
     'ADVERT_STATES'=>[
         'PENDING PAYMENT'=>'PENDING PAYMENT',
         'PAID'=>'PAID',

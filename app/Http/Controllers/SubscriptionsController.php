@@ -43,6 +43,7 @@ class SubscriptionsController extends Controller
         $networks = config("constants.MOBILE_NETWORKS");
         $sub_types = config("constants.SUB_TYPES");
         $sub_fees = config("constants.SUB_FEES");
+        $sub_category = config("constants.SUB_CATEGORY");
         /** @var \App\Subscription */
         $subscription = Subscription::create(
             [
@@ -54,6 +55,7 @@ class SubscriptionsController extends Controller
                 "sub_amount" => $sub_fees[(int)$request->input("sub_type")],
                 "sub_type" => $sub_types[(int)$request->input("sub_type")],
                 "sub_payment_method" => "MOBILE",
+                "sub_category" => $sub_category[(int)$request->input("sub_category")],
                 "sub_payment_mobile_network" => $networks[(int)$request->input("sub_payment_mobile_network")],
                 "sub_payment_mobile_no" => $request->input("sub_payment_mobile_no")
             ]

@@ -60,6 +60,10 @@
                         {!! Form::select('sub_type', config('constants.SUB_TYPES'), null, ['class' => 'form-control','id'=>'sub_type','required' => 'required']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('sub_category', 'Subscription Category:') !!}
+                        {!! Form::select('sub_category', config('constants.SUB_CATEGORY'), null, ['class' => 'form-control','id'=>'sub_category','required' => 'required']) !!}
+                    </div>
+                    <div class="form-group">
                         {!! Form::label('sub_end_date', 'End Date:') !!}
                         {!! Form::date('sub_end_date', null, ['id' => 'sub_end_date','class' => 'form-control', 'readonly' => 'readonly']) !!}
                     </div>
