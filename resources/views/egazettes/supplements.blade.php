@@ -234,13 +234,13 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab_files" data-toggle="tab" aria-expanded="true">Supplements</a>
                         </li>
-                        @if ($user->is_registrar)
+                        @can("create egazette")
                         <li>
                             <a href="#tab_supplements" data-toggle="tab">
                                 Add supplements
                             </a>
                         </li>
-                        @endif
+                        @endcan
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_files">
@@ -268,17 +268,17 @@
 
                             </div>
                         </div>
-                        @if ($user->is_registrar)
+                        @can("create egazette")
                         <div class="tab-pane" id="tab_supplements">
-                            {!! Form::open(['route' => ['egazettes.add_supplements', ["id"=>$document->id]], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+                            {!! Form::open(['route' => ['egazettes.add_supplements', ["id"=>$document->id]], 'method' => 'post', 'enctype' => 'multipart/form-data','files'=>true]) !!}
                             <div class="form-group">
                                 {!! Form::label('file_scan', 'Supplements', ['class' => 'control-label']) !!}
                                 {!! Form::file('file_scan[]', ['class'=>'form-control', 'multiple' => true]) !!} <!-- Multiple file upload field -->
                             </div>
                             {!! Form::submit('Upload', ['class' => 'btn btn-primary']) !!}
                             {!! Form::close() !!}
-                        </div>
-                        @endif
+                        </div>  
+                        @endcan
                     </div>
                 </div>
             </div>

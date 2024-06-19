@@ -1,5 +1,17 @@
 @extends('layouts.app')
 @section('title', 'E-Gazettes')
+@section("css")
+<style>
+    .btn-yellow {
+        color: #fff;
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+    .btn-yellow:hover{
+        color:white;
+    }
+</style>
+@stop
 @section("scripts")
 <script>
     $(document).ready(() => {
@@ -106,9 +118,11 @@
                                     <a class="btn btn-warning" href="{{route('egazettes.show',['egazette'=>$document->id])}}">
                                         <i class="fa fa-eye"></i> Read More
                                     </a>
+                                    <a class="btn btn-yellow" href="{{route('egazettes.supplements',['id'=>$document->id])}}">
+                                        <i class="fa fa-notes"></i> Supplements
+                                    </a>
                                     @if($document->is_downloadable)
-                                    <button class="btn btn-primary dload-btn" data-toggle="modal" data-target="#passkeyModal" data-key="{{$document->gaz_passkey}}" 
-                                    data-link="{{route('egazettes.download',['id'=>$document->id])}}">
+                                    <button class="btn btn-primary dload-btn" data-toggle="modal" data-target="#passkeyModal" data-key="{{$document->gaz_passkey}}" data-link="{{route('egazettes.download',['id'=>$document->id])}}">
                                         <i class="fa fa-download"></i> Download
                                     </button>
                                     @endif

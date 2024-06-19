@@ -11,18 +11,19 @@ class EgazetteSupplementsController extends Controller
     //
     public function index(int $id,Request $request){
         $document = Egazette::with('supplements')->find($id);
-        return view("egazettes.supplements",compact("document"));
+        $user = $request->user();
+        return view("egazettes.supplements",compact("document","user"));
     }
 
     public function store(int $id, Request $request){
-        $this->authorize("create egazatte");
+        $this->authorize("create egazette");
         $user = $request->user();
         $egazette = Egazette::find($id);
         foreach ($request->file('file_scan') as $file) {
-            $file->store('supplements');
+            $file->store('files/original');
             $fileData['name'] = $file->getClientOriginalName();
             $fileData['created_by'] = $user->id;
-            $fileData['file'] = $file->getClientOriginalName();
+            $fileData['file'] = $file->hashName();
             $fileData['custom_fields'] = json_encode([]);
             $fileData['created_at'] = now();
             $fileData['updated_at'] = now();
