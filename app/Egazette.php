@@ -14,6 +14,7 @@ use App\Activity;
  * @property string $gaz_sub_category
  * @property string $gaz_passkey
  * @property string $status
+ * @property boolean $gaz_is_downloadable
  * @property-read \App\User $createdBy
  * */
 class Egazette extends Document
@@ -31,7 +32,8 @@ class Egazette extends Document
         //Egazette
         'gaz_published_on',
         'gaz_issue_no',
-        'gaz_sub_category'  
+        'gaz_sub_category',
+        'gaz_is_downloadable' 
     ];
     protected static function boot()
     {

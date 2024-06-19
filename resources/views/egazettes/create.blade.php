@@ -26,6 +26,10 @@
                         {!! Form::date('gaz_published_on','', ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('gaz_is_downloadable', 'Downloadable') !!}
+                        {!! Form::checkbox('gaz_is_downloadable', 0, null, ['class' => 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
                         <label for="file" class="control-label">Scanned PDF</label>
                         {!! Form::file('file_scan', ['class'=>'form-control']) !!} <!-- File upload field -->
                     </div>

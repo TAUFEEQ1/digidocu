@@ -106,10 +106,12 @@
                                     <a class="btn btn-warning" href="{{route('egazettes.show',['egazette'=>$document->id])}}">
                                         <i class="fa fa-eye"></i> Read More
                                     </a>
+                                    @if($document->is_downloadable)
                                     <button class="btn btn-primary dload-btn" data-toggle="modal" data-target="#passkeyModal" data-key="{{$document->gaz_passkey}}" 
                                     data-link="{{route('egazettes.download',['id'=>$document->id])}}">
                                         <i class="fa fa-download"></i> Download
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>

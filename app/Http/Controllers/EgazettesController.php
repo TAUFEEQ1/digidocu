@@ -65,7 +65,8 @@ class EgazettesController extends Controller
             "created_by"=>$user->id,
             "name"=>"Uganda Gazette issued ".$request->input("gaz_issue_no"),
             "status"=>config('constants.GAZETTE_STATUSES.PUBLISHED'),
-            "category"=>config('constants.DOC_TYPES.EGAZETTE')
+            "category"=>config('constants.DOC_TYPES.EGAZETTE'),
+            "gaz_is_downloadable" => $request->input('gaz_is_downloadable') ? 1 : 0 // Ensure it is either 1 or 0
         ]);
         $egazette->newActivity('Gazette uploaded by: '.$user->name);
         $password = Str::random(30);
