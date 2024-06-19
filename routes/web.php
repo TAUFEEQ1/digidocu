@@ -15,6 +15,7 @@ use App\Http\Controllers\AdvertsController;
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EgazettesController;
+use App\Http\Controllers\EgazetteSupplementsController;
 use App\Http\Controllers\FileTypeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PublicationsController;
@@ -50,6 +51,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
     Route::resource('users', UserController::class);
     Route::get("/egazettes/{id}/download",[EgazettesController::class,'download'])->name('egazettes.download');
     Route::get("/egazettes/{id}/view",[EgazettesController::class,'view'])->name("egazettes.view")->middleware("signed");
+    Route::get("/egazettes/{id}/supplements",[EgazetteSupplementsController::class,'index'])->name('egazettes.supplements');
+    Route::post("/egazettes/{id}/supplements",[EgazetteSupplementsController::class,'store'])->name('egazeetes.add_supplements');
     Route::resource('egazettes',EgazettesController::class);
     Route::post('adverts/register/{id}',[AdvertsController::class,"register"])->name("adverts.register");
     Route::resource('adverts',AdvertsController::class);

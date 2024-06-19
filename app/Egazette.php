@@ -15,6 +15,7 @@ use App\Activity;
  * @property string $gaz_passkey
  * @property string $status
  * @property boolean $gaz_is_downloadable
+ * @property-read \App\File $supplements
  * @property-read \App\User $createdBy
  * */
 class Egazette extends Document
@@ -53,5 +54,12 @@ class Egazette extends Document
             'created_by' => $this->created_by,
             'document_id' => $this->id,
         ]);
+    }
+
+    public function supplements()
+    {
+        return $this->files()->whereHas('fileType', function ($query) {
+            $query->where('name', 'Supplement');
+        });
     }
 }
