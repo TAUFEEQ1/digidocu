@@ -126,6 +126,10 @@
                             <p>{{ $document->pub_title }}</p>
                         </div>
                         <div class="form-group">
+                            <label>ISBN</label>
+                            <p>{{$document->pub_isbn}}</p>
+                        </div>
+                        <div class="form-group">
                             <label>Fees (UGX):</label>
                             <p>{!! number_format($document->pub_fees, 0, '.', ',') !!}</p>
                         </div>
