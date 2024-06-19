@@ -16,6 +16,7 @@ use App\Activity;
  * @property string $status
  * @property boolean $gaz_is_downloadable
  * @property-read \App\File $supplements
+ * @property boolean $has_supplements
  * @property-read \App\User $createdBy
  * */
 class Egazette extends Document
@@ -61,5 +62,9 @@ class Egazette extends Document
         return $this->files()->whereHas('fileType', function ($query) {
             $query->where('name', 'Supplement');
         });
+    }
+    public function getHasSupplementsAttribute()
+    {
+        return $this->supplements()->exists();
     }
 }

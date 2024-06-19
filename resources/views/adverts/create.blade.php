@@ -114,7 +114,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-8 col-md-4">
-                            {!! Form::submit('Create Advert', ['class' => 'btn btn-primary pull-right']) !!}
+                            {!! Form::submit('Submit Advert', ['class' => 'btn btn-primary pull-right']) !!}
                         </div>
                     </div>
                 </div>
