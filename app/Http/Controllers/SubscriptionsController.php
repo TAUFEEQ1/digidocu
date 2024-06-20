@@ -22,9 +22,9 @@ class SubscriptionsController extends Controller
         if ($user->is_client) {
             $baseQ->where("created_by", $user->id);
         }
-        if($request->has('sub_payment_status') && $request->input('sub_payment_status')!='ALL'){
+        if ($request->has('sub_payment_status') && $request->input('sub_payment_status') != 'ALL') {
             $status = $request->input('sub_payment_status');
-            $baseQ->where('sub_payment_status',$status);
+            $baseQ->where('sub_payment_status', $status);
         }
         $documents = $baseQ->orderByDesc('id')->paginate(10);
 
@@ -66,14 +66,18 @@ class SubscriptionsController extends Controller
             PaymentProcessor::dispatch($subscription);
             $subscription->newActivity("Subscription created by " . $user->name);
             $subscription->save();
-    
+
             return redirect()->route("subscriptions.index");
         } elseif ($payment_type == "CARD") {
-            $pay = new GovPayApi(["PAY_TYPE"=>"CARD","email"=>$user->email,"name"=>$user->name]);
-            $ref = $pay->initialize();
-            $payment_url = $pay->getPaymentUrl();
             /** @var \App\Subscription */
             $subscription = Subscription::create($subscription_data);
+            $redirect_url = url()->route('subscriptions.show', $subscription->id);
+            $pay = new GovPayApi([
+                "PAY_TYPE" => "CARD", "email" => $user->email,
+                "name" => $user->name, "redirect_url" => $redirect_url
+            ]);
+            $ref = $pay->initialize();
+            $payment_url = $pay->getPaymentUrl();
             $subscription->sub_payment_ref = $ref;
             $subscription->newActivity("Subscription created by " . $user->name);
             $subscription->save();
