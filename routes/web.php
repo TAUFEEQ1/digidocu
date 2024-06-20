@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
 
     
     Route::resource('publications',PublicationsController::class);
-    Route::get('subscriptions/{id}/receipt',[SubscriptionsController::class,'getReceipt']);
+    Route::get('subscriptions/{id}/receipt',[SubscriptionsController::class,'getReceipt'])->name("subscriptions.receipt");
     Route::resource('subscriptions',SubscriptionsController::class);
     Route::get('/_files/{dir?}/{file?}',[HomeController::class,'showFile'])->name('files.showfile');
     Route::get('/_zip/{id}/{dir?}',[HomeController::class,'downloadZip'])->name('files.downloadZip');

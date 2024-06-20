@@ -6,6 +6,8 @@ use App\Document;
 use App\Payments\BasePayment;
 use App\Subscription;
 use Carbon\Carbon;
+use SubscriptionFailed;
+use SubscriptionSuccessful;
 
 class SubscriptionPayment extends BasePayment
 {
@@ -48,12 +50,16 @@ class SubscriptionPayment extends BasePayment
                 $subscription->sub_start_date = clone $current_date;
                 $subscription->sub_end_date = $this->getEndDate($current_date);
                 $subscription->save();
+                $user = $subscription->createdBy;
+                $user->notify(new SubscriptionSuccessful($subscription));
                 break;
             case "FAILED":
                 $subscription->sub_payment_status = config("constants.SUB_PAY_STATES.FAILED");
                 $subscription->status = config("constants.SUB_STATUSES.PAYMENT FAILED");
                 $subscription->sub_payment_notes = $tx["notes"];
                 $subscription->save();
+                $user = $subscription->createdBy;
+                $user->notify(new SubscriptionFailed($tx["notes"]));
                 break;
             default:
                 break;
