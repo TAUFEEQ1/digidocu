@@ -37,7 +37,7 @@ Route::get('config', function () {
     Artisan::call('cache:forget spatie.permission.cache');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], function () {
     Route::get('/home', [HomeController::class,'index'])->name('admin.dashboard');
