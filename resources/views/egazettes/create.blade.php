@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('gaz_is_downloadable', 'Downloadable') !!}
-                        {!! Form::checkbox('gaz_is_downloadable', 0, null, ['class' => 'form-control']) !!}
+                        {!! Form::select('gaz_is_downloadable', [1 => 'Yes', 0 => 'No'], null, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
                         <label for="file" class="control-label">Scanned PDF</label>

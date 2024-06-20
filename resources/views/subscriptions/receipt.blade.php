@@ -27,7 +27,7 @@
 </head>
 <body>
     <div class="receipt-container">
-        <img src="https://uppc.go.ug/sites/default/files/UPPC%20logo.png" alt="Home">
+        <img src="{{ asset('images/logo.png') }}" alt="Home">
         <div class="receipt-heading">
             <h4>Subscription Receipt</h4>
             <hr>

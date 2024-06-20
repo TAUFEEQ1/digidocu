@@ -7,7 +7,7 @@
     <div class="pull-right">
         <a href="{{ route('adverts.create') }}" class="btn btn-primary">
             <i class="fa fa-plus"></i>
-            Add New
+            Submit Advert
         </a>
     </div>
     @endif
