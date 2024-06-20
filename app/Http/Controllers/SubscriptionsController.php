@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\GovPayApi;
 use App\Jobs\PaymentProcessor;
 use Illuminate\Http\Request;
 
@@ -44,27 +45,40 @@ class SubscriptionsController extends Controller
         $sub_types = config("constants.SUB_TYPES");
         $sub_fees = config("constants.SUB_FEES");
         $sub_category = config("constants.SUB_CATEGORY");
-        /** @var \App\Subscription */
-        $subscription = Subscription::create(
-            [
-                "name" => "Subscription from " . $user->name,
-                "status" => config("constants.SUB_STATUSES.PENDING PAYMENT"),
-                "sub_payment_status" => config("constants.SUB_PAY_STATES.PENDING"),
-                "category" => config("constants.DOC_TYPES.SUBSCRIPTION"),
-                "created_by" => $user->id,
-                "sub_amount" => $sub_fees[(int)$request->input("sub_type")],
-                "sub_type" => $sub_types[(int)$request->input("sub_type")],
-                "sub_payment_method" => "MOBILE",
-                "sub_category" => $sub_category[(int)$request->input("sub_category")],
-                "sub_payment_mobile_network" => $networks[(int)$request->input("sub_payment_mobile_network")],
-                "sub_payment_mobile_no" => $request->input("sub_payment_mobile_no")
-            ]
-        );
-        PaymentProcessor::dispatch($subscription);
-        $subscription->newActivity("Subscription created by " . $user->name);
-        $subscription->save();
 
-        return redirect()->route("subscriptions.index");
+        $payment_type = $request->input("payment_type");
+        $subscription_data = [
+            "name" => "Subscription from " . $user->name,
+            "status" => config("constants.SUB_STATUSES.PENDING PAYMENT"),
+            "sub_payment_status" => config("constants.SUB_PAY_STATES.PENDING"),
+            "category" => config("constants.DOC_TYPES.SUBSCRIPTION"),
+            "created_by" => $user->id,
+            "sub_amount" => $sub_fees[(int)$request->input("sub_type")],
+            "sub_type" => $sub_types[(int)$request->input("sub_type")],
+            "sub_payment_method" => $payment_type,
+            "sub_category" => $sub_category[(int)$request->input("sub_category")],
+        ];
+        if ($payment_type == "MOBILE") {
+            $subscription_data["sub_payment_mobile_network"] = $networks[(int)$request->input("sub_payment_mobile_network")];
+            $subscription_data["sub_payment_mobile_no"] = $request->input("sub_payment_mobile_no");
+            /** @var \App\Subscription */
+            $subscription = Subscription::create($subscription_data);
+            PaymentProcessor::dispatch($subscription);
+            $subscription->newActivity("Subscription created by " . $user->name);
+            $subscription->save();
+    
+            return redirect()->route("subscriptions.index");
+        } elseif ($payment_type == "CARD") {
+            $pay = new GovPayApi(["PAY_TYPE"=>"CARD","email"=>$user->email,"name"=>$user->name]);
+            $ref = $pay->initialize();
+            $payment_url = $pay->getPaymentUrl();
+            /** @var \App\Subscription */
+            $subscription = Subscription::create($subscription_data);
+            $subscription->sub_payment_ref = $ref;
+            $subscription->newActivity("Subscription created by " . $user->name);
+            $subscription->save();
+            return redirect($payment_url);
+        }
     }
     public function show(int $id, Request $request)
     {

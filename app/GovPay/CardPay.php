@@ -1,6 +1,8 @@
 <?php
 namespace App\GovPay;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use App\Exceptions\GovException;
 
 class CardPay extends GovBase{
     private array $details;
@@ -45,6 +47,18 @@ class CardPay extends GovBase{
     {
         $response = Http::withHeaders($this->getHeaders())->post($this->base_url."/initialize",$this->getPayload());
         $jsonData = $response->json();  
-        
+        // use a validator.
+        $validator = Validator::make($jsonData,[
+            "payload"=>"required",
+            "payload.internal_reference"=>"required",
+        ]);
+        if($validator->passes()){
+            $this->payment_url =  $jsonData["payload"]["payment_url"];
+            return $jsonData["payload"]["internal_reference"];
+        }
+        if(array_key_exists('message',$jsonData)){
+            throw new GovException($jsonData['message']);
+        }
+        return null;
     }
 }
