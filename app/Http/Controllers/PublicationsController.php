@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
 use App\FileType;
+use App\GovPayApi;
 use App\Jobs\PublicationPayment;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -44,21 +45,66 @@ class PublicationsController extends Controller
         return view('publications.create');
     }
 
-    public function buy(int $id,Request $request){
+    public function buy(int $id, Request $request)
+    {
         $user = $request->user();
-        $publication = Publication::findorFail($id);
+        $publication = Publication::findOrFail($id);
         $networks = config("constants.MOBILE_NETWORKS");
-        $publication_buyer = PublicationBuyer::create([
-            "publication_id"=> $publication->id,
-            "buyer_id"=> $user->id,
-            "mobile_network"=> $networks[(int)$request->input("mobile_network")],
-            "mobile_no"=> $request->input("mobile_no"),
-            "status"=> config('constants.ADVERT_STATES.PENDING PAYMENT'),
-            "payment_ref"=>"NA"
-        ]);
-        PublicationPayment::dispatch($publication_buyer);
-        return redirect()->route("publications.show",["publication"=>$id]);
+    
+        $payment_type = $request->input('payment_type');
+    
+        // Validate request based on payment type
+        $validationRules = [
+            'payment_type' => 'required|string|in:MOBILE,CARD',
+        ];
+    
+        if ($payment_type === 'MOBILE') {
+            $validationRules['mobile_network'] = 'required|integer|in:' . implode(',', array_keys($networks));
+            $validationRules['mobile_no'] = 'required|string|regex:/^0[0-9]{9}$/';
+        }
+    
+        $request->validate($validationRules);
+    
+        // Create the publication buyer data array
+        $publication_buyer_data = [
+            "publication_id" => $publication->id,
+            "buyer_id" => $user->id,
+            "status" => config('constants.ADVERT_STATES.PENDING PAYMENT'),
+            "payment_type" => $payment_type,
+            "payment_ref" => "NA"
+        ];
+    
+        if ($payment_type === 'MOBILE') {
+            $publication_buyer_data["mobile_network"] = $networks[(int)$request->input("mobile_network")];
+            $publication_buyer_data["mobile_no"] = $request->input("mobile_no");
+    
+            /** @var \App\PublicationBuyer */
+            $publication_buyer = PublicationBuyer::create($publication_buyer_data);
+            PublicationPayment::dispatch($publication_buyer);
+            $publication_buyer->newActivity("Publication purchase initiated by " . $user->name);
+            $publication_buyer->save();
+    
+            return redirect()->route("publications.show", ["publication" => $id]);
+        } elseif ($payment_type === 'CARD') {
+            /** @var \App\PublicationBuyer */
+            $publication_buyer = PublicationBuyer::create($publication_buyer_data);
+            $redirect_url = url()->route('publications.show', $publication->id);
+            $pay = new GovPayApi([
+                "PAY_TYPE" => "CARD",
+                "email" => $user->email,
+                "name" => $user->name,
+                "redirect_url" => $redirect_url
+            ]);
+            $ref = $pay->initialize();
+            $payment_url = $pay->getPaymentUrl();
+            $publication_buyer->payment_ref = $ref;
+            $publication_buyer->newActivity("Publication purchase initiated by " . $user->name);
+            $publication_buyer->save();
+    
+            return redirect($payment_url);
+        }
     }
+    
     /**
      * Store a newly created resource in storage.
      */
