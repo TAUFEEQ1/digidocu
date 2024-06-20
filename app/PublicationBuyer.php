@@ -17,7 +17,8 @@ class PublicationBuyer extends Model
         'buyer_id',
         'purchased_at',
         'mobile_network',
-        'mobile_no'
+        'mobile_no',
+        'payment_method'
     ];
 
     public function publication(){
