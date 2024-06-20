@@ -106,6 +106,22 @@
 
             req.send()
         });
+        function toggleMobileFields() {
+            if ($('#payment_type').val() === 'MOBILE') {
+                $('#mobile_network_group').show();
+                $('#mobile_no_group').show();
+            } else {
+                $('#mobile_network_group').hide();
+                $('#mobile_no_group').hide();
+            }
+        }
+        // Initial check when the page loads
+        toggleMobileFields();
+
+        // Event listener for the payment type dropdown change
+        $('#payment_type').change(function() {
+            toggleMobileFields();
+        });
 </script>
 @stop
 @section('content')
@@ -194,16 +210,20 @@
                                 </div>
                                 <h3>Payment Details</h3>
                                 <div class="form-group">
+                                    {!! Form::label('pub_fees', 'Fees:') !!}
+                                    {!! Form::text('pub_fees',$document->pub_fees, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('payment_type', 'Payment Type') !!}
+                                    {!! Form::select('payment_type',["MOBILE"=>"MOBILE","CARD"=>"CARD"], null, ['class' => 'form-control', 'required' => 'required','id'=>'payment_type']) !!}
+                                </div>
+                                <div class="form-group" id="mobile_network_group" style="display:none;">
                                     {!! Form::label('mobile_network', 'Mobile Network:') !!}
                                     {!! Form::select('mobile_network', config('constants.MOBILE_NETWORKS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="mobile_no_group" style="display:none;">
                                     {!! Form::label('mobile_no', 'Mobile No:') !!}
                                     {!! Form::tel('mobile_no','', ['class' => 'form-control', 'required' => 'required', 'pattern' => '0[0-9]{9}']) !!}
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('pub_fees', 'Fees:') !!}
-                                    {!! Form::text('pub_fees',$document->pub_fees, ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly']) !!}
                                 </div>
                                 <div class="form-group">
                                     {!! Form::submit('Buy', ['class' => 'btn btn-primary']) !!}
