@@ -36,7 +36,9 @@ Route::get('config', function () {
     Artisan::call('view:clear');
     Artisan::call('cache:forget spatie.permission.cache');
 });
-
+Route::get('/verify-email', function () {
+    return view('auth.verify');
+})->name('verification.notice');
 Auth::routes(['verify' => true]);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], function () {

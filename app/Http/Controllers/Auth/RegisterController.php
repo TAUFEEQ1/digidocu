@@ -32,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/email/verify';
+    protected $redirectTo = '/verify-email';
 
     /**
      * Create a new controller instance.
@@ -100,7 +100,7 @@ class RegisterController extends Controller
 
         $user = $this->create($request->all());
 
-        $user->notify(new VerifyEmailNotification());
+        $user->sendEmailVerificationNotification();
         return redirect($this->redirectPath())->with('status', 'We have sent you an email verification link!');
     }
 }

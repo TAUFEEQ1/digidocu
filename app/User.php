@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -127,6 +128,10 @@ class User extends Authenticatable
         ->whereDate('sub_end_date', '>=', now())
         ->exists();
     
+    }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
     }
 
 //    public function scopePermission($query, $permissions)

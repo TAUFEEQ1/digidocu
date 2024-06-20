@@ -37,7 +37,7 @@ class VerifyEmailNotification extends Notification
         return \Illuminate\Support\Facades\URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(config('auth.verification.expire', 60)),
-            ['id' => $notifiable->getKey()]
+            ['id' => $notifiable->getKey(),'hash' => sha1($notifiable->getEmailForVerification())]
         );
     }
 }
