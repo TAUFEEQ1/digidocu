@@ -56,6 +56,22 @@
             }
 
         });
+        function toggleMobileFields() {
+            if ($('#payment_type').val() === 'MOBILE') {
+                $('#mobile_network_group').show();
+                $('#mobile_no_group').show();
+            } else {
+                $('#mobile_network_group').hide();
+                $('#mobile_no_group').hide();
+            }
+        }
+        // Initial check when the page loads
+        toggleMobileFields();
+
+        // Event listener for the payment type dropdown change
+        $('#payment_type').change(function() {
+            toggleMobileFields();
+        });
 
     });
 </script>
@@ -105,10 +121,14 @@
                         {!! Form::number('ad_amount',config("constants.ADVERT_SERVICES")[0]['price'], ['class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly',"id"=>'ad_amount']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('payment_type', 'Payment Method') !!}
+                        {!! Form::select('payment_type', ["MOBILE"=>"MOBILE","CARD"=>"CARD"], null, ['class' => 'form-control', 'required' => 'required','id'=>'payment_type']) !!}
+                    </div>
+                    <div class="form-group" id="mobile_network_group" style="display:none;">
                         {!! Form::label('ad_payment_mobile_network', 'Mobile Network:') !!}
                         {!! Form::select('ad_payment_mobile_network', config('constants.MOBILE_NETWORKS'), null, ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="mobile_no_group" style="display:none;">
                         {!! Form::label('ad_payment_mobile_no', 'Mobile No:') !!}
                         {!! Form::tel('ad_payment_mobile_no','', ['class' => 'form-control', 'required' => 'required', 'pattern' => '0[0-9]{9}']) !!}
                     </div>

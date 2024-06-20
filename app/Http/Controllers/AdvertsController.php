@@ -57,7 +57,7 @@ class AdvertsController extends Controller
             $ad_meta = [array_merge($service['meta'][0], ['value' => $value])];
         }
 
-        $payment_type = $request->input("ad_payment_method");
+        $payment_type = $request->input("payment_type");
 
         $advert_data = [
             "name" => "Advert application by " . $user->name,
