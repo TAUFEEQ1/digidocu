@@ -27,9 +27,9 @@ class VerifyEmailNotification extends Notification
 
         return (new MailMessage)
             ->subject('Verify your email address')
-            ->line('Please click the button below to verify your email address.')
-            ->action('Verify Email Address', $verificationUrl)
-            ->line('If you did not create an account, no further action is required.');
+            ->markdown('vendor.notifications.verify_email',[
+                'verificationUrl'=>$verificationUrl
+            ]);
     }
 
     protected function verificationUrl($notifiable)

@@ -13,7 +13,5 @@ If you did not create an account, no further action is required.
 
 Best regards,
 
-Team Uganda Printing and Publishing Corporation
-
 {{ config('app.name') }}
 @endcomponent
