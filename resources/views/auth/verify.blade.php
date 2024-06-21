@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Verify Email | {{ config('settings.system_title') }}</title>
 
-    <!-- Tell the browser to be responsive to screen width -->
+    <!-- Responsive design -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     <!-- Bootstrap 3.3.7 -->
@@ -18,6 +18,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/lte/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/lte/skins/skin-blue-light.min.css') }}">
+
     <!-- iCheck -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/square/_all.css">
 
@@ -27,11 +28,16 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- Custom Styles -->
     <style>
         .login-box-body {
             border: 1px solid rgba(0, 40, 100, 0.12) !important;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05) !important;
             border-radius: 3px;
+        }
+        .login-box{
+            min-width: 30em;
         }
     </style>
     <link rel="stylesheet" href="{{ asset('css/digidocu-custom.css') }}">
@@ -44,7 +50,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">{{ __('Verify Your Email Address') }}</p>
+            <h3 class="login-box-msg">{{ __('Verify Your Email Address') }}</h3>
 
             @if (session('resent'))
                 <div class="alert alert-success" role="alert">
@@ -64,12 +70,13 @@
     </div>
     <!-- /.login-box -->
 
+    <!-- jQuery 3.2.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <!-- AdminLTE App -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.3/js/adminlte.min.js"></script>
-
+    <!-- iCheck -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
     <script>
         $(function() {
