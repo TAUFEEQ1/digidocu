@@ -4,6 +4,7 @@ use App\Payments\BasePayment;
 use App\PublicationBuyer;
 use App\Publication;
 use App\Document;
+use App\Notifications\PublicationPurchased;
 
 class PublicationPayment extends BasePayment{
 
@@ -22,6 +23,8 @@ class PublicationPayment extends BasePayment{
                 $current_date = now();
                 $publication_buyer->paid_at = $current_date;
                 $publication_buyer->save();
+                $user = $publication_buyer->buyer;
+                $user->notify(new PublicationPurchased($publication_buyer));
                 break;
             case "FAILED":
                 $publication_buyer->status = config("constants.ADVERT_STATES.PAYMENT FAILED");

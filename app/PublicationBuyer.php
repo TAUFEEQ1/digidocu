@@ -5,6 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\PublicationBuyer
+ * @property-read \App\Publication $publication
+ * @property-read \App\User $buyer
+ */
 class PublicationBuyer extends Model
 {
     use HasFactory;
