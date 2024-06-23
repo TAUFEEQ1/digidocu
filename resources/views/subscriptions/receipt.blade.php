@@ -23,11 +23,15 @@
         .receipt-details p {
             margin-bottom: 10px;
         }
+        .logo{
+            position: relative;
+            left:25%
+        }
     </style>
 </head>
 <body>
     <div class="receipt-container">
-        <img src="{{ asset('images/logo.png') }}" alt="Home">
+        <img src="https://uppc.go.ug/sites/default/files/UPPC%20logo.png" class="logo">
         <div class="receipt-heading">
             <h4>Subscription Receipt</h4>
             <hr>
